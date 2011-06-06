@@ -1,0 +1,16 @@
+{
+    "name": "color-convert",
+    "description": "Plain color conversion functions",
+    "version": "0.1.0",
+    "author": "Heather Arthur <fayearthur@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/harthur/color-convert.git"
+    },
+    "main": "./conversions",
+    "devDependencies": {
+        "browserify": ">=1.0.0",
+        "uglify-js": "1.0.x"
+    },
+    "keywords": ["color", "colour", "rgb"]
+}
