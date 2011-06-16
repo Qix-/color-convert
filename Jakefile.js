@@ -19,7 +19,7 @@ task('build', [], function (dest) {
 
   var source = browserify.bundle({
     name: "convert",
-    main: __dirname + "/conversions.js",
+    main: path.join(__dirname, pkg.main),
     shim: false
   });
   source = "var colorConvert = (function() {" + source + " return require('convert')})();"

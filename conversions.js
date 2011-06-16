@@ -1,38 +1,38 @@
 /* MIT license */
 
 module.exports = {
-  rgb2hslRaw : rgb2hslRaw,
-  hsl2rgbRaw : hsl2rgbRaw,
-  rgb2hsvRaw : rgb2hsvRaw,
-  hsv2rgbRaw : hsv2rgbRaw,
-  hsv2hslRaw : hsv2hslRaw,
-  hsl2hsvRaw : hsl2hsvRaw,
-  rgb2cmykRaw : rgb2cmykRaw,
-  cmyk2rgbRaw : cmyk2rgbRaw,
-  keyword2rgbRaw : keyword2rgbRaw,
-  rgb2keywordRaw : rgb2keywordRaw,
-  rgb2xyzRaw : rgb2xyzRaw,
-  xyz2rgbRaw : xyz2rgbRaw,
-  rgb2labRaw : rgb2labRaw
+  rgb2hsl: rgb2hsl,
+  rgb2hsv: rgb2hsv,
+  rgb2cmyk: rgb2cmyk,
+  rgb2keyword: rgb2keyword,
+  rgb2xyz: rgb2xyz,
+  rgb2lab: rgb2lab,
+
+  hsl2rgb: hsl2rgb,
+  hsl2hsv: hsl2hsv,
+  hsl2cmyk: hsl2cmyk,
+  hsl2keyword: hsl2keyword,
+
+  hsv2rgb: hsv2rgb,
+  hsv2hsl: hsv2hsl,
+  hsv2cmyk: hsv2cmyk,
+  hsv2keyword: hsv2keyword,
+
+  cmyk2rgb: cmyk2rgb,
+  cmyk2hsl: cmyk2hsl,
+  cmyk2hsv: cmyk2hsv,
+  cmyk2keyword: cmyk2keyword,
+  
+  keyword2rgb: keyword2rgb,
+  keyword2hsl: keyword2hsl,
+  keyword2hsv: keyword2hsv,
+  keyword2cmyk: keyword2cmyk,
+  
+  xyz2rgb: xyz2rgb,
 }
 
-for (var funcName in module.exports) {
-  var rounded = funcName.slice(0, funcName.length - 3);
-  module.exports[rounded] = (function(funcName) { 
-    return function(arg) {
-      if (typeof arg == "number")
-        arg = Array.prototype.slice.call(arguments);
-      
-      var val = module.exports[funcName](arg);
-      for (var i = 0; i < val.length; i++)
-        val[i] = Math.round(val[i]);
-      return val;
-    }
-  })(funcName);
-}
 
-
-function rgb2hslRaw(rgb) {
+function rgb2hsl(rgb) {
   var r = rgb[0]/255,
       g = rgb[1]/255,
       b = rgb[2]/255,
@@ -67,7 +67,7 @@ function rgb2hslRaw(rgb) {
   return [h, s * 100, l * 100];
 }
 
-function rgb2hsvRaw(rgb) {
+function rgb2hsv(rgb) {
   var r = rgb[0],
       g = rgb[1],
       b = rgb[2],
@@ -100,7 +100,64 @@ function rgb2hsvRaw(rgb) {
   return [h, s, v];
 }
 
-function hsl2rgbRaw(hsl) {
+function rgb2cmyk(rgb) {
+  var r = rgb[0] / 255,
+      g = rgb[1] / 255,
+      b = rgb[2] / 255,
+      c, m, y, k;
+      
+  k = Math.min(1 - r, 1 - g, 1 - b);
+  c = (1 - r - k) / (1 - k);
+  m = (1 - g - k) / (1 - k);
+  y = (1 - b - k) / (1 - k);
+  return [c * 100, m * 100, y * 100, k * 100];
+}
+
+function rgb2keyword(rgb) {
+  return reverseKeywords[JSON.stringify(rgb)];
+}
+
+function rgb2xyz(rgb) {
+  var r = rgb[0] / 255,
+      g = rgb[1] / 255,
+      b = rgb[2] / 255;
+
+  // assume sRGB
+  r = r > 0.04045 ? Math.pow(((r + 0.055) / 1.055), 2.4) : (r / 12.92);
+  g = g > 0.04045 ? Math.pow(((g + 0.055) / 1.055), 2.4) : (g / 12.92);
+  b = b > 0.04045 ? Math.pow(((b + 0.055) / 1.055), 2.4) : (b / 12.92);
+  
+  var x = (r * 0.4124) + (g * 0.3576) + (b * 0.1805);
+  var y = (r * 0.2126) + (g * 0.7152) + (b * 0.0722);
+  var z = (r * 0.0193) + (g * 0.1192) + (b * 0.9505);
+
+  return [x * 100, y *100, z * 100];
+}
+
+function rgb2lab(rgb) {
+  var xyz = rgb2xyz(rgb),
+        x = xyz[0],
+        y = xyz[1],
+        z = xyz[2],
+        l, a, b;
+
+  x /= 95.047;
+  y /= 100;
+  z /= 108.883;
+
+  x = x > 0.008856 ? Math.pow(x, 1/3) : (7.787 * x) + (16 / 116);
+  y = y > 0.008856 ? Math.pow(y, 1/3) : (7.787 * y) + (16 / 116);
+  z = z > 0.008856 ? Math.pow(z, 1/3) : (7.787 * z) + (16 / 116);
+
+  l = (116 * y) - 16;
+  a = 500 * (x - y);
+  b = 200 * (y - z);
+  
+  return [l, a, b];
+}
+
+
+function hsl2rgb(hsl) {
   var h = hsl[0] / 360,
       s = hsl[1] / 100,
       l = hsl[2] / 100,
@@ -138,7 +195,28 @@ function hsl2rgbRaw(hsl) {
   return rgb;
 }
 
-function hsv2rgbRaw(hsv) {
+function hsl2hsv(hsl) {
+  var h = hsl[0],
+      s = hsl[1] / 100,
+      l = hsl[2] / 100,
+      sv, v;
+  l *= 2;
+  s *= (l <= 1) ? l : 2 - l;
+  v = (l + s) / 2;
+  sv = (2 * s) / (l + s);
+  return [h, s * 100, v * 100];
+}
+
+function hsl2cmyk(args) {
+  return rgb2cmyk(hsl2rgb(args));
+}
+
+function hsl2keyword(args) {
+  return rgb2keyword(hsl2rgb(args));
+}
+
+
+function hsv2rgb(hsv) {
   var h = hsv[0] / 60,
       s = hsv[1] / 100,
       v = hsv[2] / 100,
@@ -166,7 +244,7 @@ function hsv2rgbRaw(hsv) {
   }
 }
 
-function hsv2hslRaw(hsv) {
+function hsv2hsl(hsv) {
   var h = hsv[0],
       s = hsv[1] / 100,
       v = hsv[2] / 100,
@@ -179,36 +257,19 @@ function hsv2hslRaw(hsv) {
   return [h, sl * 100, l * 100];
 }
 
-function hsl2hsvRaw(hsl) {
-  var h = hsl[0],
-      s = hsl[1] / 100,
-      l = hsl[2] / 100,
-      sv, v;
-  l *= 2;
-  s *= (l <= 1) ? l : 2 - l;
-  v = (l + s) / 2;
-  sv = (2 * s) / (l + s);
-  return [h, s * 100, v * 100];
+function hsv2cmyk(args) {
+  return rgb2cmyk(hsv2rgb(args));
 }
 
-function rgb2cmykRaw(rgb) {
-  var r = rgb[0] / 255,
-      g = rgb[1] / 255,
-      b = rgb[2] / 255,
-      c, m, y, k;
-      
-  k = Math.min(1 - r, 1 - g, 1 - b);
-  c = (1 - r - k) / (1 - k);
-  m = (1 - g - k) / (1 - k);
-  y = (1 - b - k) / (1 - k);
-  return [c * 100, m * 100, y * 100, k * 100];
+function hsv2keyword(args) {
+  return rgb2keyword(hsv2rgb(args));
 }
 
-function cmyk2rgbRaw(cmyk) {
-  var c = cmyk[0] /= 100,
-      m = cmyk[1] /= 100,
-      y = cmyk[2] /= 100,
-      k = cmyk[3] /= 100,
+function cmyk2rgb(cmyk) {
+  var c = cmyk[0] / 100,
+      m = cmyk[1] / 100,
+      y = cmyk[2] / 100,
+      k = cmyk[3] / 100,
       r, g, b;
 
   r = 1 - Math.min(1, c * (1 - k) + k);
@@ -217,24 +278,20 @@ function cmyk2rgbRaw(cmyk) {
   return [r * 255, g * 255, b * 255];
 }
 
-function rgb2xyzRaw(rgb) {
-  var r = rgb[0] /= 255,
-      g = rgb[1] /= 255,
-      b = rgb[2] /= 255;
-
-  // assume sRGB
-  r = r > 0.04045 ? Math.pow(((r + 0.055) / 1.055), 2.4) : (r / 12.92);
-  g = g > 0.04045 ? Math.pow(((g + 0.055) / 1.055), 2.4) : (g / 12.92);
-  b = b > 0.04045 ? Math.pow(((b + 0.055) / 1.055), 2.4) : (b / 12.92);
-  
-  var x = (r * 0.4124) + (g * 0.3576) + (b * 0.1805);
-  var y = (r * 0.2126) + (g * 0.7152) + (b * 0.0722);
-  var z = (r * 0.0193) + (g * 0.1192) + (b * 0.9505);
-
-  return [x * 100, y *100, z * 100];
+function cmyk2hsl(args) {
+  return rgb2hsl(cmyk2rgb(args));
 }
 
-function xyz2rgbRaw(xyz) {
+function cmyk2hsv(args) {
+  return rgb2hsv(cmyk2rgb(args));
+}
+
+function cmyk2keyword(args) {
+  return rgb2keyword(cmyk2rgb(args));
+}
+
+
+function xyz2rgb(xyz) {
   var x = xyz[0] / 100,
       y = xyz[1] / 100,
       z = xyz[2] / 100,
@@ -261,34 +318,21 @@ function xyz2rgbRaw(xyz) {
   return [r * 255, g * 255, b * 255];
 }
 
-function rgb2labRaw(rgb) {
-  var xyz = rgb2xyzRaw(rgb),
-        x = xyz[0],
-        y = xyz[1],
-        z = xyz[2],
-        l, a, b;
 
-  x /= 95.047;
-  y /= 100;
-  z /= 108.883;
-
-  x = x > 0.008856 ? Math.pow(x, 1/3) : (7.787 * x) + (16 / 116);
-  y = y > 0.008856 ? Math.pow(y, 1/3) : (7.787 * y) + (16 / 116);
-  z = z > 0.008856 ? Math.pow(z, 1/3) : (7.787 * z) + (16 / 116);
-
-  l = (116 * y) - 16;
-  a = 500 * (x - y);
-  b = 200 * (y - z);
-  
-  return [l, a, b];
-}
-
-function keyword2rgbRaw(keyword) {
+function keyword2rgb(keyword) {
   return cssKeywords[keyword];
 }
 
-function rgb2keywordRaw(rgb) {
-  return reverseKeywords[JSON.stringify(rgb)];
+function keyword2hsl(args) {
+  return rgb2hsl(keyword2rgb(args));
+}
+
+function keyword2hsv(args) {
+  return rgb2hsv(keyword2rgb(args));
+}
+
+function keyword2cmyk(args) {
+  return rgb2cmyk(keyword2rgb(args));
 }
 
 var cssKeywords = {
