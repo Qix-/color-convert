@@ -74,7 +74,7 @@ function rgb2hsv(rgb) {
       min = Math.min(r, g, b),
       max = Math.max(r, g, b),
       delta = max - min,
-      h, s, l;
+      h, s, v;
 
   if (max == 0)
     s = 0;
