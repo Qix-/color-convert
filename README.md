@@ -2,7 +2,7 @@
 Color-convert is a library of plain color conversion functions. It converts between rgb, hsl, hsv, and cmyk:
 
 ```javascript
-colorConvert.rgb2hsl([140, 200, 100]));   // [96, 48, 59]
+colorConvert.rgb2hsl([140, 200, 100]);   // [96, 48, 59]
 ```	
 
 # Install
@@ -33,7 +33,7 @@ convert.cmyk2rgb([100, 100, 100, 100])  // cmyk -> rgb, hsl, hsv, and keyword
 
 convert.keyword2rgb("blue")             // keyword -> rgb, hsl, hsv, and cmyk
 
-convert.xyz2rgb([100, 100, 100])        // xyz -> rgb
+convert.xyz2rgb([100, 100, 100])        // xyz -> rgb, lab
 ```
 
 ### Unrounded
