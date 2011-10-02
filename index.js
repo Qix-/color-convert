@@ -1,23 +1,5 @@
 var conversions = require("./conversions");
 
-
-var convert = {};
-/*
-module.exports = convert;
-*/
-
-/******
-module.exports = ArgParser;
-// for nomnom.parseArgs()
-var argParser = ArgParser();
-
-for (var i in argParser) {
-  if (typeof argParser[i] == "function") {
-     ArgParser[i] = argParser[i];     
-  }
-}
-********/
-
 var convert = function() {
   return new Converter();
 }
