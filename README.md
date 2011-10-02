@@ -54,7 +54,7 @@ convert["hsl"]["hsv"]([160, 0, 20]) == convert.hsl2hsv([160, 0, 20])
 ```
 
 ### Other spaces
-There are some conversions from rgb (sRGB) to XYZ and LAB too, available as `rgb2xyz()`, `rgb2lab()`, `xyz2rgb`, and `xyz2lab()`.
+There are some conversions from rgb (sRGB) to XYZ and LAB too, available as `rgb2xyz()`, `rgb2lab()`, `xyz2rgb()`, and `xyz2lab()`.
 
 # Contribute
 Please fork, add conversions, figure out color profile stuff for XYZ, LAB, etc. This is meant to be a basic library that can be used by other libraries to wrap color calculations in some cool way.

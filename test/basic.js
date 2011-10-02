@@ -27,8 +27,13 @@ assert.deepEqual(convert.keyword2rgb("blue"), [0, 0, 255]);
 assert.deepEqual(convert.keyword2hsl("blue"), [240, 100, 50]);
 assert.deepEqual(convert.keyword2hsv("blue"), [240, 100, 100]);
 assert.deepEqual(convert.keyword2cmyk("blue"), [100, 100, 0, 0]);
+assert.deepEqual(convert.keyword2lab("blue"), [32, 79, -108]);
+assert.deepEqual(convert.keyword2xyz("blue"), [18, 7, 95]);
 
 assert.deepEqual(convert.xyz2rgb([25, 40, 15]), [97, 190, 85]);
+assert.deepEqual(convert.xyz2lab([25, 40, 15]), [69, -48, 44]);
+
+assert.deepEqual(convert.lab2xyz([69, -48, 44]), [25, 39, 15]);
 
 // non-array arguments
 assert.deepEqual(convert.hsl2rgb(96, 48, 59), [140, 201, 100]);
@@ -92,8 +97,15 @@ assert.deepEqual(convert["keyword"]["rgb"](val), convert.keyword2rgb(val));
 assert.deepEqual(convert["keyword"]["hsl"](val), convert.keyword2hsl(val));
 assert.deepEqual(convert["keyword"]["hsv"](val), convert.keyword2hsv(val));
 assert.deepEqual(convert["keyword"]["cmyk"](val), convert.keyword2cmyk(val));
+assert.deepEqual(convert["keyword"]["lab"](val), convert.keyword2lab(val));
+assert.deepEqual(convert["keyword"]["xyz"](val), convert.keyword2xyz(val));
 
-assert.deepEqual(convert["xyz"]["rgb"]([25, 40, 15]), [97, 190, 85]);
+val = [25, 40, 15]
+assert.deepEqual(convert["xyz"]["rgb"](val), convert.xyz2rgb(val));
+assert.deepEqual(convert["xyz"]["lab"](val), convert.xyz2lab(val));
+
+val = [69, -48, 44];
+assert.deepEqual(convert["lab"]["xyz"](val), [25, 39, 15]);
 
 
 // converter
@@ -114,5 +126,3 @@ assert.deepEqual(converter.rgb(), convert.hsl2rgb(vals));
 assert.deepEqual(converter.hsv(), convert.hsl2hsv(vals));
 assert.deepEqual(converter.cmyk(), convert.hsl2cmyk(vals));
 assert.deepEqual(converter.keyword(), convert.hsl2keyword(vals));
-
-
