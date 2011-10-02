@@ -1,8 +1,12 @@
 # color-convert
-Color-convert is a library of plain color conversion functions. It converts between rgb, hsl, hsv, and cmyk:
+Color-convert is a color conversion library for JavaScript and node. It converts all ways between rgb, hsl, hsv, cmyk, and CSS keywords:
 
 ```javascript
-colorConvert.rgb2hsl([140, 200, 100]));   // [96, 48, 59]
+var converter = require("color-convert")();
+
+converter.rgb(140, 200, 100).hsl()   // [96, 48, 59]
+
+converter.keyword("blue").rgb()      // [0, 0, 255]
 ```	
 
 # Install
@@ -18,29 +22,28 @@ For [node](http://nodejs.org) with [npm](http://npmjs.org):
 Download the latest [color-convert.js](http://github.com/harthur/color-convert/downloads). All the methods are on the `colorConvert` object.
 
 # API
-Color-convert converts all ways between rgb, hsl, hsv, cmyk, and CSS keyword. Also from rgb to xyz and lab (these two assume sRGB color profile):
+Color-convert exports a converter object with getter/setter methods for each color space. It caches conversions:
 
 ```javascript
-var convert = require("color-convert");
+var converter = require("color-convert")();
 
-convert.rgb2hsl([255, 255, 255])        // rgb -> hsl, hsv, cmyk, keyword, xyz, and lab
+converter.rgb(140, 200, 100).hsl()   // [96, 48, 59]
 
-convert.hsl2rgb([360, 100, 100])        // hsl -> rgb, hsv, cmyk, and keyword
+converter.rgb([140, 200, 100])       // args can be an array
+```
 
-convert.hsv2rgb([360, 100, 100])        // hsv -> rgb, hsl, cmyk, and keyword
+### Plain functions
+Get direct conversion functions with no fancy objects:
 
-convert.cmyk2rgb([100, 100, 100, 100])  // cmyk -> rgb, hsl, hsv, and keyword
-
-convert.keyword2rgb("blue")             // keyword -> rgb, hsl, hsv, and cmyk
-
-convert.xyz2rgb([100, 100, 100])        // xyz -> rgb
+```javascript
+require("convert").rgb2hsl([140, 200, 100]);   // [96, 48, 59]
 ```
 
 ### Unrounded
 To get the unrounded conversion, append `Raw` to the function name:
 
 ```javascript
-colorConvert.rgb2hslRaw([140, 200, 100]);   // [95.99999999999999, 47.619047619047606, 58.82352941176471]
+convert.rgb2hslRaw([140, 200, 100]);   // [95.99999999999999, 47.619047619047606, 58.82352941176471]
 ```
 
 ### Hash
@@ -49,6 +52,9 @@ There's also a hash of the conversion functions keyed first by the "from" color 
 ```javascript
 convert["hsl"]["hsv"]([160, 0, 20]) == convert.hsl2hsv([160, 0, 20])
 ```
+
+### Other spaces
+There are some conversions from rgb (sRGB) to XYZ and LAB too, available as `rgb2xyz()`, `rgb2lab()`, `xyz2rgb`, and `xyz2lab()`.
 
 # Contribute
 Please fork, add conversions, figure out color profile stuff for XYZ, LAB, etc. This is meant to be a basic library that can be used by other libraries to wrap color calculations in some cool way.

@@ -94,3 +94,25 @@ assert.deepEqual(convert["keyword"]["hsv"](val), convert.keyword2hsv(val));
 assert.deepEqual(convert["keyword"]["cmyk"](val), convert.keyword2cmyk(val));
 
 assert.deepEqual(convert["xyz"]["rgb"]([25, 40, 15]), [97, 190, 85]);
+
+
+// converter
+var converter = convert();
+
+var vals = [140, 200, 100];
+converter.rgb(140, 200, 100);
+
+assert.deepEqual(converter.hsl(), convert.rgb2hsl(vals));
+assert.deepEqual(converter.hsv(), convert.rgb2hsv(vals));
+assert.deepEqual(converter.cmyk(), convert.rgb2cmyk(vals));
+assert.deepEqual(converter.rgb(), vals);
+assert.deepEqual(converter.rgb([255, 228, 196]).keyword(), "bisque");
+
+vals = [96, 48, 59];
+converter.hsl(vals);
+assert.deepEqual(converter.rgb(), convert.hsl2rgb(vals));
+assert.deepEqual(converter.hsv(), convert.hsl2hsv(vals));
+assert.deepEqual(converter.cmyk(), convert.hsl2cmyk(vals));
+assert.deepEqual(converter.keyword(), convert.hsl2keyword(vals));
+
+
