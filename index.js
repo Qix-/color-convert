@@ -1,7 +1,7 @@
 var conversions = require("./conversions");
 
 var convert = function() {
-  return new Converter();
+   return new Converter();
 }
 
 for (var func in conversions) {
@@ -41,52 +41,52 @@ for (var func in conversions) {
 
 /* Converter does lazy conversion and caching */
 var Converter = function() {
-  this.convs = {};
+   this.convs = {};
 };
 
 /* Either get the values for a space or
   set the values for a space, depending on args */
 Converter.prototype.routeSpace = function(space, args) {
-  var values = args[0];
-  if (values === undefined) {
-     // color.rgb()
-     return this.getValues(space);
-  }
-  // color.rgb(10, 10, 10)
-  if (typeof values == "number") {
-     values = Array.prototype.slice.call(args);        
-  }
+   var values = args[0];
+   if (values === undefined) {
+      // color.rgb()
+      return this.getValues(space);
+   }
+   // color.rgb(10, 10, 10)
+   if (typeof values == "number") {
+      values = Array.prototype.slice.call(args);        
+   }
 
-  return this.setValues(space, values);
+   return this.setValues(space, values);
 };
   
 /* Set the values for a space, invalidating cache */
 Converter.prototype.setValues = function(space, values) {
-  this.space = space;
-  this.convs = {};
-  this.convs[space] = values;
-  return this;
+   this.space = space;
+   this.convs = {};
+   this.convs[space] = values;
+   return this;
 };
 
 /* Get the values for a space. If there's already
   a conversion for the space, fetch it, otherwise
   compute it */
 Converter.prototype.getValues = function(space) {
-  var vals = this.convs[space];
-  if (!vals) {
-    var fspace = this.space;
-        from = this.convs[fspace];
-    vals = convert[fspace][space](from);
+   var vals = this.convs[space];
+   if (!vals) {
+      var fspace = this.space,
+          from = this.convs[fspace];
+      vals = convert[fspace][space](from);
 
-    this.convs[space] = vals;
-  }
+      this.convs[space] = vals;
+   }
   return vals;
 };
 
 ["rgb", "hsl", "hsv", "cmyk", "keyword"].forEach(function(space) {
-  Converter.prototype[space] = function(vals) {
-    return this.routeSpace(space, arguments);
-  }
+   Converter.prototype[space] = function(vals) {
+      return this.routeSpace(space, arguments);
+   }
 });
 
 module.exports = convert;
