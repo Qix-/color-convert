@@ -9,7 +9,7 @@ assert.deepEqual(convert.rgb2xyz([92, 191, 84]), [25, 40, 15]);
 assert.deepEqual(convert.rgb2lab([92, 191, 84]), [70, -50, 45]);
 
 assert.deepEqual(convert.hsl2rgb([96, 48, 59]), [140, 201, 100]);
-assert.deepEqual(convert.hsl2hsv([96, 48, 59]), [96, 39, 79]); // colorpicker says [96,50,79]
+assert.deepEqual(convert.hsl2hsv([96, 48, 59]), [96, 50, 79]); // colorpicker says [96,50,79]
 assert.deepEqual(convert.hsl2cmyk([96, 48, 59]), [30, 0, 50, 21]);
 assert.deepEqual(convert.hsl2keyword([240, 100, 50]), "blue");
 
@@ -58,7 +58,7 @@ assert.deepEqual(round(convert.keyword2rgbRaw("blue")), [0, 0, 255]);
 assert.deepEqual(convert.rgb2keywordRaw([255, 228, 196]), "bisque");
 
 assert.deepEqual(round(convert.hsv2hslRaw([96, 50, 78])), [96, 47, 58.5]);
-assert.deepEqual(round(convert.hsl2hsvRaw([96, 48, 59])), [96, 39.4, 78.7]);
+assert.deepEqual(round(convert.hsl2hsvRaw([96, 48, 59])), [96, 50, 78.7]);
 
 assert.deepEqual(round(convert.xyz2rgbRaw([25, 40, 15])), [97.4, 189.9, 85]);
 assert.deepEqual(round(convert.rgb2xyzRaw([92, 191, 84])), [24.6, 40.2, 14.8]);
