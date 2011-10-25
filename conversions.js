@@ -209,7 +209,7 @@ function hsl2hsv(hsl) {
   s *= (l <= 1) ? l : 2 - l;
   v = (l + s) / 2;
   sv = (2 * s) / (l + s);
-  return [h, s * 100, v * 100];
+  return [h, sv * 100, v * 100];
 }
 
 function hsl2cmyk(args) {
