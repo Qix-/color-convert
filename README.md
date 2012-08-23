@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/harthur/color-convert.png)](http://travis-ci.org/harthur/color-convert)
 # color-convert
 Color-convert is a color conversion library for JavaScript and node. It converts all ways between rgb, hsl, hsv, cmyk, and CSS keywords:
 
