@@ -31,9 +31,11 @@ assert.deepEqual(convert.keyword2lab("blue"), [32, 79, -108]);
 assert.deepEqual(convert.keyword2xyz("blue"), [18, 7, 95]);
 
 assert.deepEqual(convert.xyz2rgb([25, 40, 15]), [97, 190, 85]);
+assert.deepEqual(convert.xyz2rgb([50, 100, 100]), [0, 255, 241]);
 assert.deepEqual(convert.xyz2lab([25, 40, 15]), [69, -48, 44]);
 
 assert.deepEqual(convert.lab2xyz([69, -48, 44]), [25, 39, 15]);
+assert.deepEqual(convert.lab2rgb([75, 20, -30]), [194, 175, 240]);
 
 // non-array arguments
 assert.deepEqual(convert.hsl2rgb(96, 48, 59), [140, 201, 100]);
