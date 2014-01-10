@@ -7,6 +7,7 @@ assert.deepEqual(convert.rgb2cmyk([140, 200, 100]), [30, 0, 50, 22]);
 assert.deepEqual(convert.rgb2keyword([255, 228, 196]), "bisque");
 assert.deepEqual(convert.rgb2xyz([92, 191, 84]), [25, 40, 15]);
 assert.deepEqual(convert.rgb2lab([92, 191, 84]), [70, -50, 45]);
+assert.deepEqual(convert.rgb2lch([92, 191, 84]), [70, 67, 138]);
 
 assert.deepEqual(convert.hsl2rgb([96, 48, 59]), [140, 201, 100]);
 assert.deepEqual(convert.hsl2hsv([96, 48, 59]), [96, 50, 79]); // colorpicker says [96,50,79]
@@ -33,9 +34,15 @@ assert.deepEqual(convert.keyword2xyz("blue"), [18, 7, 95]);
 assert.deepEqual(convert.xyz2rgb([25, 40, 15]), [97, 190, 85]);
 assert.deepEqual(convert.xyz2rgb([50, 100, 100]), [0, 255, 241]);
 assert.deepEqual(convert.xyz2lab([25, 40, 15]), [69, -48, 44]);
+assert.deepEqual(convert.xyz2lch([25, 40, 15]), [69, 65, 137]);
 
 assert.deepEqual(convert.lab2xyz([69, -48, 44]), [25, 39, 15]);
 assert.deepEqual(convert.lab2rgb([75, 20, -30]), [194, 175, 240]);
+assert.deepEqual(convert.lab2lch([69, -48, 44]), [69, 65, 137]);
+
+assert.deepEqual(convert.lch2lab([69, 65, 137]), [69, -48, 44]);
+assert.deepEqual(convert.lch2xyz([69, 65, 137]), [25, 39, 15]);
+assert.deepEqual(convert.lch2rgb([69, 65, 137]), [98, 188, 83]);
 
 // non-array arguments
 assert.deepEqual(convert.hsl2rgb(96, 48, 59), [140, 201, 100]);
