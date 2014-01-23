@@ -34,6 +34,7 @@ module.exports = {
   xyz2lab: xyz2lab,
   
   lab2xyz: lab2xyz,
+  lab2rgb: lab2rgb,
 }
 
 
@@ -316,9 +317,9 @@ function xyz2rgb(xyz) {
   b = b > 0.0031308 ? ((1.055 * Math.pow(b, 1.0 / 2.4)) - 0.055)
     : b = (b * 12.92);
 
-  r = (r < 0) ? 0 : r;
-  g = (g < 0) ? 0 : g;
-  b = (b < 0) ? 0 : b;
+  r = Math.min(Math.max(0, r), 1);
+  g = Math.min(Math.max(0, g), 1);
+  b = Math.min(Math.max(0, b), 1);
 
   return [r * 255, g * 255, b * 255];
 }
@@ -363,6 +364,10 @@ function lab2xyz(lab) {
   z = z / 108.883 <= 0.008859 ? z = (108.883 * (y2 - (b / 200) - (16 / 116))) / 7.787 : 108.883 * Math.pow(y2 - (b / 200), 3);
 
   return [x, y, z];
+}
+
+function lab2rgb(args) {
+  return xyz2rgb(lab2xyz(args));
 }
 
 function keyword2rgb(keyword) {
