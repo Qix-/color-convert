@@ -7,6 +7,7 @@ module.exports = {
   rgb2keyword: rgb2keyword,
   rgb2xyz: rgb2xyz,
   rgb2lab: rgb2lab,
+  rgb2lch: rgb2lch,
 
   hsl2rgb: hsl2rgb,
   hsl2hsv: hsl2hsv,
@@ -32,9 +33,15 @@ module.exports = {
   
   xyz2rgb: xyz2rgb,
   xyz2lab: xyz2lab,
+  xyz2lch: xyz2lch,
   
   lab2xyz: lab2xyz,
   lab2rgb: lab2rgb,
+  lab2lch: lab2lch,
+
+  lch2lab: lch2lab,
+  lch2xyz: lch2xyz,
+  lch2rgb: lch2rgb,
 }
 
 
@@ -162,6 +169,9 @@ function rgb2lab(rgb) {
   return [l, a, b];
 }
 
+function rgb2lch(args) {
+  return lab2lch(rgb2lab(args));
+}
 
 function hsl2rgb(hsl) {
   var h = hsl[0] / 360,
@@ -345,6 +355,10 @@ function xyz2lab(xyz) {
   return [l, a, b];
 }
 
+function xyz2lch(args) {
+  return lab2lch(xyz2lab(args));
+}
+
 function lab2xyz(lab) {
   var l = lab[0],
       a = lab[1],
@@ -366,8 +380,43 @@ function lab2xyz(lab) {
   return [x, y, z];
 }
 
+function lab2lch(lab) {
+  var l = lab[0],
+      a = lab[1],
+      b = lab[2],
+      hr, h, c;
+
+  hr = Math.atan2(b, a);
+  h = hr * 360 / 2 / Math.PI;
+  if (h < 0) {
+    h += 360;
+  }
+  c = Math.sqrt(a * a + b * b);
+  return [l, c, h];
+}
+
 function lab2rgb(args) {
   return xyz2rgb(lab2xyz(args));
+}
+
+function lch2lab(lch) {
+  var l = lch[0],
+      c = lch[1],
+      h = lch[2],
+      a, b, hr;
+
+  hr = h / 360 * 2 * Math.PI;
+  a = c * Math.cos(hr);
+  b = c * Math.sin(hr);
+  return [l, a, b];
+}
+
+function lch2xyz(args) {
+  return lab2xyz(lch2lab(args));
+}
+
+function lch2rgb(args) {
+  return lab2rgb(lch2lab(args));
 }
 
 function keyword2rgb(keyword) {
