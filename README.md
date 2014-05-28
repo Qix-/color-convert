@@ -36,7 +36,7 @@ converter.rgb([140, 200, 100])       // args can be an array
 Get direct conversion functions with no fancy objects:
 
 ```javascript
-require("convert").rgb2hsl([140, 200, 100]);   // [96, 48, 59]
+require("color-convert").rgb2hsl([140, 200, 100]);   // [96, 48, 59]
 ```
 
 ### Unrounded
