@@ -41,7 +41,7 @@ module.exports = {
 
   lch2lab: lch2lab,
   lch2xyz: lch2xyz,
-  lch2rgb: lch2rgb,
+  lch2rgb: lch2rgb
 }
 
 
