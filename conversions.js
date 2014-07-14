@@ -3,6 +3,7 @@
 module.exports = {
   rgb2hsl: rgb2hsl,
   rgb2hsv: rgb2hsv,
+  rgb2hwb: rgb2hwb,
   rgb2cmyk: rgb2cmyk,
   rgb2keyword: rgb2keyword,
   rgb2xyz: rgb2xyz,
@@ -11,30 +12,40 @@ module.exports = {
 
   hsl2rgb: hsl2rgb,
   hsl2hsv: hsl2hsv,
+  hsl2hwb: hsl2hwb,
   hsl2cmyk: hsl2cmyk,
   hsl2keyword: hsl2keyword,
 
   hsv2rgb: hsv2rgb,
   hsv2hsl: hsv2hsl,
+  hsv2hwb: hsv2hwb,
   hsv2cmyk: hsv2cmyk,
   hsv2keyword: hsv2keyword,
+
+  hwb2rgb: hwb2rgb,
+  hwb2hsl: hwb2hsl,
+  hwb2hsv: hwb2hsv,
+  hwb2cmyk: hwb2cmyk,
+  hwb2keyword: hwb2keyword,
 
   cmyk2rgb: cmyk2rgb,
   cmyk2hsl: cmyk2hsl,
   cmyk2hsv: cmyk2hsv,
+  cmyk2hwb: cmyk2hwb,
   cmyk2keyword: cmyk2keyword,
-  
+
   keyword2rgb: keyword2rgb,
   keyword2hsl: keyword2hsl,
   keyword2hsv: keyword2hsv,
+  keyword2hwb: keyword2hwb,
   keyword2cmyk: keyword2cmyk,
   keyword2lab: keyword2lab,
   keyword2xyz: keyword2xyz,
-  
+
   xyz2rgb: xyz2rgb,
   xyz2lab: xyz2lab,
   xyz2lch: xyz2lch,
-  
+
   lab2xyz: lab2xyz,
   lab2rgb: lab2rgb,
   lab2lch: lab2lch,
@@ -56,10 +67,10 @@ function rgb2hsl(rgb) {
 
   if (max == min)
     h = 0;
-  else if (r == max) 
-    h = (g - b) / delta; 
+  else if (r == max)
+    h = (g - b) / delta;
   else if (g == max)
-    h = 2 + (b - r) / delta; 
+    h = 2 + (b - r) / delta;
   else if (b == max)
     h = 4 + (r - g)/ delta;
 
@@ -96,16 +107,16 @@ function rgb2hsv(rgb) {
 
   if (max == min)
     h = 0;
-  else if (r == max) 
-    h = (g - b) / delta; 
+  else if (r == max)
+    h = (g - b) / delta;
   else if (g == max)
-    h = 2 + (b - r) / delta; 
+    h = 2 + (b - r) / delta;
   else if (b == max)
     h = 4 + (r - g) / delta;
 
   h = Math.min(h * 60, 360);
 
-  if (h < 0) 
+  if (h < 0)
     h += 360;
 
   v = ((max / 255) * 1000) / 10;
@@ -113,12 +124,23 @@ function rgb2hsv(rgb) {
   return [h, s, v];
 }
 
+function rgb2hwb(rgb) {
+  var r = rgb[0],
+      g = rgb[1],
+      b = rgb[2],
+      h = rgb2hsl(rgb)[0]
+      w = 1/255 * Math.min(r, Math.min(g, b))
+      b = 1 - 1/255 * Math.max(r, Math.max(g, b));
+
+  return [h, w * 100, b * 100];
+}
+
 function rgb2cmyk(rgb) {
   var r = rgb[0] / 255,
       g = rgb[1] / 255,
       b = rgb[2] / 255,
       c, m, y, k;
-      
+
   k = Math.min(1 - r, 1 - g, 1 - b);
   c = (1 - r - k) / (1 - k);
   m = (1 - g - k) / (1 - k);
@@ -139,7 +161,7 @@ function rgb2xyz(rgb) {
   r = r > 0.04045 ? Math.pow(((r + 0.055) / 1.055), 2.4) : (r / 12.92);
   g = g > 0.04045 ? Math.pow(((g + 0.055) / 1.055), 2.4) : (g / 12.92);
   b = b > 0.04045 ? Math.pow(((b + 0.055) / 1.055), 2.4) : (b / 12.92);
-  
+
   var x = (r * 0.4124) + (g * 0.3576) + (b * 0.1805);
   var y = (r * 0.2126) + (g * 0.7152) + (b * 0.0722);
   var z = (r * 0.0193) + (g * 0.1192) + (b * 0.9505);
@@ -165,7 +187,7 @@ function rgb2lab(rgb) {
   l = (116 * y) - 16;
   a = 500 * (x - y);
   b = 200 * (y - z);
-  
+
   return [l, a, b];
 }
 
@@ -207,7 +229,7 @@ function hsl2rgb(hsl) {
 
     rgb[i] = val * 255;
   }
-  
+
   return rgb;
 }
 
@@ -221,6 +243,10 @@ function hsl2hsv(hsl) {
   v = (l + s) / 2;
   sv = (2 * s) / (l + s);
   return [h, sv * 100, v * 100];
+}
+
+function hsl2hwb(args) {
+  return rgb2hwb(hsl2rgb(args));
 }
 
 function hsl2cmyk(args) {
@@ -266,11 +292,15 @@ function hsv2hsl(hsv) {
       v = hsv[2] / 100,
       sl, l;
 
-  l = (2 - s) * v;  
+  l = (2 - s) * v;
   sl = s * v;
   sl /= (l <= 1) ? l : 2 - l;
   l /= 2;
   return [h, sl * 100, l * 100];
+}
+
+function hsv2hwb(args) {
+  return rgb2hwb(hsv2rgb(args))
 }
 
 function hsv2cmyk(args) {
@@ -279,6 +309,58 @@ function hsv2cmyk(args) {
 
 function hsv2keyword(args) {
   return rgb2keyword(hsv2rgb(args));
+}
+
+// http://dev.w3.org/csswg/css-color/#hwb-to-rgb
+function hwb2rgb(hwb) {
+  var h = hwb[0] / 360,
+      wh = hwb[1] / 100,
+      bl = hwb[2] / 100,
+      ratio = wh + bl,
+      i, v, f, n;
+
+  // wh + bl cant be > 1
+  if (ratio > 1) {
+    wh /= ratio;
+    bl /= ratio;
+  }
+
+  i = Math.floor(6 * h);
+  v = 1 - bl;
+  f = 6 * h - i;
+  if ((i & 0x01) != 0) {
+    f = 1 - f;
+  }
+  n = wh + f * (v - wh);  // linear interpolation
+
+  switch (i) {
+    default:
+    case 6:
+    case 0: r = v; g = n; b = wh; break;
+    case 1: r = n; g = v; b = wh; break;
+    case 2: r = wh; g = v; b = n; break;
+    case 3: r = wh; g = n; b = v; break;
+    case 4: r = n; g = wh; b = v; break;
+    case 5: r = v; g = wh; b = n; break;
+  }
+
+  return [r * 255, g * 255, b * 255];
+}
+
+function hwb2hsl(args) {
+  return rgb2hsl(hwb2rgb(args));
+}
+
+function hwb2hsv(args) {
+  return rgb2hsv(hwb2rgb(args));
+}
+
+function hwb2cmyk(args) {
+  return rgb2cmyk(hwb2rgb(args));
+}
+
+function hwb2keyword(args) {
+  return rgb2keyword(hwb2rgb(args));
 }
 
 function cmyk2rgb(cmyk) {
@@ -302,6 +384,10 @@ function cmyk2hsv(args) {
   return rgb2hsv(cmyk2rgb(args));
 }
 
+function cmyk2hwb(args) {
+  return rgb2hwb(cmyk2rgb(args));
+}
+
 function cmyk2keyword(args) {
   return rgb2keyword(cmyk2rgb(args));
 }
@@ -323,7 +409,7 @@ function xyz2rgb(xyz) {
 
   g = g > 0.0031308 ? ((1.055 * Math.pow(g, 1.0 / 2.4)) - 0.055)
     : g = (g * 12.92);
-        
+
   b = b > 0.0031308 ? ((1.055 * Math.pow(b, 1.0 / 2.4)) - 0.055)
     : b = (b * 12.92);
 
@@ -351,7 +437,7 @@ function xyz2lab(xyz) {
   l = (116 * y) - 16;
   a = 500 * (x - y);
   b = 200 * (y - z);
-  
+
   return [l, a, b];
 }
 
@@ -429,6 +515,10 @@ function keyword2hsl(args) {
 
 function keyword2hsv(args) {
   return rgb2hsv(keyword2rgb(args));
+}
+
+function keyword2hwb(args) {
+  return rgb2hwb(keyword2rgb(args));
 }
 
 function keyword2cmyk(args) {
