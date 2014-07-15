@@ -1,5 +1,5 @@
 # color-convert
-Color-convert is a color conversion library for JavaScript and node. It converts all ways between rgb, hsl, hsv, cmyk, and CSS keywords:
+Color-convert is a color conversion library for JavaScript and node. It converts all ways between `rgb`, `hsl`, `hsv`, `hwb`, `cmyk`, and CSS keywords:
 
 ```javascript
 var converter = require("color-convert")();
