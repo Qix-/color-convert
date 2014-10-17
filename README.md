@@ -7,7 +7,7 @@ var converter = require("color-convert")();
 converter.rgb(140, 200, 100).hsl()   // [96, 48, 59]
 
 converter.keyword("blue").rgb()      // [0, 0, 255]
-```	
+```
 
 # Install
 
@@ -19,7 +19,7 @@ For [node](http://nodejs.org) with [npm](http://npmjs.org):
 
 ### browser
 
-Download the latest [color-convert.js](http://github.com/harthur/color-convert/downloads). All the methods are on the `colorConvert` object.
+Download the latest [color-convert.js](http://github.com/harthur/color-convert/tree/gh-pages). All the methods are on the `colorConvert` object.
 
 # API
 Color-convert exports a converter object with getter/setter methods for each color space. It caches conversions:
