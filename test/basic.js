@@ -19,6 +19,7 @@ assert.deepEqual(convert.hsl2keyword([240, 100, 50]), "blue");
 
 assert.deepEqual(convert.hsv2rgb([96, 50, 78]), [139, 199, 99]);
 assert.deepEqual(convert.hsv2hsl([96, 50, 78]), [96, 47, 59]);
+assert.deepEqual(convert.hsv2hsl([0,0,0]), [0,0,0]);
 assert.deepEqual(convert.hsv2hwb([96, 50, 78]), [96, 39, 22]);
 assert.deepEqual(convert.hsv2cmyk([96, 50, 78]), [30, 0, 50, 22]);
 assert.deepEqual(convert.hsv2keyword([240, 100, 100]), "blue");
