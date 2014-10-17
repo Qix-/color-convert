@@ -5,6 +5,7 @@ assert.deepEqual(convert.rgb2hsl([140, 200, 100]), [96, 48, 59]);
 assert.deepEqual(convert.rgb2hsv([140, 200, 100]), [96, 50, 78]);
 assert.deepEqual(convert.rgb2hwb([140, 200, 100]), [96, 39, 22]);
 assert.deepEqual(convert.rgb2cmyk([140, 200, 100]), [30, 0, 50, 22]);
+assert.deepEqual(convert.rgb2cmyk([0,0,0,1]), [0,0,0,100]);
 assert.deepEqual(convert.rgb2keyword([255, 228, 196]), "bisque");
 assert.deepEqual(convert.rgb2xyz([92, 191, 84]), [25, 40, 15]);
 assert.deepEqual(convert.rgb2lab([92, 191, 84]), [70, -50, 45]);
