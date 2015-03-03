@@ -1,7 +1,7 @@
 {
     "name": "color-convert",
     "description": "Plain color conversion functions",
-    "version": "0.3.3",
+    "version": "0.5.2",
     "author": "Heather Arthur <fayearthur@gmail.com>",
     "repository": "harthur/color-convert",
     "keywords": ["color", "colour", "rgb"],
