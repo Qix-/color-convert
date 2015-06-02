@@ -177,3 +177,11 @@ assert.deepEqual(convert.hwb2rgb([240, 0, 0]), [0,0,255]);
 assert.deepEqual(convert.hwb2rgb([240, 20, 40]), [51, 51, 153]);
 assert.deepEqual(convert.hwb2rgb([240, 40, 40]), [102, 102, 153]);
 assert.deepEqual(convert.hwb2rgb([240, 40, 20]), [102, 102, 204]);
+
+
+// black should always stay black
+val = [0, 0, 0];
+assert.deepEqual(convert.hsl2hsv(val), val);
+assert.deepEqual(convert.hsl2rgb(val), val);
+assert.deepEqual(convert.hsl2hwb(val), [0, 0, 100]);
+assert.deepEqual(convert.hsl2cmyk(val), [0, 0, 0, 100]);
