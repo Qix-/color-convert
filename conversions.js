@@ -9,30 +9,40 @@ module.exports = {
   rgb2xyz: rgb2xyz,
   rgb2lab: rgb2lab,
   rgb2lch: rgb2lch,
+  rgb2ansi16: rgb2ansi16,
+  rgb2ansi: rgb2ansi,
 
   hsl2rgb: hsl2rgb,
   hsl2hsv: hsl2hsv,
   hsl2hwb: hsl2hwb,
   hsl2cmyk: hsl2cmyk,
   hsl2keyword: hsl2keyword,
+  hsl2ansi16: hsl2ansi16,
+  hsl2ansi: hsl2ansi,
 
   hsv2rgb: hsv2rgb,
   hsv2hsl: hsv2hsl,
   hsv2hwb: hsv2hwb,
   hsv2cmyk: hsv2cmyk,
   hsv2keyword: hsv2keyword,
+  hsv2ansi16: hsv2ansi16,
+  hsv2ansi: hsv2ansi,
 
   hwb2rgb: hwb2rgb,
   hwb2hsl: hwb2hsl,
   hwb2hsv: hwb2hsv,
   hwb2cmyk: hwb2cmyk,
   hwb2keyword: hwb2keyword,
+  hwb2ansi16: hwb2ansi16,
+  hwb2ansi: hwb2ansi,
 
   cmyk2rgb: cmyk2rgb,
   cmyk2hsl: cmyk2hsl,
   cmyk2hsv: cmyk2hsv,
   cmyk2hwb: cmyk2hwb,
   cmyk2keyword: cmyk2keyword,
+  cmyk2ansi16: cmyk2ansi16,
+  cmyk2ansi: cmyk2ansi,
 
   keyword2rgb: keyword2rgb,
   keyword2hsl: keyword2hsl,
@@ -41,6 +51,8 @@ module.exports = {
   keyword2cmyk: keyword2cmyk,
   keyword2lab: keyword2lab,
   keyword2xyz: keyword2xyz,
+  keyword2ansi16: keyword2ansi16,
+  keyword2ansi: keyword2ansi,
 
   xyz2rgb: xyz2rgb,
   xyz2lab: xyz2lab,
@@ -52,7 +64,21 @@ module.exports = {
 
   lch2lab: lch2lab,
   lch2xyz: lch2xyz,
-  lch2rgb: lch2rgb
+  lch2rgb: lch2rgb,
+
+  ansi162rgb: ansi162rgb,
+  ansi162hsl: ansi162hsl,
+  ansi162hsv: ansi162hsv,
+  ansi162hwb: ansi162hwb,
+  ansi162cmyk: ansi162cmyk,
+  ansi162keyword: ansi162keyword,
+
+  ansi2rgb: ansi2rgb,
+  ansi2hsl: ansi2hsl,
+  ansi2hsv: ansi2hsv,
+  ansi2hwb: ansi2hwb,
+  ansi2cmyk: ansi2cmyk,
+  ansi2keyword: ansi2keyword,
 }
 
 
@@ -539,6 +565,166 @@ function keyword2lab(args) {
 
 function keyword2xyz(args) {
   return rgb2xyz(keyword2rgb(args));
+}
+
+function rgb2ansi16(args) {
+  var r = args[0],
+      g = args[1],
+      b = args[2],
+      value = arguments[1] || rgb2hsv(args)[2]; // hsv2ansi16 optimization
+
+  value = Math.round(value / 50);
+  if (value === 0)
+    return 30;
+
+  var ansi = 30 +
+    ((Math.round(b / 255) << 2) |
+    (Math.round(g / 255) << 1) |
+    Math.round(r / 255));
+
+  if (value === 2)
+    ansi += 60;
+
+  return ansi;
+}
+
+function rgb2ansi(args) {
+  var r = args[0],
+      g = args[1],
+      b = args[2];
+
+  // we use the extended greyscale palette here, with the exception of
+  // black and white. normal palette only has 4 greyscale shades.
+  if (r === g && g === b) {
+    if (r < 8)
+      return 16;
+    if (r > 248)
+      return 231;
+    return Math.round(((r - 8) / 247) * 24) + 232;
+  }
+
+  var ansi = 16 +
+    (36 * Math.round(r / 255 * 5)) +
+    (6 * Math.round(g / 255 * 5)) +
+    Math.round(b / 255 * 5);
+
+  return ansi;
+}
+
+function hsl2ansi16(args) {
+  return rgb2ansi16(hsl2rgb(args));
+}
+
+function hsl2ansi(args) {
+  return rgb2ansi(hsl2rgb(args));
+}
+
+function hsv2ansi16(args) {
+  return rgb2ansi16(hsv2rgb(args), args[2]);
+}
+
+function hsv2ansi(args) {
+  return rgb2ansi(hsv2rgb(args));
+}
+
+function hwb2ansi16(args) {
+  return rgb2ansi16(hwb2rgb(args));
+}
+
+function hwb2ansi(args) {
+  return rgb2ansi(hwb2rgb(args));
+}
+
+function cmyk2ansi16(args) {
+  return rgb2ansi16(cmyk2rgb(args));
+}
+
+function cmyk2ansi(args) {
+  return rgb2ansi(cmyk2rgb(args));
+}
+
+function keyword2ansi16(args) {
+  return rgb2ansi16(keyword2rgb(args));
+}
+
+function keyword2ansi(args) {
+  return rgb2ansi(keyword2rgb(args));
+}
+
+function ansi162rgb(args) {
+  var color = args % 10;
+
+  // handle greyscale
+  if (color === 0 || color === 7) {
+    if (args > 50)
+      color += 3.5;
+    color = color / 10.5 * 255;
+    return [color, color, color];
+  }
+
+  var mult = (~~(args > 50) + 1) * 0.5,
+      r = ((color & 1) * mult) * 255,
+      g = (((color >> 1) & 1) * mult) * 255,
+      b = (((color >> 2) & 1) * mult) * 255;
+
+  return [r, g, b];
+}
+
+function ansi162hsl(args) {
+  return rgb2hsl(ansi162rgb(args));
+}
+
+function ansi162hsv(args) {
+  return rgb2hsv(ansi162rgb(args));
+}
+
+function ansi162hwb(args) {
+  return rgb2hwb(ansi162rgb(args));
+}
+
+function ansi162cmyk(args) {
+  return rgb2cmyk(ansi162rgb(args));
+}
+
+function ansi162keyword(args) {
+  return rgb2keyword(ansi162rgb(args));
+}
+
+function ansi2rgb(args) {
+  // handle greyscale
+  if (args >= 232) {
+    var c = (args - 232) * 10 + 8;
+    return [c, c, c];
+  }
+
+  args -= 16;
+
+  var rem,
+      r = Math.floor(args / 36) / 5 * 255,
+      g = Math.floor((rem = args % 36) / 6) / 5 * 255,
+      b = (rem % 6) / 5 * 255;
+
+  return [r, g, b];
+}
+
+function ansi2hsl(args) {
+  return rgb2hsl(ansi2rgb(args));
+}
+
+function ansi2hsv(args) {
+  return rgb2hsv(ansi2rgb(args));
+}
+
+function ansi2hwb(args) {
+  return rgb2hwb(ansi2rgb(args));
+}
+
+function ansi2cmyk(args) {
+  return rgb2cmyk(ansi2rgb(args));
+}
+
+function ansi2keyword(args) {
+  return rgb2keyword(ansi2rgb(args));
 }
 
 var cssKeywords = {
