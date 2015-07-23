@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/harthur/color-convert.svg?branch=master)](https://travis-ci.org/harthur/color-convert)
 
-Color-convert is a color conversion library for JavaScript and node. It converts all ways between `rgb`, `hsl`, `hsv`, `hwb`, `cmyk`, and CSS keywords:
+Color-convert is a color conversion library for JavaScript and node.
+It converts all ways between `rgb`, `hsl`, `hsv`, `hwb`, `cmyk`, `ansi`, `ansi16` and CSS keywords:
 
 ```js
 var converter = require("color-convert")();
@@ -15,7 +16,7 @@ converter.keyword("blue").rgb()      // [0, 0, 255]
 # Install
 
 ```console
-npm install color-convert
+$ npm install color-convert
 ```
 
 # API
