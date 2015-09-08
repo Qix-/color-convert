@@ -175,7 +175,7 @@ function rgb2cmyk(rgb) {
 }
 
 function rgb2keyword(rgb) {
-  return reverseKeywords[JSON.stringify(rgb)];
+  return reverseKeywords[rgb.join()];
 }
 
 function rgb2xyz(rgb) {
@@ -880,5 +880,5 @@ var cssKeywords = {
 
 var reverseKeywords = {};
 for (var key in cssKeywords) {
-  reverseKeywords[JSON.stringify(cssKeywords[key])] = key;
+  reverseKeywords[cssKeywords[key].join()] = key;
 }
