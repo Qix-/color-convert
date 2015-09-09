@@ -3,18 +3,26 @@
   "description": "Plain color conversion functions",
   "version": "0.6.0",
   "author": "Heather Arthur <fayearthur@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/harthur/color-convert.git"
-  },
-  "devDependencies": {
-  },
+  "repository": "MoOx/color-convert",
   "scripts": {
     "test": "node test/basic.js"
   },
   "keywords": [
     "color",
     "colour",
-    "rgb"
+    "convert",
+    "converter",
+    "conversion",
+    "rgb",
+    "hsl",
+    "hsv",
+    "hwb",
+    "cmyk",
+    "ansi",
+    "ansi16"
+  ],
+  "files": [
+    "index.js",
+    "conversions.js"
   ]
 }
