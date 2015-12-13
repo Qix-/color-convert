@@ -1,7 +1,7 @@
 {
   "name": "color-convert",
   "description": "Plain color conversion functions",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "Heather Arthur <fayearthur@gmail.com>",
   "license": "MIT",
   "repository": "MoOx/color-convert",
