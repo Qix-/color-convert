@@ -6,6 +6,7 @@
   "license": "MIT",
   "repository": "MoOx/color-convert",
   "scripts": {
+    "pretest": "xo",
     "test": "node test/basic.js"
   },
   "keywords": [
@@ -25,5 +26,15 @@
   "files": [
     "index.js",
     "conversions.js"
-  ]
+  ],
+  "xo": {
+    "rules": {
+      "default-case": 0,
+      "no-inline-comments": 0,
+      "operator-linebreak": 0
+    }
+  },
+  "devDependencies": {
+    "xo": "^0.11.2"
+  }
 }
