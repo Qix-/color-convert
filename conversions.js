@@ -11,6 +11,7 @@ module.exports = {
 	rgb2lch: rgb2lch,
 	rgb2ansi16: rgb2ansi16,
 	rgb2ansi: rgb2ansi,
+	rgb2hex: rgb2hex,
 
 	hsl2rgb: hsl2rgb,
 	hsl2hsv: hsl2hsv,
@@ -19,6 +20,7 @@ module.exports = {
 	hsl2keyword: hsl2keyword,
 	hsl2ansi16: hsl2ansi16,
 	hsl2ansi: hsl2ansi,
+	hsl2hex: hsl2hex,
 
 	hsv2rgb: hsv2rgb,
 	hsv2hsl: hsv2hsl,
@@ -27,6 +29,7 @@ module.exports = {
 	hsv2keyword: hsv2keyword,
 	hsv2ansi16: hsv2ansi16,
 	hsv2ansi: hsv2ansi,
+	hsv2hex: hsv2hex,
 
 	hwb2rgb: hwb2rgb,
 	hwb2hsl: hwb2hsl,
@@ -35,6 +38,7 @@ module.exports = {
 	hwb2keyword: hwb2keyword,
 	hwb2ansi16: hwb2ansi16,
 	hwb2ansi: hwb2ansi,
+	hwb2hex: hwb2hex,
 
 	cmyk2rgb: cmyk2rgb,
 	cmyk2hsl: cmyk2hsl,
@@ -43,6 +47,7 @@ module.exports = {
 	cmyk2keyword: cmyk2keyword,
 	cmyk2ansi16: cmyk2ansi16,
 	cmyk2ansi: cmyk2ansi,
+	cmyk2hex: cmyk2hex,
 
 	keyword2rgb: keyword2rgb,
 	keyword2hsl: keyword2hsl,
@@ -53,6 +58,7 @@ module.exports = {
 	keyword2xyz: keyword2xyz,
 	keyword2ansi16: keyword2ansi16,
 	keyword2ansi: keyword2ansi,
+	keyword2hex: keyword2hex,
 
 	xyz2rgb: xyz2rgb,
 	xyz2lab: xyz2lab,
@@ -72,13 +78,24 @@ module.exports = {
 	ansi162hwb: ansi162hwb,
 	ansi162cmyk: ansi162cmyk,
 	ansi162keyword: ansi162keyword,
+	ansi162hex: ansi162hex,
 
 	ansi2rgb: ansi2rgb,
 	ansi2hsl: ansi2hsl,
 	ansi2hsv: ansi2hsv,
 	ansi2hwb: ansi2hwb,
 	ansi2cmyk: ansi2cmyk,
-	ansi2keyword: ansi2keyword
+	ansi2keyword: ansi2keyword,
+	ansi2hex: ansi2hex,
+
+	hex2rgb: hex2rgb,
+	hex2hsl: hex2hsl,
+	hex2hsv: hex2hsv,
+	hex2hwb: hex2hwb,
+	hex2cmyk: hex2cmyk,
+	hex2keyword: hex2keyword,
+	hex2ansi16: hex2ansi16,
+	hex2ansi: hex2ansi
 };
 
 var cssKeywords = {
@@ -954,4 +971,83 @@ function ansi2cmyk(args) {
 
 function ansi2keyword(args) {
 	return rgb2keyword(ansi2rgb(args));
+}
+
+function rgb2hex(args) {
+	var integer = ((Math.round(args[0]) & 0xFF) << 16)
+		+ ((Math.round(args[1]) & 0xFF) << 8)
+		+ (Math.round(args[2]) & 0xFF);
+
+	var string = integer.toString(16).toUpperCase();
+	return '000000'.substring(string.length) + string;
+}
+
+function hsl2hex(args) {
+	return rgb2hex(hsl2rgb(args));
+}
+
+function hsv2hex(args) {
+	return rgb2hex(hsv2rgb(args));
+}
+
+function hwb2hex(args) {
+	return rgb2hex(hwb2rgb(args));
+}
+
+function cmyk2hex(args) {
+	return rgb2hex(cmyk2rgb(args));
+}
+
+function keyword2hex(args) {
+	return rgb2hex(keyword2rgb(args));
+}
+
+function ansi162hex(args) {
+	return rgb2hex(ansi162rgb(args));
+}
+
+function ansi2hex(args) {
+	return rgb2hex(ansi2rgb(args));
+}
+
+function hex2rgb(args) {
+	var match = args.toString(16).match(/[a-f0-9]{6}/i);
+	if (!match) {
+		return [0, 0, 0];
+	}
+
+	var integer = parseInt(match[0], 16);
+	var r = (integer >> 16) & 0xFF;
+	var g = (integer >> 8) & 0xFF;
+	var b = integer & 0xFF;
+
+	return [r, g, b];
+}
+
+function hex2hsl(args) {
+	return rgb2hsl(hex2rgb(args));
+}
+
+function hex2hsv(args) {
+	return rgb2hsv(hex2rgb(args));
+}
+
+function hex2hwb(args) {
+	return rgb2hwb(hex2rgb(args));
+}
+
+function hex2cmyk(args) {
+	return rgb2cmyk(hex2rgb(args));
+}
+
+function hex2keyword(args) {
+	return rgb2keyword(hex2rgb(args));
+}
+
+function hex2ansi16(args) {
+	return rgb2ansi16(hex2rgb(args));
+}
+
+function hex2ansi(args) {
+	return rgb2ansi(hex2rgb(args));
 }
