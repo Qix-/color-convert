@@ -1,253 +1,9 @@
 /* MIT license */
+var cssKeywords = require('./css-keywords');
 
-module.exports = {
-	rgb2hsl: rgb2hsl,
-	rgb2hsv: rgb2hsv,
-	rgb2hwb: rgb2hwb,
-	rgb2cmyk: rgb2cmyk,
-	rgb2keyword: rgb2keyword,
-	rgb2xyz: rgb2xyz,
-	rgb2lab: rgb2lab,
-	rgb2lch: rgb2lch,
-	rgb2ansi16: rgb2ansi16,
-	rgb2ansi: rgb2ansi,
-	rgb2hex: rgb2hex,
-
-	hsl2rgb: hsl2rgb,
-	hsl2hsv: hsl2hsv,
-	hsl2hwb: hsl2hwb,
-	hsl2cmyk: hsl2cmyk,
-	hsl2keyword: hsl2keyword,
-	hsl2ansi16: hsl2ansi16,
-	hsl2ansi: hsl2ansi,
-	hsl2hex: hsl2hex,
-
-	hsv2rgb: hsv2rgb,
-	hsv2hsl: hsv2hsl,
-	hsv2hwb: hsv2hwb,
-	hsv2cmyk: hsv2cmyk,
-	hsv2keyword: hsv2keyword,
-	hsv2ansi16: hsv2ansi16,
-	hsv2ansi: hsv2ansi,
-	hsv2hex: hsv2hex,
-
-	hwb2rgb: hwb2rgb,
-	hwb2hsl: hwb2hsl,
-	hwb2hsv: hwb2hsv,
-	hwb2cmyk: hwb2cmyk,
-	hwb2keyword: hwb2keyword,
-	hwb2ansi16: hwb2ansi16,
-	hwb2ansi: hwb2ansi,
-	hwb2hex: hwb2hex,
-
-	cmyk2rgb: cmyk2rgb,
-	cmyk2hsl: cmyk2hsl,
-	cmyk2hsv: cmyk2hsv,
-	cmyk2hwb: cmyk2hwb,
-	cmyk2keyword: cmyk2keyword,
-	cmyk2ansi16: cmyk2ansi16,
-	cmyk2ansi: cmyk2ansi,
-	cmyk2hex: cmyk2hex,
-
-	keyword2rgb: keyword2rgb,
-	keyword2hsl: keyword2hsl,
-	keyword2hsv: keyword2hsv,
-	keyword2hwb: keyword2hwb,
-	keyword2cmyk: keyword2cmyk,
-	keyword2lab: keyword2lab,
-	keyword2xyz: keyword2xyz,
-	keyword2ansi16: keyword2ansi16,
-	keyword2ansi: keyword2ansi,
-	keyword2hex: keyword2hex,
-
-	xyz2rgb: xyz2rgb,
-	xyz2lab: xyz2lab,
-	xyz2lch: xyz2lch,
-
-	lab2xyz: lab2xyz,
-	lab2rgb: lab2rgb,
-	lab2lch: lab2lch,
-
-	lch2lab: lch2lab,
-	lch2xyz: lch2xyz,
-	lch2rgb: lch2rgb,
-
-	ansi162rgb: ansi162rgb,
-	ansi162hsl: ansi162hsl,
-	ansi162hsv: ansi162hsv,
-	ansi162hwb: ansi162hwb,
-	ansi162cmyk: ansi162cmyk,
-	ansi162keyword: ansi162keyword,
-	ansi162hex: ansi162hex,
-
-	ansi2rgb: ansi2rgb,
-	ansi2hsl: ansi2hsl,
-	ansi2hsv: ansi2hsv,
-	ansi2hwb: ansi2hwb,
-	ansi2cmyk: ansi2cmyk,
-	ansi2keyword: ansi2keyword,
-	ansi2hex: ansi2hex,
-
-	hex2rgb: hex2rgb,
-	hex2hsl: hex2hsl,
-	hex2hsv: hex2hsv,
-	hex2hwb: hex2hwb,
-	hex2cmyk: hex2cmyk,
-	hex2keyword: hex2keyword,
-	hex2ansi16: hex2ansi16,
-	hex2ansi: hex2ansi
-};
-
-var cssKeywords = {
-	aliceblue: [240, 248, 255],
-	antiquewhite: [250, 235, 215],
-	aqua: [0, 255, 255],
-	aquamarine: [127, 255, 212],
-	azure: [240, 255, 255],
-	beige: [245, 245, 220],
-	bisque: [255, 228, 196],
-	black: [0, 0, 0],
-	blanchedalmond: [255, 235, 205],
-	blue: [0, 0, 255],
-	blueviolet: [138, 43, 226],
-	brown: [165, 42, 42],
-	burlywood: [222, 184, 135],
-	cadetblue: [95, 158, 160],
-	chartreuse: [127, 255, 0],
-	chocolate: [210, 105, 30],
-	coral: [255, 127, 80],
-	cornflowerblue: [100, 149, 237],
-	cornsilk: [255, 248, 220],
-	crimson: [220, 20, 60],
-	cyan: [0, 255, 255],
-	darkblue: [0, 0, 139],
-	darkcyan: [0, 139, 139],
-	darkgoldenrod: [184, 134, 11],
-	darkgray: [169, 169, 169],
-	darkgreen: [0, 100, 0],
-	darkgrey: [169, 169, 169],
-	darkkhaki: [189, 183, 107],
-	darkmagenta: [139, 0, 139],
-	darkolivegreen: [85, 107, 47],
-	darkorange: [255, 140, 0],
-	darkorchid: [153, 50, 204],
-	darkred: [139, 0, 0],
-	darksalmon: [233, 150, 122],
-	darkseagreen: [143, 188, 143],
-	darkslateblue: [72, 61, 139],
-	darkslategray: [47, 79, 79],
-	darkslategrey: [47, 79, 79],
-	darkturquoise: [0, 206, 209],
-	darkviolet: [148, 0, 211],
-	deeppink: [255, 20, 147],
-	deepskyblue: [0, 191, 255],
-	dimgray: [105, 105, 105],
-	dimgrey: [105, 105, 105],
-	dodgerblue: [30, 144, 255],
-	firebrick: [178, 34, 34],
-	floralwhite: [255, 250, 240],
-	forestgreen: [34, 139, 34],
-	fuchsia: [255, 0, 255],
-	gainsboro: [220, 220, 220],
-	ghostwhite: [248, 248, 255],
-	gold: [255, 215, 0],
-	goldenrod: [218, 165, 32],
-	gray: [128, 128, 128],
-	green: [0, 128, 0],
-	greenyellow: [173, 255, 47],
-	grey: [128, 128, 128],
-	honeydew: [240, 255, 240],
-	hotpink: [255, 105, 180],
-	indianred: [205, 92, 92],
-	indigo: [75, 0, 130],
-	ivory: [255, 255, 240],
-	khaki: [240, 230, 140],
-	lavender: [230, 230, 250],
-	lavenderblush: [255, 240, 245],
-	lawngreen: [124, 252, 0],
-	lemonchiffon: [255, 250, 205],
-	lightblue: [173, 216, 230],
-	lightcoral: [240, 128, 128],
-	lightcyan: [224, 255, 255],
-	lightgoldenrodyellow: [250, 250, 210],
-	lightgray: [211, 211, 211],
-	lightgreen: [144, 238, 144],
-	lightgrey: [211, 211, 211],
-	lightpink: [255, 182, 193],
-	lightsalmon: [255, 160, 122],
-	lightseagreen: [32, 178, 170],
-	lightskyblue: [135, 206, 250],
-	lightslategray: [119, 136, 153],
-	lightslategrey: [119, 136, 153],
-	lightsteelblue: [176, 196, 222],
-	lightyellow: [255, 255, 224],
-	lime: [0, 255, 0],
-	limegreen: [50, 205, 50],
-	linen: [250, 240, 230],
-	magenta: [255, 0, 255],
-	maroon: [128, 0, 0],
-	mediumaquamarine: [102, 205, 170],
-	mediumblue: [0, 0, 205],
-	mediumorchid: [186, 85, 211],
-	mediumpurple: [147, 112, 219],
-	mediumseagreen: [60, 179, 113],
-	mediumslateblue: [123, 104, 238],
-	mediumspringgreen: [0, 250, 154],
-	mediumturquoise: [72, 209, 204],
-	mediumvioletred: [199, 21, 133],
-	midnightblue: [25, 25, 112],
-	mintcream: [245, 255, 250],
-	mistyrose: [255, 228, 225],
-	moccasin: [255, 228, 181],
-	navajowhite: [255, 222, 173],
-	navy: [0, 0, 128],
-	oldlace: [253, 245, 230],
-	olive: [128, 128, 0],
-	olivedrab: [107, 142, 35],
-	orange: [255, 165, 0],
-	orangered: [255, 69, 0],
-	orchid: [218, 112, 214],
-	palegoldenrod: [238, 232, 170],
-	palegreen: [152, 251, 152],
-	paleturquoise: [175, 238, 238],
-	palevioletred: [219, 112, 147],
-	papayawhip: [255, 239, 213],
-	peachpuff: [255, 218, 185],
-	peru: [205, 133, 63],
-	pink: [255, 192, 203],
-	plum: [221, 160, 221],
-	powderblue: [176, 224, 230],
-	purple: [128, 0, 128],
-	rebeccapurple: [102, 51, 153],
-	red: [255, 0, 0],
-	rosybrown: [188, 143, 143],
-	royalblue: [65, 105, 225],
-	saddlebrown: [139, 69, 19],
-	salmon: [250, 128, 114],
-	sandybrown: [244, 164, 96],
-	seagreen: [46, 139, 87],
-	seashell: [255, 245, 238],
-	sienna: [160, 82, 45],
-	silver: [192, 192, 192],
-	skyblue: [135, 206, 235],
-	slateblue: [106, 90, 205],
-	slategray: [112, 128, 144],
-	slategrey: [112, 128, 144],
-	snow: [255, 250, 250],
-	springgreen: [0, 255, 127],
-	steelblue: [70, 130, 180],
-	tan: [210, 180, 140],
-	teal: [0, 128, 128],
-	thistle: [216, 191, 216],
-	tomato: [255, 99, 71],
-	turquoise: [64, 224, 208],
-	violet: [238, 130, 238],
-	wheat: [245, 222, 179],
-	white: [255, 255, 255],
-	whitesmoke: [245, 245, 245],
-	yellow: [255, 255, 0],
-	yellowgreen: [154, 205, 50]
-};
+// NOTE: conversions should only return primitive values (i.e. arrays, or
+//       values that give correct `typeof` results).
+//       do not use box values types (i.e. Number(), String(), etc.)
 
 var reverseKeywords = {};
 for (var key in cssKeywords) {
@@ -256,7 +12,22 @@ for (var key in cssKeywords) {
 	}
 }
 
-function rgb2hsl(rgb) {
+var convert = module.exports = {
+	rgb: {},
+	hsl: {},
+	hsv: {},
+	hwb: {},
+	cmyk: {},
+	xyz: {},
+	lab: {},
+	lch: {},
+	hex: {},
+	keyword: {},
+	ansi16: {},
+	ansi256: {}
+};
+
+convert.rgb.hsl = function (rgb) {
 	var r = rgb[0] / 255;
 	var g = rgb[1] / 255;
 	var b = rgb[2] / 255;
@@ -294,9 +65,9 @@ function rgb2hsl(rgb) {
 	}
 
 	return [h, s * 100, l * 100];
-}
+};
 
-function rgb2hsv(rgb) {
+convert.rgb.hsv = function (rgb) {
 	var r = rgb[0];
 	var g = rgb[1];
 	var b = rgb[2];
@@ -332,21 +103,21 @@ function rgb2hsv(rgb) {
 	v = ((max / 255) * 1000) / 10;
 
 	return [h, s, v];
-}
+};
 
-function rgb2hwb(rgb) {
+convert.rgb.hwb = function (rgb) {
 	var r = rgb[0];
 	var g = rgb[1];
 	var b = rgb[2];
-	var h = rgb2hsl(rgb)[0];
+	var h = convert.rgb.hsl(rgb)[0];
 	var w = 1 / 255 * Math.min(r, Math.min(g, b));
 
 	b = 1 - 1 / 255 * Math.max(r, Math.max(g, b));
 
 	return [h, w * 100, b * 100];
-}
+};
 
-function rgb2cmyk(rgb) {
+convert.rgb.cmyk = function (rgb) {
 	var r = rgb[0] / 255;
 	var g = rgb[1] / 255;
 	var b = rgb[2] / 255;
@@ -361,13 +132,17 @@ function rgb2cmyk(rgb) {
 	y = (1 - b - k) / (1 - k) || 0;
 
 	return [c * 100, m * 100, y * 100, k * 100];
-}
+};
 
-function rgb2keyword(rgb) {
+convert.rgb.keyword = function (rgb) {
 	return reverseKeywords[rgb.join()];
-}
+};
 
-function rgb2xyz(rgb) {
+convert.keyword.rgb = function (keyword) {
+	return cssKeywords[keyword];
+};
+
+convert.rgb.xyz = function (rgb) {
 	var r = rgb[0] / 255;
 	var g = rgb[1] / 255;
 	var b = rgb[2] / 255;
@@ -382,10 +157,10 @@ function rgb2xyz(rgb) {
 	var z = (r * 0.0193) + (g * 0.1192) + (b * 0.9505);
 
 	return [x * 100, y * 100, z * 100];
-}
+};
 
-function rgb2lab(rgb) {
-	var xyz = rgb2xyz(rgb);
+convert.rgb.lab = function (rgb) {
+	var xyz = convert.rgb.xyz(rgb);
 	var x = xyz[0];
 	var y = xyz[1];
 	var z = xyz[2];
@@ -406,13 +181,9 @@ function rgb2lab(rgb) {
 	b = 200 * (y - z);
 
 	return [l, a, b];
-}
+};
 
-function rgb2lch(args) {
-	return lab2lch(rgb2lab(args));
-}
-
-function hsl2rgb(hsl) {
+convert.hsl.rgb = function (hsl) {
 	var h = hsl[0] / 360;
 	var s = hsl[1] / 100;
 	var l = hsl[2] / 100;
@@ -459,9 +230,9 @@ function hsl2rgb(hsl) {
 	}
 
 	return rgb;
-}
+};
 
-function hsl2hsv(hsl) {
+convert.hsl.hsv = function (hsl) {
 	var h = hsl[0];
 	var s = hsl[1] / 100;
 	var l = hsl[2] / 100;
@@ -480,21 +251,9 @@ function hsl2hsv(hsl) {
 	sv = (2 * s) / (l + s);
 
 	return [h, sv * 100, v * 100];
-}
+};
 
-function hsl2hwb(args) {
-	return rgb2hwb(hsl2rgb(args));
-}
-
-function hsl2cmyk(args) {
-	return rgb2cmyk(hsl2rgb(args));
-}
-
-function hsl2keyword(args) {
-	return rgb2keyword(hsl2rgb(args));
-}
-
-function hsv2rgb(hsv) {
+convert.hsv.rgb = function (hsv) {
 	var h = hsv[0] / 60;
 	var s = hsv[1] / 100;
 	var v = hsv[2] / 100;
@@ -520,9 +279,9 @@ function hsv2rgb(hsv) {
 		case 5:
 			return [v, p, q];
 	}
-}
+};
 
-function hsv2hsl(hsv) {
+convert.hsv.hsl = function (hsv) {
 	var h = hsv[0];
 	var s = hsv[1] / 100;
 	var v = hsv[2] / 100;
@@ -536,22 +295,10 @@ function hsv2hsl(hsv) {
 	l /= 2;
 
 	return [h, sl * 100, l * 100];
-}
-
-function hsv2hwb(args) {
-	return rgb2hwb(hsv2rgb(args));
-}
-
-function hsv2cmyk(args) {
-	return rgb2cmyk(hsv2rgb(args));
-}
-
-function hsv2keyword(args) {
-	return rgb2keyword(hsv2rgb(args));
-}
+};
 
 // http://dev.w3.org/csswg/css-color/#hwb-to-rgb
-function hwb2rgb(hwb) {
+convert.hwb.rgb = function (hwb) {
 	var h = hwb[0] / 360;
 	var wh = hwb[1] / 100;
 	var bl = hwb[2] / 100;
@@ -592,25 +339,9 @@ function hwb2rgb(hwb) {
 	}
 
 	return [r * 255, g * 255, b * 255];
-}
+};
 
-function hwb2hsl(args) {
-	return rgb2hsl(hwb2rgb(args));
-}
-
-function hwb2hsv(args) {
-	return rgb2hsv(hwb2rgb(args));
-}
-
-function hwb2cmyk(args) {
-	return rgb2cmyk(hwb2rgb(args));
-}
-
-function hwb2keyword(args) {
-	return rgb2keyword(hwb2rgb(args));
-}
-
-function cmyk2rgb(cmyk) {
+convert.cmyk.rgb = function (cmyk) {
 	var c = cmyk[0] / 100;
 	var m = cmyk[1] / 100;
 	var y = cmyk[2] / 100;
@@ -624,25 +355,9 @@ function cmyk2rgb(cmyk) {
 	b = 1 - Math.min(1, y * (1 - k) + k);
 
 	return [r * 255, g * 255, b * 255];
-}
+};
 
-function cmyk2hsl(args) {
-	return rgb2hsl(cmyk2rgb(args));
-}
-
-function cmyk2hsv(args) {
-	return rgb2hsv(cmyk2rgb(args));
-}
-
-function cmyk2hwb(args) {
-	return rgb2hwb(cmyk2rgb(args));
-}
-
-function cmyk2keyword(args) {
-	return rgb2keyword(cmyk2rgb(args));
-}
-
-function xyz2rgb(xyz) {
+convert.xyz.rgb = function (xyz) {
 	var x = xyz[0] / 100;
 	var y = xyz[1] / 100;
 	var z = xyz[2] / 100;
@@ -672,9 +387,9 @@ function xyz2rgb(xyz) {
 	b = Math.min(Math.max(0, b), 1);
 
 	return [r * 255, g * 255, b * 255];
-}
+};
 
-function xyz2lab(xyz) {
+convert.xyz.lab = function (xyz) {
 	var x = xyz[0];
 	var y = xyz[1];
 	var z = xyz[2];
@@ -695,13 +410,9 @@ function xyz2lab(xyz) {
 	b = 200 * (y - z);
 
 	return [l, a, b];
-}
+};
 
-function xyz2lch(args) {
-	return lab2lch(xyz2lab(args));
-}
-
-function lab2xyz(lab) {
+convert.lab.xyz = function (lab) {
 	var l = lab[0];
 	var a = lab[1];
 	var b = lab[2];
@@ -726,9 +437,9 @@ function lab2xyz(lab) {
 		: 108.883 * Math.pow(y2 - (b / 200), 3);
 
 	return [x, y, z];
-}
+};
 
-function lab2lch(lab) {
+convert.lab.lch = function (lab) {
 	var l = lab[0];
 	var a = lab[1];
 	var b = lab[2];
@@ -746,13 +457,9 @@ function lab2lch(lab) {
 	c = Math.sqrt(a * a + b * b);
 
 	return [l, c, h];
-}
+};
 
-function lab2rgb(args) {
-	return xyz2rgb(lab2xyz(args));
-}
-
-function lch2lab(lch) {
+convert.lch.lab = function (lch) {
 	var l = lch[0];
 	var c = lch[1];
 	var h = lch[2];
@@ -765,49 +472,13 @@ function lch2lab(lch) {
 	b = c * Math.sin(hr);
 
 	return [l, a, b];
-}
+};
 
-function lch2xyz(args) {
-	return lab2xyz(lch2lab(args));
-}
-
-function lch2rgb(args) {
-	return lab2rgb(lch2lab(args));
-}
-
-function keyword2rgb(keyword) {
-	return cssKeywords[keyword];
-}
-
-function keyword2hsl(args) {
-	return rgb2hsl(keyword2rgb(args));
-}
-
-function keyword2hsv(args) {
-	return rgb2hsv(keyword2rgb(args));
-}
-
-function keyword2hwb(args) {
-	return rgb2hwb(keyword2rgb(args));
-}
-
-function keyword2cmyk(args) {
-	return rgb2cmyk(keyword2rgb(args));
-}
-
-function keyword2lab(args) {
-	return rgb2lab(keyword2rgb(args));
-}
-
-function keyword2xyz(args) {
-	return rgb2xyz(keyword2rgb(args));
-}
-
-function rgb2ansi16(args) {
+convert.rgb.ansi16 = function (args) {
 	var r = args[0];
 	var g = args[1];
 	var b = args[2];
-	var value = arguments[1] || rgb2hsv(args)[2]; // hsv2ansi16 optimization
+	var value = 1 in arguments ? arguments[1] : convert.rgb.hsv(args)[2]; // hsv -> ansi16 optimization
 
 	value = Math.round(value / 50);
 
@@ -825,9 +496,15 @@ function rgb2ansi16(args) {
 	}
 
 	return ansi;
-}
+};
 
-function rgb2ansi(args) {
+convert.hsv.ansi16 = function (args) {
+	// optimization here; we already know the value and don't need to get
+	// it converted for us.
+	return convert.rgb.ansi16(convert.hsv.rgb(args), args[2]);
+};
+
+convert.rgb.ansi256 = function (args) {
 	var r = args[0];
 	var g = args[1];
 	var b = args[2];
@@ -852,49 +529,9 @@ function rgb2ansi(args) {
 		+ Math.round(b / 255 * 5);
 
 	return ansi;
-}
+};
 
-function hsl2ansi16(args) {
-	return rgb2ansi16(hsl2rgb(args));
-}
-
-function hsl2ansi(args) {
-	return rgb2ansi(hsl2rgb(args));
-}
-
-function hsv2ansi16(args) {
-	return rgb2ansi16(hsv2rgb(args), args[2]);
-}
-
-function hsv2ansi(args) {
-	return rgb2ansi(hsv2rgb(args));
-}
-
-function hwb2ansi16(args) {
-	return rgb2ansi16(hwb2rgb(args));
-}
-
-function hwb2ansi(args) {
-	return rgb2ansi(hwb2rgb(args));
-}
-
-function cmyk2ansi16(args) {
-	return rgb2ansi16(cmyk2rgb(args));
-}
-
-function cmyk2ansi(args) {
-	return rgb2ansi(cmyk2rgb(args));
-}
-
-function keyword2ansi16(args) {
-	return rgb2ansi16(keyword2rgb(args));
-}
-
-function keyword2ansi(args) {
-	return rgb2ansi(keyword2rgb(args));
-}
-
-function ansi162rgb(args) {
+convert.ansi16.rgb = function (args) {
 	var color = args % 10;
 
 	// handle greyscale
@@ -914,29 +551,9 @@ function ansi162rgb(args) {
 	var b = (((color >> 2) & 1) * mult) * 255;
 
 	return [r, g, b];
-}
+};
 
-function ansi162hsl(args) {
-	return rgb2hsl(ansi162rgb(args));
-}
-
-function ansi162hsv(args) {
-	return rgb2hsv(ansi162rgb(args));
-}
-
-function ansi162hwb(args) {
-	return rgb2hwb(ansi162rgb(args));
-}
-
-function ansi162cmyk(args) {
-	return rgb2cmyk(ansi162rgb(args));
-}
-
-function ansi162keyword(args) {
-	return rgb2keyword(ansi162rgb(args));
-}
-
-function ansi2rgb(args) {
+convert.ansi256.rgb = function (args) {
 	// handle greyscale
 	if (args >= 232) {
 		var c = (args - 232) * 10 + 8;
@@ -951,66 +568,18 @@ function ansi2rgb(args) {
 	var b = (rem % 6) / 5 * 255;
 
 	return [r, g, b];
-}
+};
 
-function ansi2hsl(args) {
-	return rgb2hsl(ansi2rgb(args));
-}
-
-function ansi2hsv(args) {
-	return rgb2hsv(ansi2rgb(args));
-}
-
-function ansi2hwb(args) {
-	return rgb2hwb(ansi2rgb(args));
-}
-
-function ansi2cmyk(args) {
-	return rgb2cmyk(ansi2rgb(args));
-}
-
-function ansi2keyword(args) {
-	return rgb2keyword(ansi2rgb(args));
-}
-
-function rgb2hex(args) {
+convert.rgb.hex = function (args) {
 	var integer = ((Math.round(args[0]) & 0xFF) << 16)
 		+ ((Math.round(args[1]) & 0xFF) << 8)
 		+ (Math.round(args[2]) & 0xFF);
 
 	var string = integer.toString(16).toUpperCase();
 	return '000000'.substring(string.length) + string;
-}
+};
 
-function hsl2hex(args) {
-	return rgb2hex(hsl2rgb(args));
-}
-
-function hsv2hex(args) {
-	return rgb2hex(hsv2rgb(args));
-}
-
-function hwb2hex(args) {
-	return rgb2hex(hwb2rgb(args));
-}
-
-function cmyk2hex(args) {
-	return rgb2hex(cmyk2rgb(args));
-}
-
-function keyword2hex(args) {
-	return rgb2hex(keyword2rgb(args));
-}
-
-function ansi162hex(args) {
-	return rgb2hex(ansi162rgb(args));
-}
-
-function ansi2hex(args) {
-	return rgb2hex(ansi2rgb(args));
-}
-
-function hex2rgb(args) {
+convert.hex.rgb = function (args) {
 	var match = args.toString(16).match(/[a-f0-9]{6}/i);
 	if (!match) {
 		return [0, 0, 0];
@@ -1022,32 +591,4 @@ function hex2rgb(args) {
 	var b = integer & 0xFF;
 
 	return [r, g, b];
-}
-
-function hex2hsl(args) {
-	return rgb2hsl(hex2rgb(args));
-}
-
-function hex2hsv(args) {
-	return rgb2hsv(hex2rgb(args));
-}
-
-function hex2hwb(args) {
-	return rgb2hwb(hex2rgb(args));
-}
-
-function hex2cmyk(args) {
-	return rgb2cmyk(hex2rgb(args));
-}
-
-function hex2keyword(args) {
-	return rgb2keyword(hex2rgb(args));
-}
-
-function hex2ansi16(args) {
-	return rgb2ansi16(hex2rgb(args));
-}
-
-function hex2ansi(args) {
-	return rgb2ansi(hex2rgb(args));
-}
+};
