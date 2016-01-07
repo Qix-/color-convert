@@ -1,7 +1,7 @@
 {
   "name": "color-convert",
   "description": "Plain color conversion functions",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "author": "Heather Arthur <fayearthur@gmail.com>",
   "license": "MIT",
   "repository": "Qix-/color-convert",
@@ -26,7 +26,8 @@
   "files": [
     "index.js",
     "conversions.js",
-    "css-keywords.js"
+    "css-keywords.js",
+    "route.js"
   ],
   "xo": {
     "rules": {
