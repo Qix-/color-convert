@@ -4,7 +4,7 @@
   "version": "0.7.0",
   "author": "Heather Arthur <fayearthur@gmail.com>",
   "license": "MIT",
-  "repository": "MoOx/color-convert",
+  "repository": "Qix-/color-convert",
   "scripts": {
     "pretest": "xo",
     "test": "node test/basic.js"
