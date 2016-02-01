@@ -39,7 +39,7 @@ convert.rgb.cmyk.raw(167, 255, 4); // [ 34.509803921568626, 0, 98.43137254901961
 ### Arrays
 All functions that accept multiple arguments also support passing an array.
 
-Not that this does **not** apply to functions that convert from a color that only requires one value (e.g. `keyword`, `ansi256`, `hex`, etc.)
+Note that this does **not** apply to functions that convert from a color that only requires one value (e.g. `keyword`, `ansi256`, `hex`, etc.)
 
 ```js
 var convert = require('color-convert');
