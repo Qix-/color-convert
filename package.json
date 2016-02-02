@@ -21,8 +21,7 @@
 	"hwb",
 	"cmyk",
 	"ansi",
-	"ansi16",
-	"hcg"
+	"ansi16"
   ],
   "files": [
 	"index.js",
