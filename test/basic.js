@@ -25,6 +25,10 @@ for (var len = models.length, i = 0; i < len; i++) {
 			console.log(chalk.red([fromModel, toModel].join('->')), chalk.red('(no conversion)'));
 		}
 	}
+
+	// should not expose channels
+	assert(convert[toModel].channels > 0);
+	assert(Object.keys(convert[toModel]).indexOf('channels') === -1);
 }
 
 assert.deepEqual(convert.rgb.hsl([140, 200, 100]), [96, 48, 59]);

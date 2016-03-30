@@ -61,6 +61,8 @@ function wrapRounded(fn) {
 models.forEach(function (fromModel) {
 	convert[fromModel] = {};
 
+	Object.defineProperty(convert[fromModel], 'channels', {value: conversions[fromModel].channels});
+
 	var routes = route(fromModel);
 	var routeModels = Object.keys(routes);
 

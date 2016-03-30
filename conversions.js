@@ -13,19 +13,32 @@ for (var key in cssKeywords) {
 }
 
 var convert = module.exports = {
-	rgb: {},
-	hsl: {},
-	hsv: {},
-	hwb: {},
-	cmyk: {},
-	xyz: {},
-	lab: {},
-	lch: {},
-	hex: {},
-	keyword: {},
-	ansi16: {},
-	ansi256: {}
+	rgb: {channels: 3},
+	hsl: {channels: 3},
+	hsv: {channels: 3},
+	hwb: {channels: 3},
+	cmyk: {channels: 4},
+	xyz: {channels: 3},
+	lab: {channels: 3},
+	lch: {channels: 3},
+	hex: {channels: 1},
+	keyword: {channels: 1},
+	ansi16: {channels: 1},
+	ansi256: {channels: 1}
 };
+
+// hide .channels property
+for (var model in convert) {
+	if (convert.hasOwnProperty(model)) {
+		if (!('channels' in convert[model])) {
+			throw new Error('missing channels property: ' + model);
+		}
+
+		var channels = convert[model].channels;
+		delete convert[model].channels;
+		Object.defineProperty(convert[model], 'channels', {value: channels});
+	}
+}
 
 convert.rgb.hsl = function (rgb) {
 	var r = rgb[0] / 255;
