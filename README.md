@@ -8,8 +8,12 @@ It converts all ways between `rgb`, `hsl`, `hsv`, `hwb`, `cmyk`, `ansi`, `ansi16
 ```js
 var convert = require('color-convert');
 
-convert.rgb.hsl(140, 200, 100);   // [96, 48, 59]
-convert.keyword.rgb('blue');      // [0, 0, 255]
+convert.rgb.hsl(140, 200, 100);             // [96, 48, 59]
+convert.keyword.rgb('blue');                // [0, 0, 255]
+
+var rgbChannels = convert.rgb.channels;     // 4
+var cmykChannels = convert.cmyk.channels;   // 5
+var ansiChannels = convert.ansi16.channels; // 1
 ```
 
 # Install
@@ -23,6 +27,8 @@ $ npm install color-convert
 Simply get the property of the _from_ and _to_ conversion that you're looking for.
 
 All functions have a rounded and unrounded variant. By default, return values are rounded. To get the unrounded (raw) results, simply tack on `.raw` to the function.
+
+All 'from' functions have a hidden property called `.channels` that indicates the number of channels the function expects (not including alpha).
 
 ```js
 var convert = require('color-convert');
