@@ -43,6 +43,7 @@ assert.deepEqual(convert.rgb.lch([92, 191, 84]), [70, 67, 138]);
 assert.deepEqual(convert.rgb.ansi16([92, 191, 84]), 32);
 assert.deepEqual(convert.rgb.ansi256([92, 191, 84]), 114);
 assert.deepEqual(convert.rgb.hex([92, 191, 84]), '5CBF54');
+assert.deepEqual(convert.rgb.hcg([140, 200, 100]), [96, 39, 65]);
 
 assert.deepEqual(convert.hsl.rgb([96, 48, 59]), [140, 201, 100]);
 assert.deepEqual(convert.hsl.hsv([96, 48, 59]), [96, 50, 79]); // colorpicker says [96,50,79]
@@ -52,6 +53,7 @@ assert.deepEqual(convert.hsl.keyword([240, 100, 50]), 'blue');
 assert.deepEqual(convert.hsl.ansi16([240, 100, 50]), 94);
 assert.deepEqual(convert.hsl.ansi256([240, 100, 50]), 21);
 assert.deepEqual(convert.hsl.hex([240, 100, 50]), '0000FF');
+assert.deepEqual(convert.hsl.hcg([96, 48, 59]), [96, 39, 65]);
 
 assert.deepEqual(convert.hsv.rgb([96, 50, 78]), [139, 199, 99]);
 assert.deepEqual(convert.hsv.hsl([96, 50, 78]), [96, 47, 59]);
@@ -62,6 +64,7 @@ assert.deepEqual(convert.hsv.keyword([240, 100, 100]), 'blue');
 assert.deepEqual(convert.hsv.ansi16([240, 100, 100]), 94);
 assert.deepEqual(convert.hsv.ansi256([240, 100, 100]), 21);
 assert.deepEqual(convert.hsv.hex([251, 80, 42]), '25156B');
+assert.deepEqual(convert.hsv.hcg([96, 50, 78]), [96, 39, 64]);
 
 assert.deepEqual(convert.cmyk.rgb([30, 0, 50, 22]), [139, 199, 99]);
 assert.deepEqual(convert.cmyk.hsl([30, 0, 50, 22]), [96, 47, 59]);
@@ -100,6 +103,10 @@ assert.deepEqual(convert.ansi16.rgb(103), [255, 255, 0]);
 assert.deepEqual(convert.ansi256.rgb(175), [204, 102, 153]);
 
 assert.deepEqual(convert.hex.rgb('ABCDEF'), [171, 205, 239]);
+
+assert.deepEqual(convert.hcg.rgb([96, 39, 64]), [139, 199, 100]);
+assert.deepEqual(convert.hcg.hsv([96, 39, 64]), [96, 50, 78]);
+assert.deepEqual(convert.hcg.hsl([96, 39, 64]), [96, 47, 59]);
 
 // non-array arguments
 assert.deepEqual(convert.hsl.rgb(96, 48, 59), [140, 201, 100]);
