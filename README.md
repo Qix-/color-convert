@@ -1,6 +1,6 @@
 # color-convert
 
-[![Build Status](https://travis-ci.org/MoOx/color-convert.svg?branch=master)](https://travis-ci.org/MoOx/color-convert)
+[![Build Status](https://travis-ci.org/qix-/color-convert.svg?branch=master)](https://travis-ci.org/qix-/color-convert)
 
 Color-convert is a color conversion library for JavaScript and node.
 It converts all ways between `rgb`, `hsl`, `hsv`, `hwb`, `cmyk`, `ansi`, `ansi16`, `hex` strings, and CSS `keyword`s:
