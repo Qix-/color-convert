@@ -44,6 +44,7 @@ assert.deepEqual(convert.rgb.ansi16([92, 191, 84]), 32);
 assert.deepEqual(convert.rgb.ansi256([92, 191, 84]), 114);
 assert.deepEqual(convert.rgb.hex([92, 191, 84]), '5CBF54');
 assert.deepEqual(convert.rgb.hcg([140, 200, 100]), [96, 39, 65]);
+assert.deepEqual(convert.rgb.apple([255, 127, 0]), [65535, 32639, 0]);
 
 assert.deepEqual(convert.hsl.rgb([96, 48, 59]), [140, 201, 100]);
 assert.deepEqual(convert.hsl.hsv([96, 48, 59]), [96, 50, 79]); // colorpicker says [96,50,79]

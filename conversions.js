@@ -25,7 +25,8 @@ var convert = module.exports = {
 	keyword: {channels: 1},
 	ansi16: {channels: 1},
 	ansi256: {channels: 1},
-	hcg: {channels: 3}
+	hcg: {channels: 3},
+	apple: {channels: 3}
 };
 
 // hide .channels property
@@ -742,4 +743,12 @@ convert.hcg.hsl = function (hcg) {
 	}
 
 	return [hcg[0], s * 100, l * 100];
+};
+
+convert.apple.rgb = function (apple) {
+	return [(apple[0] / 65535) * 255, (apple[1] / 65535) * 255, (apple[2] / 65535) * 255];
+};
+
+convert.rgb.apple = function (rgb) {
+	return [(rgb[0] / 255) * 65535, (rgb[1] / 255) * 65535, (rgb[2] / 255) * 65535];
 };
