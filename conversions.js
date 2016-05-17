@@ -149,8 +149,42 @@ convert.rgb.cmyk = function (rgb) {
 	return [c * 100, m * 100, y * 100, k * 100];
 };
 
+/**
+ * See https://en.m.wikipedia.org/wiki/Euclidean_distance#Squared_Euclidean_distance
+ * */
+function comparativeDistance(x, y) {
+	return (
+		Math.pow(x[0] - y[0], 2) +
+		Math.pow(x[1] - y[1], 2) +
+		Math.pow(x[2] - y[2], 2)
+	);
+}
+
 convert.rgb.keyword = function (rgb) {
-	return reverseKeywords[rgb.join()];
+	var currentClosestDistance = Infinity;
+	var currentClosestKeyword = undefined;
+
+	for (var keyword in cssKeywords) {
+		if (cssKeywords.hasOwnProperty(keyword)) {
+			var value = cssKeywords[keyword];
+
+			// Short circuit for exact equal.
+			if (rgb === value) {
+				return value;
+			}
+
+			// Compute comparative distance
+			var distance = comparativeDistance(rgb, value);
+
+			// Check if its less, if so set as closest
+			if (distance < currentClosestDistance) {
+				currentClosestDistance = distance;
+				currentClosestKeyword = keyword;
+			}
+		}
+	}
+
+	return currentClosestKeyword;
 };
 
 convert.keyword.rgb = function (keyword) {
