@@ -162,7 +162,7 @@ function comparativeDistance(x, y) {
 
 convert.rgb.keyword = function (rgb) {
 	var currentClosestDistance = Infinity;
-	var currentClosestKeyword = undefined;
+	var currentClosestKeyword;
 
 	for (var keyword in cssKeywords) {
 		if (cssKeywords.hasOwnProperty(keyword)) {
