@@ -440,8 +440,8 @@ convert.lab.xyz = function (lab) {
 	z = y - b / 200;
 
 	var y2 = Math.pow(y, 3);
-	var x2 = Math.pow(y, 3);
-	var z2 = Math.pow(y, 3);
+	var x2 = Math.pow(x, 3);
+	var z2 = Math.pow(z, 3);
 	y = y2 > 0.008856 ? y2 : (y - 16 / 116) / 7.787;
 	x = x2 > 0.008856 ? x2 : (x - 16 / 116) / 7.787;
 	z = z2 > 0.008856 ? z2 : (z - 16 / 116) / 7.787;
