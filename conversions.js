@@ -435,16 +435,16 @@ convert.lab.xyz = function (lab) {
 	var y;
 	var z;
 
-	y = ( l + 16 ) / 116;
+	y = (l + 16) / 116;
 	x = a / 500 + y;
 	z = y - b / 200;
 
-	var y2 = Math.pow(y,3);
-	var x2 = Math.pow(y,3);
-	var z2 = Math.pow(y,3);
-	y = y2 > 0.008856 ? y2 : ( y - 16 / 116 ) / 7.787;
-	x = x2 > 0.008856 ? x2 : ( x - 16 / 116 ) / 7.787;
-	z = z2 > 0.008856 ? z2 : ( z - 16 / 116 ) / 7.787;
+	var y2 = Math.pow(y, 3);
+	var x2 = Math.pow(y, 3);
+	var z2 = Math.pow(y, 3);
+	y = y2 > 0.008856 ? y2 : (y - 16 / 116) / 7.787;
+	x = x2 > 0.008856 ? x2 : (x - 16 / 116) / 7.787;
+	z = z2 > 0.008856 ? z2 : (z - 16 / 116) / 7.787;
 
 	x *= 95.047;
 	y *= 100;
