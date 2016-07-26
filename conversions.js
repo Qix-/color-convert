@@ -387,15 +387,15 @@ convert.xyz.rgb = function (xyz) {
 	// assume sRGB
 	r = r > 0.0031308
 		? ((1.055 * Math.pow(r, 1.0 / 2.4)) - 0.055)
-		: r *= 12.92;
+		: r * 12.92;
 
 	g = g > 0.0031308
 		? ((1.055 * Math.pow(g, 1.0 / 2.4)) - 0.055)
-		: g *= 12.92;
+		: g * 12.92;
 
 	b = b > 0.0031308
 		? ((1.055 * Math.pow(b, 1.0 / 2.4)) - 0.055)
-		: b *= 12.92;
+		: b * 12.92;
 
 	r = Math.min(Math.max(0, r), 1);
 	g = Math.min(Math.max(0, g), 1);
