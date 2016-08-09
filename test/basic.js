@@ -137,9 +137,17 @@ assert.deepEqual(round(convert.keyword.rgb.raw('blue')), [0, 0, 255]);
 assert.deepEqual(convert.rgb.keyword.raw([255, 228, 196]), 'bisque');
 
 assert.deepEqual(round(convert.hsv.hsl.raw([96, 50, 78])), [96, 47, 58.5]);
-assert.deepEqual(round(convert.hsl.hsv.raw([96, 48, 59])), [96, 50, 78.7]);
+assert.deepEqual(round(convert.hsv.hsl.raw([302, 32, 55])), [302, 19.0, 46.2]);
+assert.deepEqual(round(convert.hsv.hsl.raw([267, 19, 89])), [267, 43.5, 80.5]);
+assert.deepEqual(round(convert.hsv.hsl.raw([267, 91, 95])), [267, 89.6, 51.8]);
+assert.deepEqual(round(convert.hsv.hsl.raw([267, 91, 12])), [267, 83.5, 6.5]);
+assert.deepEqual(round(convert.hsv.hsl.raw([180, 50, 0])), [180, 33.3, 0]); // Preserve saturation
 
 assert.deepEqual(round(convert.hsl.hsv.raw([96, 48, 59])), [96, 50, 78.7]);
+assert.deepEqual(round(convert.hsl.hsv.raw([120, 54, 61])), [120, 51.3, 82.1]);
+assert.deepEqual(round(convert.hsl.hsv.raw([27, 51, 43])), [27, 67.5, 64.9]);
+assert.deepEqual(round(convert.hsl.hsv.raw([241, 17, 79])), [241, 8.6, 82.6]);
+assert.deepEqual(round(convert.hsl.hsv.raw([120, 50, 0])), [120, 66.7, 0]); // Preserve saturation
 
 assert.deepEqual(round(convert.xyz.rgb.raw([25, 40, 15])), [97.4, 189.9, 85]);
 assert.deepEqual(round(convert.rgb.xyz.raw([92, 191, 84])), [24.6, 40.2, 14.8]);
