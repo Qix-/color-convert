@@ -251,19 +251,16 @@ convert.hsl.hsv = function (hsl) {
 	var h = hsl[0];
 	var s = hsl[1] / 100;
 	var l = hsl[2] / 100;
+	var smin = s;
+	var lmin = Math.max(l, 0.01);
 	var sv;
 	var v;
 
-	if (l === 0) {
-		// no need to do calc on black
-		// also avoids divide by 0 error
-		return [0, 0, 0];
-	}
-
 	l *= 2;
 	s *= (l <= 1) ? l : 2 - l;
+	smin *= lmin <= 1 ? lmin : 2 - lmin;
 	v = (l + s) / 2;
-	sv = (2 * s) / (l + s);
+	sv = l === 0 ? (2 * smin) / (lmin + smin) : (2 * s) / (l + s);
 
 	return [h, sv * 100, v * 100];
 };
@@ -300,12 +297,15 @@ convert.hsv.hsl = function (hsv) {
 	var h = hsv[0];
 	var s = hsv[1] / 100;
 	var v = hsv[2] / 100;
+	var vmin = Math.max(v, 0.01);
+	var lmin;
 	var sl;
 	var l;
 
 	l = (2 - s) * v;
-	sl = s * v;
-	sl /= (l <= 1) ? l : 2 - l;
+	lmin = (2 - s) * vmin;
+	sl = s * vmin;
+	sl /= (lmin <= 1) ? lmin : 2 - lmin;
 	sl = sl || 0;
 	l /= 2;
 
