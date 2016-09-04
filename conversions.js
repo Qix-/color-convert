@@ -8,7 +8,7 @@ var cssKeywords = require('./css-keywords');
 var reverseKeywords = {};
 for (var key in cssKeywords) {
 	if (cssKeywords.hasOwnProperty(key)) {
-		reverseKeywords[cssKeywords[key].join()] = key;
+		reverseKeywords[cssKeywords[key]] = key;
 	}
 }
 
@@ -161,17 +161,17 @@ function comparativeDistance(x, y) {
 }
 
 convert.rgb.keyword = function (rgb) {
+	var reversed = reverseKeywords[rgb];
+	if (reversed) {
+		return reversed;
+	}
+
 	var currentClosestDistance = Infinity;
 	var currentClosestKeyword;
 
 	for (var keyword in cssKeywords) {
 		if (cssKeywords.hasOwnProperty(keyword)) {
 			var value = cssKeywords[keyword];
-
-			// Short circuit for exact equal.
-			if (rgb === value) {
-				return value;
-			}
 
 			// Compute comparative distance
 			var distance = comparativeDistance(rgb, value);
