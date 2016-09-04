@@ -3,6 +3,7 @@ var assert = require('assert');
 var chalk = require('chalk');
 var convert = require('../index');
 var conversions = require('../conversions');
+var keywords = require('../css-keywords');
 
 var models = Object.keys(conversions);
 for (var len = models.length, i = 0; i < len; i++) {
@@ -157,7 +158,7 @@ assert.deepEqual(round(convert.rgb.lab.raw([92, 191, 84])), [69.6, -50.1, 44.6])
 // hwb
 // http://dev.w3.org/csswg/css-color/#hwb-examples
 
-// all extrem value should give black, white or grey
+// all extreme value should give black, white or grey
 for (var angle = 0; angle <= 360; angle++) {
 	assert.deepEqual(convert.hwb.rgb([angle, 0, 100]), [0, 0, 0]);
 	assert.deepEqual(convert.hwb.rgb([angle, 100, 0]), [255, 255, 255]);
@@ -186,3 +187,17 @@ assert.deepEqual(convert.hsl.rgb(val), val);
 assert.deepEqual(convert.hsl.hwb(val), [0, 0, 100]);
 assert.deepEqual(convert.hsl.cmyk(val), [0, 0, 0, 100]);
 assert.deepEqual(convert.hsl.hex(val), '000000');
+
+// test keyword rounding
+assert.deepEqual(convert.rgb.keyword(255, 255, 0), 'yellow');
+assert.deepEqual(convert.rgb.keyword(255, 255, 1), 'yellow');
+assert.deepEqual(convert.rgb.keyword(250, 254, 1), 'yellow');
+
+// assure euclidean distance algorithm produces perfectly inverse results
+for (var k in keywords) {
+	if (keywords.hasOwnProperty(k)) {
+		// why the roundabout testing method? certain css keywords have the same color values.
+		var derived = convert.rgb.keyword(keywords[k]);
+		assert.deepEqual(keywords[derived], keywords[k]);
+	}
+}
