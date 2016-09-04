@@ -5,6 +5,13 @@ var cssKeywords = require('./css-keywords');
 //       values that give correct `typeof` results).
 //       do not use box values types (i.e. Number(), String(), etc.)
 
+var reverseKeywords = {};
+for (var key in cssKeywords) {
+	if (cssKeywords.hasOwnProperty(key)) {
+		reverseKeywords[cssKeywords[key].join()] = key;
+	}
+}
+
 var convert = module.exports = {
 	rgb: {channels: 3},
 	hsl: {channels: 3},
