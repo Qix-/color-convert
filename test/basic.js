@@ -23,7 +23,7 @@ for (var len = models.length, i = 0; i < len; i++) {
 
 			console.log(path.join(chalk.bold.black('->')));
 		} else {
-			console.log(chalk.red([fromModel, toModel].join('->')), chalk.red('(no conversion)'));
+			console.log(chalk.red([toModel, fromModel].join('->')), chalk.red('(no conversion)'));
 		}
 	}
 
