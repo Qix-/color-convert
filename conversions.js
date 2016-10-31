@@ -1,5 +1,5 @@
 /* MIT license */
-var cssKeywords = require('./css-keywords');
+var cssKeywords = require('color-name');
 
 // NOTE: conversions should only return primitive values (i.e. arrays, or
 //       values that give correct `typeof` results).

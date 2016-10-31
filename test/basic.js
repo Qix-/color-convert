@@ -3,7 +3,7 @@ var assert = require('assert');
 var chalk = require('chalk');
 var convert = require('../index');
 var conversions = require('../conversions');
-var keywords = require('../css-keywords');
+var keywords = require('color-name');
 
 var models = Object.keys(conversions);
 for (var len = models.length, i = 0; i < len; i++) {
