@@ -201,3 +201,21 @@ for (var k in keywords) {
 		assert.deepEqual(keywords[derived], keywords[k]);
 	}
 }
+
+// basic gray tests
+assert.deepEqual(convert.gray.rgb([0]), [0, 0, 0]);
+assert.deepEqual(convert.gray.rgb([50]), [128, 128, 128]);
+assert.deepEqual(convert.gray.rgb([100]), [255, 255, 255]);
+assert.deepEqual(convert.gray.hsl([50]), [0, 0, 50]);
+assert.deepEqual(convert.gray.hsv([50]), [0, 0, 50]);
+assert.deepEqual(convert.gray.hwb([50]), [0, 100, 50]);
+assert.deepEqual(convert.gray.cmyk([50]), [0, 0, 0, 50]);
+assert.deepEqual(convert.gray.lab([50]), [50, 0, 0]);
+assert.deepEqual(convert.gray.hex([50]), '808080');
+assert.deepEqual(convert.gray.hex([100]), 'FFFFFF');
+assert.deepEqual(convert.gray.hex([0]), '000000');
+
+assert.deepEqual(convert.rgb.gray([0, 0, 0]), [0]);
+assert.deepEqual(convert.rgb.gray([128, 128, 128]), [50]);
+assert.deepEqual(convert.rgb.gray([255, 255, 255]), [100]);
+assert.deepEqual(convert.rgb.gray([0, 128, 255]), [50]);
