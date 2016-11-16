@@ -23,10 +23,10 @@ var convert = module.exports = {
 	lch: {channels: 3, labels: 'lch'},
 	hex: {channels: 1, labels: ['hex']},
 	keyword: {channels: 1, labels: ['keyword']},
-	ansi16: {channels: 1, labels: ['code']},
-	ansi256: {channels: 1, labels: ['code']},
+	ansi16: {channels: 1, labels: ['ansi16']},
+	ansi256: {channels: 1, labels: ['ansi256']},
 	hcg: {channels: 3, labels: ['h', 'c', 'g']},
-	apple: {channels: 3, labels: ['r', 'g', 'b']},
+	apple: {channels: 3, labels: ['r16', 'g16', 'b16']},
 	gray: {channels: 1, labels: ['gray']}
 };
 

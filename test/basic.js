@@ -32,6 +32,16 @@ for (var len = models.length, i = 0; i < len; i++) {
 	assert(Object.keys(convert[toModel]).indexOf('channels') === -1);
 }
 
+// labels should be unique
+var uniqued = {};
+models.forEach(function (model) {
+	var hash = [].slice.call(convert[model].labels).sort().join('');
+	if (hash in uniqued) {
+		throw new Error('models ' + uniqued[hash] + ' and ' + model + ' have the same label set');
+	}
+	uniqued[hash] = model;
+});
+
 assert.deepEqual(convert.rgb.hsl([140, 200, 100]), [96, 48, 59]);
 assert.deepEqual(convert.rgb.hsv([140, 200, 100]), [96, 50, 78]);
 assert.deepEqual(convert.rgb.hwb([140, 200, 100]), [96, 39, 22]);
