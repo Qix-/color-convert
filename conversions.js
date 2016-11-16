@@ -13,33 +13,44 @@ for (var key in cssKeywords) {
 }
 
 var convert = module.exports = {
-	rgb: {channels: 3},
-	hsl: {channels: 3},
-	hsv: {channels: 3},
-	hwb: {channels: 3},
-	cmyk: {channels: 4},
-	xyz: {channels: 3},
-	lab: {channels: 3},
-	lch: {channels: 3},
-	hex: {channels: 1},
-	keyword: {channels: 1},
-	ansi16: {channels: 1},
-	ansi256: {channels: 1},
-	hcg: {channels: 3},
-	apple: {channels: 3},
-	gray: {channels: 1}
+	rgb: {channels: 3, labels: 'rgb'},
+	hsl: {channels: 3, labels: 'hsl'},
+	hsv: {channels: 3, labels: 'hsv'},
+	hwb: {channels: 3, labels: 'hwb'},
+	cmyk: {channels: 4, labels: 'cmyk'},
+	xyz: {channels: 3, labels: 'xyz'},
+	lab: {channels: 3, labels: 'lab'},
+	lch: {channels: 3, labels: 'lch'},
+	hex: {channels: 1, labels: ['hex']},
+	keyword: {channels: 1, labels: ['keyword']},
+	ansi16: {channels: 1, labels: ['code']},
+	ansi256: {channels: 1, labels: ['code']},
+	hcg: {channels: 3, labels: ['h', 'c', 'g']},
+	apple: {channels: 3, labels: ['r', 'g', 'b']},
+	gray: {channels: 1, labels: ['gray']}
 };
 
-// hide .channels property
+// hide .channels and .labels properties
 for (var model in convert) {
 	if (convert.hasOwnProperty(model)) {
 		if (!('channels' in convert[model])) {
 			throw new Error('missing channels property: ' + model);
 		}
 
+		if (!('labels' in convert[model])) {
+			throw new Error('missing channel labels property: ' + model);
+		}
+
+		if (convert[model].labels.length !== convert[model].channels) {
+			throw new Error('channel and label counts mismatch: ' + model);
+		}
+
 		var channels = convert[model].channels;
+		var labels = convert[model].labels;
 		delete convert[model].channels;
+		delete convert[model].labels;
 		Object.defineProperty(convert[model], 'channels', {value: channels});
+		Object.defineProperty(convert[model], 'labels', {value: labels});
 	}
 }
 
