@@ -640,12 +640,20 @@ convert.rgb.hex = function (args) {
 };
 
 convert.hex.rgb = function (args) {
-	var match = args.toString(16).match(/[a-f0-9]{6}/i);
+	var match = args.toString(16).match(/[a-f0-9]{6}|[a-f0-9]{3}/i);
 	if (!match) {
 		return [0, 0, 0];
 	}
 
-	var integer = parseInt(match[0], 16);
+	var colorString = match[0];
+
+	if (match[0].length === 3) {
+		colorString = colorString.split('').map(function (char) {
+			return char + char;
+		}).join('');
+	}
+
+	var integer = parseInt(colorString, 16);
 	var r = (integer >> 16) & 0xFF;
 	var g = (integer >> 8) & 0xFF;
 	var b = integer & 0xFF;
