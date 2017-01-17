@@ -115,6 +115,8 @@ assert.deepEqual(convert.ansi16.rgb(103), [255, 255, 0]);
 assert.deepEqual(convert.ansi256.rgb(175), [204, 102, 153]);
 
 assert.deepEqual(convert.hex.rgb('ABCDEF'), [171, 205, 239]);
+assert.deepEqual(convert.hex.rgb('AABBCC'), [170, 187, 204]);
+assert.deepEqual(convert.hex.rgb('ABC'), [170, 187, 204]);
 
 assert.deepEqual(convert.hcg.rgb([96, 39, 64]), [139, 199, 100]);
 assert.deepEqual(convert.hcg.hsv([96, 39, 64]), [96, 50, 78]);
