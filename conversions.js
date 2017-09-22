@@ -7,9 +7,7 @@ var cssKeywords = require('color-name');
 
 var reverseKeywords = {};
 for (var key in cssKeywords) {
-	if (cssKeywords.hasOwnProperty(key)) {
-		reverseKeywords[cssKeywords[key]] = key;
-	}
+	reverseKeywords[cssKeywords[key]] = key;
 }
 
 var convert = module.exports = {
@@ -32,26 +30,10 @@ var convert = module.exports = {
 
 // hide .channels and .labels properties
 for (var model in convert) {
-	if (convert.hasOwnProperty(model)) {
-		if (!('channels' in convert[model])) {
-			throw new Error('missing channels property: ' + model);
-		}
-
-		if (!('labels' in convert[model])) {
-			throw new Error('missing channel labels property: ' + model);
-		}
-
-		if (convert[model].labels.length !== convert[model].channels) {
-			throw new Error('channel and label counts mismatch: ' + model);
-		}
-
-		var channels = convert[model].channels;
-		var labels = convert[model].labels;
-		delete convert[model].channels;
-		delete convert[model].labels;
-		Object.defineProperty(convert[model], 'channels', {value: channels});
-		Object.defineProperty(convert[model], 'labels', {value: labels});
-	}
+	convert[model] = Object.defineProperties({}, {
+		channels: {value: convert[model].channels},
+		labels: {value: convert[model].labels}
+	});
 }
 
 convert.rgb.hsl = function (rgb) {
@@ -182,17 +164,15 @@ convert.rgb.keyword = function (rgb) {
 	var currentClosestKeyword;
 
 	for (var keyword in cssKeywords) {
-		if (cssKeywords.hasOwnProperty(keyword)) {
-			var value = cssKeywords[keyword];
+		var value = cssKeywords[keyword];
 
-			// Compute comparative distance
-			var distance = comparativeDistance(rgb, value);
+		// Compute comparative distance
+		var distance = comparativeDistance(rgb, value);
 
-			// Check if its less, if so set as closest
-			if (distance < currentClosestDistance) {
-				currentClosestDistance = distance;
-				currentClosestKeyword = keyword;
-			}
+		// Check if its less, if so set as closest
+		if (distance < currentClosestDistance) {
+			currentClosestDistance = distance;
+			currentClosestKeyword = keyword;
 		}
 	}
 

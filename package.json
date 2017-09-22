@@ -33,7 +33,9 @@
     "rules": {
       "default-case": 0,
       "no-inline-comments": 0,
-      "operator-linebreak": 0
+      "operator-linebreak": 0,
+      "no-nested-ternary": 0,
+      "guard-for-in": 0
     }
   },
   "devDependencies": {
