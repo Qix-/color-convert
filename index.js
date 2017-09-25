@@ -1,78 +1,86 @@
 var conversions = require('./conversions');
-var route = require('./route');
 
-var convert = {};
+var convert = module.exports = {};
 
 var models = Object.keys(conversions);
 
-function wrapRaw(fn) {
-	var wrappedFn = function (args) {
-		if (args === undefined || args === null) {
-			return args;
-		}
+models.forEach(function (fromModel) {
+	convert[fromModel] = Object.defineProperties({}, {
+		channels: {value: conversions[fromModel].channels},
+		labels: {value: conversions[fromModel].labels}
+	});
 
-		if (arguments.length > 1) {
-			args = Array.prototype.slice.call(arguments);
+	models.forEach(function (toModel) {
+		if (toModel !== fromModel) {
+			convert[fromModel][toModel] = wrap(search(fromModel, toModel));
 		}
+	});
+});
 
-		return fn(args);
+// util functions:
+
+function wrap(fn) {
+	var wrappedRawFn = function (args) {
+		return fn(arguments.length > 1 ? Array.prototype.slice.call(arguments) : args);
 	};
 
-	// preserve .conversion property if there is one
-	if ('conversion' in fn) {
-		wrappedFn.conversion = fn.conversion;
-	}
-
-	return wrappedFn;
-}
-
-function wrapRounded(fn) {
 	var wrappedFn = function (args) {
-		if (args === undefined || args === null) {
-			return args;
-		}
+		var result = fn(arguments.length > 1 ? Array.prototype.slice.call(arguments) : args);
 
-		if (arguments.length > 1) {
-			args = Array.prototype.slice.call(arguments);
-		}
-
-		var result = fn(args);
-
-		// we're assuming the result is an array here.
-		// see notice in conversions.js; don't use box types
-		// in conversion functions.
 		if (typeof result === 'object') {
 			for (var len = result.length, i = 0; i < len; i++) {
 				result[i] = Math.round(result[i]);
 			}
 		}
-
 		return result;
 	};
 
-	// preserve .conversion property if there is one
-	if ('conversion' in fn) {
-		wrappedFn.conversion = fn.conversion;
-	}
+	// preserve .path property if there is one
+	wrappedFn.path = fn.path;
+	wrappedFn.raw = wrappedRawFn;
 
 	return wrappedFn;
 }
 
-models.forEach(function (fromModel) {
-	convert[fromModel] = {};
+/**
+ * search the shortest path between 2 keys in conversions object
+ * return the composed function, with a .path property
+ */
+function search(fromKey, toKey) {
+	var nodes = [fromKey];
+	var visited = {}; // map node key => parent key
+	visited[fromKey] = null;
 
-	Object.defineProperty(convert[fromModel], 'channels', {value: conversions[fromModel].channels});
-	Object.defineProperty(convert[fromModel], 'labels', {value: conversions[fromModel].labels});
+	while (nodes.length) { // search breadth-first
+		var newNodes = [];
+		for (var i = 0; i < nodes.length; i++) {
+			var k = nodes[i];
+			var targets = conversions[k];
+			if (targets[toKey]) { // done, we can stop
+				var arr = [toKey, k];
+				var fn = targets[toKey];
+				while (visited[k]) { // compose functions while there's a parent
+					fn = compose(fn, conversions[visited[k]][k]);
+					k = visited[k];
+					arr.push(k);
+				}
+				fn.path = arr.reverse();
+				return fn;
+			}
 
-	var routes = route(fromModel);
-	var routeModels = Object.keys(routes);
+			for (var key in targets) {
+				if (visited[key] === undefined) {
+					visited[key] = k;
+					newNodes.push(key);
+				}
+			}
+		}
+		nodes = newNodes;
+	}
+}
 
-	routeModels.forEach(function (toModel) {
-		var fn = routes[toModel];
-
-		convert[fromModel][toModel] = wrapRounded(fn);
-		convert[fromModel][toModel].raw = wrapRaw(fn);
-	});
-});
-
-module.exports = convert;
+function compose(f, g) {
+	return function (args) {
+		return f(g(args));
+	};
+}
