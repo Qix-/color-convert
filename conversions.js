@@ -335,10 +335,6 @@ convert.hwb.rgb = function (hwb) {
 	var wh = hwb[1] / 100;
 	var bl = hwb[2] / 100;
 	var ratio = wh + bl;
-	var i;
-	var v;
-	var f;
-	var n;
 
 	// wh + bl cant be > 1
 	if (ratio > 1) {
@@ -346,31 +342,21 @@ convert.hwb.rgb = function (hwb) {
 		bl /= ratio;
 	}
 
-	i = Math.floor(6 * h);
-	v = 1 - bl;
-	f = 6 * h - i;
+	var i = Math.floor(h * 6);
+	var v = 1 - bl;
+	var f = (i & 1) ? 1 + i - h * 6 : h * 6 - i; // if i is odd
 
-	if ((i & 0x01) !== 0) {
-		f = 1 - f;
-	}
+	var n = wh + f * (v - wh); // linear interpolation
 
-	n = wh + f * (v - wh); // linear interpolation
-
-	var r;
-	var g;
-	var b;
 	switch (i) {
-		default:
 		case 6:
-		case 0: r = v; g = n; b = wh; break;
-		case 1: r = n; g = v; b = wh; break;
-		case 2: r = wh; g = v; b = n; break;
-		case 3: r = wh; g = n; b = v; break;
-		case 4: r = n; g = wh; b = v; break;
-		case 5: r = v; g = wh; b = n; break;
+		case 0: return [v * 255, n * 255, wh * 255];
+		case 1: return [n * 255, v * 255, wh * 255];
+		case 2: return [wh * 255, v * 255, n * 255];
+		case 3: return [wh * 255, n * 255, v * 255];
+		case 4: return [n * 255, wh * 255, v * 255];
+		case 5: return [v * 255, wh * 255, n * 255];
 	}
-
-	return [r * 255, g * 255, b * 255];
 };
 
 convert.cmyk.rgb = function (cmyk) {
