@@ -338,6 +338,25 @@ convert.hsv.hsl = function (hsv) {
 	return [h, sl * 100, l * 100];
 };
 
+convert.hsv.hwb = function (hsv) {
+	var h = hsv[0];
+	var s = hsv[1];
+	var v = hsv[2];
+	return [h, (100 - s) * v / 100, 100 - v];
+};
+
+convert.hwb.hsv = function (hwb) {
+	var h = hwb[0];
+	var w = hwb[1] / 100;
+	var b = hwb[2] / 100;
+	var ratio = w + b;
+	if (ratio > 1) {
+		w /= ratio;
+		b /= ratio;
+	}
+	return [h, Math.max(0, 1 - w / (1 - b)) * 100, (1 - b) * 100];
+};
+
 // http://dev.w3.org/csswg/css-color/#hwb-to-rgb
 convert.hwb.rgb = function (hwb) {
 	var h = hwb[0] / 360;

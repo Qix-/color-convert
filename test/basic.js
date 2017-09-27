@@ -134,6 +134,12 @@ eq(convert.hcg.hsl([96, 39, 64]), [96, 47, 59]);
 // non-array arguments
 eq(convert.hsl.rgb(96, 48, 59), [140, 201, 100]);
 
+// check hsv <-> hwb
+eq(convert.rgb.hwb(convert.hsv.rgb.raw(96, 48, 59)), convert.hsv.hwb(96, 48, 59));
+eq(convert.rgb.hwb(convert.hsv.rgb.raw(296, 48, 59)), convert.hsv.hwb(296, 48, 59));
+eq(convert.rgb.hsv(convert.hwb.rgb.raw(96, 48, 49)), convert.hwb.hsv(96, 48, 49));
+eq(convert.rgb.hsv(convert.hwb.rgb.raw(296, 38, 19)), convert.hwb.hsv(296, 38, 19));
+
 // raw functions
 function round(vals) {
 	for (var i = 0; i < vals.length; i++) {
