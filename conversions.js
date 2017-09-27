@@ -62,36 +62,18 @@ convert.rgb.hsv = function (rgb) {
 	var b = rgb[2];
 	var min = Math.min(r, g, b);
 	var max = Math.max(r, g, b);
-	var delta = max - min;
-	var h;
-	var s;
-	var v;
+	var d = max - min;
+	var v = max / 255;
+	var s = max === 0 ? 0 : d / max;
 
-	if (max === 0) {
-		s = 0;
-	} else {
-		s = (delta / max * 1000) / 10;
+	if (d > 0) { // not achromatic
+		var h = max === r ? (g - b) / d + (g < b ? 6 : 0) :
+						max === g ? (b - r) / d + 2 :
+										(r - g) / d + 4;
+		return [(h * 60) % 360, s * 100, v * 100];
 	}
 
-	if (max === min) {
-		h = 0;
-	} else if (r === max) {
-		h = (g - b) / delta;
-	} else if (g === max) {
-		h = 2 + (b - r) / delta;
-	} else if (b === max) {
-		h = 4 + (r - g) / delta;
-	}
-
-	h = Math.min(h * 60, 360);
-
-	if (h < 0) {
-		h += 360;
-	}
-
-	v = ((max / 255) * 1000) / 10;
-
-	return [h, s, v];
+	return [0, s * 100, v * 100];
 };
 
 convert.rgb.hwb = function (rgb) {
