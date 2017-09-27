@@ -300,19 +300,14 @@ convert.hsv.hsl = function (hsv) {
 	var h = hsv[0];
 	var s = hsv[1] / 100;
 	var v = hsv[2] / 100;
+
 	var vmin = Math.max(v, 0.01);
-	var lmin;
-	var sl;
-	var l;
+	var lmin = (2 - s) / 2 * vmin;
 
-	l = (2 - s) * v;
-	lmin = (2 - s) * vmin;
-	sl = s * vmin;
-	sl /= (lmin <= 1) ? lmin : 2 - lmin;
-	sl = sl || 0;
-	l /= 2;
+	var L = (2 - s) * v / 2;
+	var S = s * vmin / (lmin < 0.5 ? lmin * 2 : 2 - lmin * 2) || 0;
 
-	return [h, sl * 100, l * 100];
+	return [h, S * 100, L * 100];
 };
 
 convert.hsv.hwb = function (hsv) {
