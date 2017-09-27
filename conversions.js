@@ -224,53 +224,40 @@ convert.rgb.lab = function (rgb) {
 	return [l, a, b];
 };
 
+function hue2rgb(p, q, t) { // private fn for hsl.rgb
+	if (t < 0) {
+		t += 1;
+	}
+	if (t > 1) {
+		t -= 1;
+	}
+	if (t < 1 / 6) {
+		return p + (q - p) * 6 * t;
+	}
+	if (t < 1 / 2) {
+		return q;
+	}
+	if (t < 2 / 3) {
+		return p + (q - p) * (2 / 3 - t) * 6;
+	}
+	return p;
+}
+
 convert.hsl.rgb = function (hsl) {
 	var h = hsl[0] / 360;
 	var s = hsl[1] / 100;
 	var l = hsl[2] / 100;
-	var t1;
-	var t2;
-	var t3;
-	var rgb;
-	var val;
 
-	if (s === 0) {
-		val = l * 255;
-		return [val, val, val];
+	if (s !== 0) { // not achromatic
+		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+		var p = 2 * l - q;
+		return [
+			hue2rgb(p, q, h + 1 / 3) * 255,
+			hue2rgb(p, q, h) * 255,
+			hue2rgb(p, q, h - 1 / 3) * 255
+		];
 	}
-
-	if (l < 0.5) {
-		t2 = l * (1 + s);
-	} else {
-		t2 = l + s - l * s;
-	}
-
-	t1 = 2 * l - t2;
-
-	rgb = [0, 0, 0];
-	for (var i = 0; i < 3; i++) {
-		t3 = h + 1 / 3 * -(i - 1);
-		if (t3 < 0) {
-			t3++;
-		}
-		if (t3 > 1) {
-			t3--;
-		}
-
-		if (6 * t3 < 1) {
-			val = t1 + (t2 - t1) * 6 * t3;
-		} else if (2 * t3 < 1) {
-			val = t2;
-		} else if (3 * t3 < 2) {
-			val = t1 + (t2 - t1) * (2 / 3 - t3) * 6;
-		} else {
-			val = t1;
-		}
-
-		rgb[i] = val * 255;
-	}
-
-	return rgb;
+	return [l * 255, l * 255, l * 255];
 };
 
 convert.hsl.hsv = function (hsl) {
