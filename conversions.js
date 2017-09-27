@@ -42,38 +42,18 @@ convert.rgb.hsl = function (rgb) {
 	var b = rgb[2] / 255;
 	var min = Math.min(r, g, b);
 	var max = Math.max(r, g, b);
-	var delta = max - min;
-	var h;
-	var s;
-	var l;
+	var d = max - min;
+	var l = (min + max) / 2;
 
-	if (max === min) {
-		h = 0;
-	} else if (r === max) {
-		h = (g - b) / delta;
-	} else if (g === max) {
-		h = 2 + (b - r) / delta;
-	} else if (b === max) {
-		h = 4 + (r - g) / delta;
+	if (d > 0) { // not achromatic
+		var s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+		var h = max === r ? (g - b) / d + (g < b ? 6 : 0) :
+						max === g ? (b - r) / d + 2 :
+											(r - g) / d + 4;
+		return [(h * 60) % 360, s * 100, l * 100];
 	}
 
-	h = Math.min(h * 60, 360);
-
-	if (h < 0) {
-		h += 360;
-	}
-
-	l = (min + max) / 2;
-
-	if (max === min) {
-		s = 0;
-	} else if (l <= 0.5) {
-		s = delta / (max + min);
-	} else {
-		s = delta / (2 - max - min);
-	}
-
-	return [h, s * 100, l * 100];
+	return [0, 0, l * 100];
 };
 
 convert.rgb.hsv = function (rgb) {
