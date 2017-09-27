@@ -77,15 +77,23 @@ convert.rgb.hsv = function (rgb) {
 };
 
 convert.rgb.hwb = function (rgb) {
-	var r = rgb[0];
-	var g = rgb[1];
-	var b = rgb[2];
-	var h = convert.rgb.hsl(rgb)[0];
-	var w = 1 / 255 * Math.min(r, Math.min(g, b));
+	var r = rgb[0] / 255;
+	var g = rgb[1] / 255;
+	var b = rgb[2] / 255;
+	var min = Math.min(r, g, b);
+	var max = Math.max(r, g, b);
+	var d = max - min;
+	var black = 1 - max;
 
-	b = 1 - 1 / 255 * Math.max(r, Math.max(g, b));
+	if (d > 0) { // not achromatic
+		var hue = min === r ? 180 - 60 * (g - b) / d :
+							min === g ? 300 - 60 * (b - r) / d :
+							60 - 60 * (r - g) / d;
 
-	return [h, w * 100, b * 100];
+		return [hue, min * 100, black * 100];
+	}
+
+	return [0, min * 100, black * 100];
 };
 
 convert.rgb.cmyk = function (rgb) {
