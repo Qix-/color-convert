@@ -264,18 +264,15 @@ convert.hsl.hsv = function (hsl) {
 	var h = hsl[0];
 	var s = hsl[1] / 100;
 	var l = hsl[2] / 100;
-	var smin = s;
+
 	var lmin = Math.max(l, 0.01);
-	var sv;
-	var v;
+	var smin = s * (lmin <= 1 ? lmin : 2 - lmin);
 
-	l *= 2;
-	s *= (l <= 1) ? l : 2 - l;
-	smin *= lmin <= 1 ? lmin : 2 - lmin;
-	v = (l + s) / 2;
-	sv = l === 0 ? (2 * smin) / (lmin + smin) : (2 * s) / (l + s);
+	var t = s * (l < 0.5 ? l : 1 - l);
+	var V = l + t;
+	var S = l > 0 ? 2 * t / V : 2 * smin / (lmin + smin);
 
-	return [h, sv * 100, v * 100];
+	return [h, S * 100, V * 100];
 };
 
 convert.hsv.rgb = function (hsv) {
