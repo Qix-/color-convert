@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 var assert = require('assert');
 var chalk = require('chalk');
-var convert = require('../index');
+var convert = require('..');
 var conversions = require('../conversions');
 var keywords = require('color-name');
 
@@ -17,6 +17,7 @@ for (var len = models.length, i = 0; i < len; i++) {
 
 		var fn = convert[toModel][fromModel];
 		if (fn) {
+			assert(fn.raw); // assert the function was wrapped
 			var path = (fn.conversion || [fromModel, toModel]).slice();
 			path[0] = chalk.bold.cyan(path[0]);
 			path[path.length - 1] = chalk.bold.cyan(path[path.length - 1]);

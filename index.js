@@ -1,78 +1,40 @@
 var conversions = require('./conversions');
-var route = require('./route');
+var utils = require('./utils');
 
-var convert = {};
+var define = function (data) {
+	return Object.defineProperties(Object.create(null), data);
+};
 
-var models = Object.keys(conversions);
+var convert = module.exports = {
+	rgb: define({channels: {value: 3}, labels: {value: 'rgb'}}),
+	hsl: define({channels: {value: 3}, labels: {value: 'hsl'}}),
+	hsv: define({channels: {value: 3}, labels: {value: 'hsv'}}),
+	hwb: define({channels: {value: 3}, labels: {value: 'hwb'}}),
+	cmyk: define({channels: {value: 4}, labels: {value: 'cmyk'}}),
+	xyz: define({channels: {value: 3}, labels: {value: 'xyz'}}),
+	lab: define({channels: {value: 3}, labels: {value: 'lab'}}),
+	lch: define({channels: {value: 3}, labels: {value: 'lch'}}),
+	hex: define({channels: {value: 1}, labels: {value: ['hex']}}),
+	keyword: define({channels: {value: 1}, labels: {value: ['keyword']}}),
+	ansi16: define({channels: {value: 1}, labels: {value: ['ansi16']}}),
+	ansi256: define({channels: {value: 1}, labels: {value: ['ansi256']}}),
+	hcg: define({channels: {value: 3}, labels: {value: ['h', 'c', 'g']}}),
+	apple: define({channels: {value: 3}, labels: {value: ['r16', 'g16', 'b16']}}),
+	gray: define({channels: {value: 1}, labels: {value: ['gray']}})
+};
 
-function wrapRaw(fn) {
-	var wrappedFn = function (args) {
-		if (args === undefined || args === null) {
-			return args;
+var models = Object.keys(convert);
+
+models.forEach(function (fromName) {
+	models.forEach(function (toName) {
+		if (conversions[fromName][toName]) {
+			convert[fromName][toName] = utils.wrap(conversions[fromName][toName]);
+			convert[fromName][toName].path = [fromName, toName];
+		} else {
+			convert[fromName][toName] = utils.wrap(function (args) { // build it lazily
+				convert[fromName][toName] = utils.wrap(utils.search(conversions, fromName, toName));
+				return convert[fromName][toName](args);
+			});
 		}
-
-		if (arguments.length > 1) {
-			args = Array.prototype.slice.call(arguments);
-		}
-
-		return fn(args);
-	};
-
-	// preserve .conversion property if there is one
-	if ('conversion' in fn) {
-		wrappedFn.conversion = fn.conversion;
-	}
-
-	return wrappedFn;
-}
-
-function wrapRounded(fn) {
-	var wrappedFn = function (args) {
-		if (args === undefined || args === null) {
-			return args;
-		}
-
-		if (arguments.length > 1) {
-			args = Array.prototype.slice.call(arguments);
-		}
-
-		var result = fn(args);
-
-		// we're assuming the result is an array here.
-		// see notice in conversions.js; don't use box types
-		// in conversion functions.
-		if (typeof result === 'object') {
-			for (var len = result.length, i = 0; i < len; i++) {
-				result[i] = Math.round(result[i]);
-			}
-		}
-
-		return result;
-	};
-
-	// preserve .conversion property if there is one
-	if ('conversion' in fn) {
-		wrappedFn.conversion = fn.conversion;
-	}
-
-	return wrappedFn;
-}
-
-models.forEach(function (fromModel) {
-	convert[fromModel] = {};
-
-	Object.defineProperty(convert[fromModel], 'channels', {value: conversions[fromModel].channels});
-	Object.defineProperty(convert[fromModel], 'labels', {value: conversions[fromModel].labels});
-
-	var routes = route(fromModel);
-	var routeModels = Object.keys(routes);
-
-	routeModels.forEach(function (toModel) {
-		var fn = routes[toModel];
-
-		convert[fromModel][toModel] = wrapRounded(fn);
-		convert[fromModel][toModel].raw = wrapRaw(fn);
 	});
 });
-
-module.exports = convert;
