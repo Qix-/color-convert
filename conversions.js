@@ -7,9 +7,7 @@ var cssKeywords = require('color-name');
 
 var reverseKeywords = {};
 for (var key in cssKeywords) {
-	if (cssKeywords.hasOwnProperty(key)) {
-		reverseKeywords[cssKeywords[key]] = key;
-	}
+	reverseKeywords[cssKeywords[key]] = key;
 }
 
 var convert = module.exports = {
@@ -32,26 +30,10 @@ var convert = module.exports = {
 
 // hide .channels and .labels properties
 for (var model in convert) {
-	if (convert.hasOwnProperty(model)) {
-		if (!('channels' in convert[model])) {
-			throw new Error('missing channels property: ' + model);
-		}
-
-		if (!('labels' in convert[model])) {
-			throw new Error('missing channel labels property: ' + model);
-		}
-
-		if (convert[model].labels.length !== convert[model].channels) {
-			throw new Error('channel and label counts mismatch: ' + model);
-		}
-
-		var channels = convert[model].channels;
-		var labels = convert[model].labels;
-		delete convert[model].channels;
-		delete convert[model].labels;
-		Object.defineProperty(convert[model], 'channels', {value: channels});
-		Object.defineProperty(convert[model], 'labels', {value: labels});
-	}
+	convert[model] = Object.defineProperties({}, {
+		channels: {value: convert[model].channels},
+		labels: {value: convert[model].labels}
+	});
 }
 
 convert.rgb.hsl = function (rgb) {
@@ -60,38 +42,18 @@ convert.rgb.hsl = function (rgb) {
 	var b = rgb[2] / 255;
 	var min = Math.min(r, g, b);
 	var max = Math.max(r, g, b);
-	var delta = max - min;
-	var h;
-	var s;
-	var l;
+	var d = max - min;
+	var l = (min + max) / 2;
 
-	if (max === min) {
-		h = 0;
-	} else if (r === max) {
-		h = (g - b) / delta;
-	} else if (g === max) {
-		h = 2 + (b - r) / delta;
-	} else if (b === max) {
-		h = 4 + (r - g) / delta;
+	if (d > 0) { // not achromatic
+		var s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+		var h = max === r ? (g - b) / d + (g < b ? 6 : 0) :
+						max === g ? (b - r) / d + 2 :
+											(r - g) / d + 4;
+		return [(h * 60) % 360, s * 100, l * 100];
 	}
 
-	h = Math.min(h * 60, 360);
-
-	if (h < 0) {
-		h += 360;
-	}
-
-	l = (min + max) / 2;
-
-	if (max === min) {
-		s = 0;
-	} else if (l <= 0.5) {
-		s = delta / (max + min);
-	} else {
-		s = delta / (2 - max - min);
-	}
-
-	return [h, s * 100, l * 100];
+	return [0, 0, l * 100];
 };
 
 convert.rgb.hsv = function (rgb) {
@@ -100,48 +62,38 @@ convert.rgb.hsv = function (rgb) {
 	var b = rgb[2];
 	var min = Math.min(r, g, b);
 	var max = Math.max(r, g, b);
-	var delta = max - min;
-	var h;
-	var s;
-	var v;
+	var d = max - min;
+	var v = max / 255;
+	var s = max === 0 ? 0 : d / max;
 
-	if (max === 0) {
-		s = 0;
-	} else {
-		s = (delta / max * 1000) / 10;
+	if (d > 0) { // not achromatic
+		var h = max === r ? (g - b) / d + (g < b ? 6 : 0) :
+						max === g ? (b - r) / d + 2 :
+										(r - g) / d + 4;
+		return [(h * 60) % 360, s * 100, v * 100];
 	}
 
-	if (max === min) {
-		h = 0;
-	} else if (r === max) {
-		h = (g - b) / delta;
-	} else if (g === max) {
-		h = 2 + (b - r) / delta;
-	} else if (b === max) {
-		h = 4 + (r - g) / delta;
-	}
-
-	h = Math.min(h * 60, 360);
-
-	if (h < 0) {
-		h += 360;
-	}
-
-	v = ((max / 255) * 1000) / 10;
-
-	return [h, s, v];
+	return [0, s * 100, v * 100];
 };
 
 convert.rgb.hwb = function (rgb) {
-	var r = rgb[0];
-	var g = rgb[1];
-	var b = rgb[2];
-	var h = convert.rgb.hsl(rgb)[0];
-	var w = 1 / 255 * Math.min(r, Math.min(g, b));
+	var r = rgb[0] / 255;
+	var g = rgb[1] / 255;
+	var b = rgb[2] / 255;
+	var min = Math.min(r, g, b);
+	var max = Math.max(r, g, b);
+	var d = max - min;
+	var black = 1 - max;
 
-	b = 1 - 1 / 255 * Math.max(r, Math.max(g, b));
+	if (d > 0) { // not achromatic
+		var hue = min === r ? 180 - 60 * (g - b) / d :
+							min === g ? 300 - 60 * (b - r) / d :
+							60 - 60 * (r - g) / d;
 
-	return [h, w * 100, b * 100];
+		return [hue, min * 100, black * 100];
+	}
+
+	return [0, min * 100, black * 100];
 };
 
 convert.rgb.cmyk = function (rgb) {
@@ -182,17 +134,15 @@ convert.rgb.keyword = function (rgb) {
 	var currentClosestKeyword;
 
 	for (var keyword in cssKeywords) {
-		if (cssKeywords.hasOwnProperty(keyword)) {
-			var value = cssKeywords[keyword];
+		var value = cssKeywords[keyword];
 
-			// Compute comparative distance
-			var distance = comparativeDistance(rgb, value);
+		// Compute comparative distance
+		var distance = comparativeDistance(rgb, value);
 
-			// Check if its less, if so set as closest
-			if (distance < currentClosestDistance) {
-				currentClosestDistance = distance;
-				currentClosestKeyword = keyword;
-			}
+		// Check if its less, if so set as closest
+		if (distance < currentClosestDistance) {
+			currentClosestDistance = distance;
+			currentClosestKeyword = keyword;
 		}
 	}
 
@@ -244,98 +194,75 @@ convert.rgb.lab = function (rgb) {
 	return [l, a, b];
 };
 
+function hue2rgb(p, q, t) { // private fn for hsl.rgb
+	if (t < 0) {
+		t += 1;
+	}
+	if (t > 1) {
+		t -= 1;
+	}
+	if (t < 1 / 6) {
+		return p + (q - p) * 6 * t;
+	}
+	if (t < 1 / 2) {
+		return q;
+	}
+	if (t < 2 / 3) {
+		return p + (q - p) * (2 / 3 - t) * 6;
+	}
+	return p;
+}
+
 convert.hsl.rgb = function (hsl) {
 	var h = hsl[0] / 360;
 	var s = hsl[1] / 100;
 	var l = hsl[2] / 100;
-	var t1;
-	var t2;
-	var t3;
-	var rgb;
-	var val;
 
-	if (s === 0) {
-		val = l * 255;
-		return [val, val, val];
+	if (s !== 0) { // not achromatic
+		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+		var p = 2 * l - q;
+		return [
+			hue2rgb(p, q, h + 1 / 3) * 255,
+			hue2rgb(p, q, h) * 255,
+			hue2rgb(p, q, h - 1 / 3) * 255
+		];
 	}
-
-	if (l < 0.5) {
-		t2 = l * (1 + s);
-	} else {
-		t2 = l + s - l * s;
-	}
-
-	t1 = 2 * l - t2;
-
-	rgb = [0, 0, 0];
-	for (var i = 0; i < 3; i++) {
-		t3 = h + 1 / 3 * -(i - 1);
-		if (t3 < 0) {
-			t3++;
-		}
-		if (t3 > 1) {
-			t3--;
-		}
-
-		if (6 * t3 < 1) {
-			val = t1 + (t2 - t1) * 6 * t3;
-		} else if (2 * t3 < 1) {
-			val = t2;
-		} else if (3 * t3 < 2) {
-			val = t1 + (t2 - t1) * (2 / 3 - t3) * 6;
-		} else {
-			val = t1;
-		}
-
-		rgb[i] = val * 255;
-	}
-
-	return rgb;
+	return [l * 255, l * 255, l * 255];
 };
 
 convert.hsl.hsv = function (hsl) {
 	var h = hsl[0];
 	var s = hsl[1] / 100;
 	var l = hsl[2] / 100;
-	var smin = s;
+
 	var lmin = Math.max(l, 0.01);
-	var sv;
-	var v;
+	var smin = s * (lmin <= 1 ? lmin : 2 - lmin);
 
-	l *= 2;
-	s *= (l <= 1) ? l : 2 - l;
-	smin *= lmin <= 1 ? lmin : 2 - lmin;
-	v = (l + s) / 2;
-	sv = l === 0 ? (2 * smin) / (lmin + smin) : (2 * s) / (l + s);
+	var t = s * (l < 0.5 ? l : 1 - l);
+	var V = l + t;
+	var S = l > 0 ? 2 * t / V : 2 * smin / (lmin + smin);
 
-	return [h, sv * 100, v * 100];
+	return [h, S * 100, V * 100];
 };
 
 convert.hsv.rgb = function (hsv) {
-	var h = hsv[0] / 60;
+	var a = hsv[0] / 60;
+	var i = Math.floor(a);
+	var f = a - i;
 	var s = hsv[1] / 100;
 	var v = hsv[2] / 100;
-	var hi = Math.floor(h) % 6;
+	var p = v * (1 - s);
+	var q = v * (1 - f * s);
+	var t = v * (1 - (1 - f) * s);
 
-	var f = h - Math.floor(h);
-	var p = 255 * v * (1 - s);
-	var q = 255 * v * (1 - (s * f));
-	var t = 255 * v * (1 - (s * (1 - f)));
-	v *= 255;
-
-	switch (hi) {
-		case 0:
-			return [v, t, p];
-		case 1:
-			return [q, v, p];
-		case 2:
-			return [p, v, t];
-		case 3:
-			return [p, q, v];
-		case 4:
-			return [t, p, v];
-		case 5:
-			return [v, p, q];
+	switch (i) {
+		case 6:
+		case 0: return [v * 255, t * 255, p * 255];
+		case 1: return [q * 255, v * 255, p * 255];
+		case 2: return [p * 255, v * 255, t * 255];
+		case 3: return [p * 255, q * 255, v * 255];
+		case 4: return [t * 255, p * 255, v * 255];
+		case 5: return [v * 255, p * 255, q * 255];
 	}
 };
 
@@ -343,19 +270,33 @@ convert.hsv.hsl = function (hsv) {
 	var h = hsv[0];
 	var s = hsv[1] / 100;
 	var v = hsv[2] / 100;
+
 	var vmin = Math.max(v, 0.01);
-	var lmin;
-	var sl;
-	var l;
+	var lmin = (2 - s) / 2 * vmin;
 
-	l = (2 - s) * v;
-	lmin = (2 - s) * vmin;
-	sl = s * vmin;
-	sl /= (lmin <= 1) ? lmin : 2 - lmin;
-	sl = sl || 0;
-	l /= 2;
+	var L = (2 - s) * v / 2;
+	var S = s * vmin / (lmin < 0.5 ? lmin * 2 : 2 - lmin * 2) || 0;
 
-	return [h, sl * 100, l * 100];
+	return [h, S * 100, L * 100];
+};
+
+convert.hsv.hwb = function (hsv) {
+	var h = hsv[0];
+	var s = hsv[1];
+	var v = hsv[2];
+	return [h, (100 - s) * v / 100, 100 - v];
+};
+
+convert.hwb.hsv = function (hwb) {
+	var h = hwb[0];
+	var w = hwb[1] / 100;
+	var b = hwb[2] / 100;
+	var ratio = w + b;
+	if (ratio > 1) {
+		w /= ratio;
+		b /= ratio;
+	}
+	return [h, Math.max(0, 1 - w / (1 - b)) * 100, (1 - b) * 100];
 };
 
 // http://dev.w3.org/csswg/css-color/#hwb-to-rgb
@@ -364,10 +305,6 @@ convert.hwb.rgb = function (hwb) {
 	var wh = hwb[1] / 100;
 	var bl = hwb[2] / 100;
 	var ratio = wh + bl;
-	var i;
-	var v;
-	var f;
-	var n;
 
 	// wh + bl cant be > 1
 	if (ratio > 1) {
@@ -375,31 +312,21 @@ convert.hwb.rgb = function (hwb) {
 		bl /= ratio;
 	}
 
-	i = Math.floor(6 * h);
-	v = 1 - bl;
-	f = 6 * h - i;
+	var i = Math.floor(h * 6);
+	var v = 1 - bl;
+	var f = (i & 1) ? 1 + i - h * 6 : h * 6 - i; // if i is odd
 
-	if ((i & 0x01) !== 0) {
-		f = 1 - f;
-	}
+	var n = wh + f * (v - wh); // linear interpolation
 
-	n = wh + f * (v - wh); // linear interpolation
-
-	var r;
-	var g;
-	var b;
 	switch (i) {
-		default:
 		case 6:
-		case 0: r = v; g = n; b = wh; break;
-		case 1: r = n; g = v; b = wh; break;
-		case 2: r = wh; g = v; b = n; break;
-		case 3: r = wh; g = n; b = v; break;
-		case 4: r = n; g = wh; b = v; break;
-		case 5: r = v; g = wh; b = n; break;
+		case 0: return [v * 255, n * 255, wh * 255];
+		case 1: return [n * 255, v * 255, wh * 255];
+		case 2: return [wh * 255, v * 255, n * 255];
+		case 3: return [wh * 255, n * 255, v * 255];
+		case 4: return [n * 255, wh * 255, v * 255];
+		case 5: return [v * 255, wh * 255, n * 255];
 	}
-
-	return [r * 255, g * 255, b * 255];
 };
 
 convert.cmyk.rgb = function (cmyk) {
