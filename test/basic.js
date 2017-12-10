@@ -7,30 +7,30 @@ var keywords = require('color-name');
 
 var models = Object.keys(conversions);
 for (var len = models.length, i = 0; i < len; i++) {
-	var toModel = models[i];
+	var fromModel = models[i];
 	for (var j = 0; j < len; j++) {
-		var fromModel = models[j];
+		var toModel = models[j];
 
 		if (toModel === fromModel) {
 			continue;
 		}
 
-		var fn = convert[toModel][fromModel];
+		var fn = convert[fromModel][toModel];
 		if (fn) {
 			assert(fn.raw); // assert the function was wrapped
-			var path = (fn.conversion || [fromModel, toModel]).slice();
+			var path = (fn.path || [fromModel, toModel]).slice();
 			path[0] = chalk.bold.cyan(path[0]);
 			path[path.length - 1] = chalk.bold.cyan(path[path.length - 1]);
 
 			console.log(path.join(chalk.bold.black('->')));
 		} else {
-			console.log(chalk.red([toModel, fromModel].join('->')), chalk.red('(no conversion)'));
+			console.log(chalk.red([fromModel, toModel].join('->')), chalk.red('(no conversion)'));
 		}
 	}
 
 	// should not expose channels
-	assert(convert[toModel].channels > 0);
-	assert(Object.keys(convert[toModel]).indexOf('channels') === -1);
+	assert(convert[fromModel].channels > 0);
+	assert(Object.keys(convert[fromModel]).indexOf('channels') === -1);
 }
 
 // labels should be unique

@@ -20,6 +20,13 @@ models.forEach(function (fromName) {
 				convert[fromName][toName] = utils.wrap(utils.search(conversions, fromName, toName));
 				return convert[fromName][toName](args);
 			});
+			// make the full path visible as a getter, since it's lazy built, then .path is overriden after first call
+			Object.defineProperty(convert[fromName][toName], 'path', {
+				get: function () {
+					convert[fromName][toName] = utils.wrap(utils.search(conversions, fromName, toName));
+					return convert[fromName][toName].path;
+				}
+			});
 		}
 	});
 });
