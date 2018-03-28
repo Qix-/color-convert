@@ -35,7 +35,7 @@ for (var len = models.length, i = 0; i < len; i++) {
 
 // labels should be unique
 var uniqued = {};
-models.forEach(function (model) {
+models.forEach(model => {
 	var hash = [].slice.call(convert[model].labels).sort().join('');
 	if (uniqued[hash]) {
 		throw new Error('models ' + uniqued[hash] + ' and ' + model + ' have the same label set');
@@ -207,7 +207,7 @@ assert.deepEqual(convert.rgb.keyword(255, 255, 1), 'yellow');
 assert.deepEqual(convert.rgb.keyword(250, 254, 1), 'yellow');
 
 // assure euclidean distance algorithm produces perfectly inverse results
-Object.keys(keywords).forEach(function (k) {
+Object.keys(keywords).forEach(k => {
 	// why the roundabout testing method? certain css keywords have the same color values.
 	var derived = convert.rgb.keyword(keywords[k]);
 	assert.deepEqual(keywords[derived], keywords[k]);

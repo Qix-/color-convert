@@ -6,7 +6,7 @@ var cssKeywords = require('color-name');
 //       do not use box values types (i.e. Number(), String(), etc.)
 
 var reverseKeywords = {};
-Object.keys(cssKeywords).forEach(function (key) {
+Object.keys(cssKeywords).forEach(key => {
 	reverseKeywords[cssKeywords[key]] = key;
 });
 
@@ -28,7 +28,7 @@ var convert = module.exports = {
 	gray: ['gray']
 };
 
-Object.keys(convert).forEach(function (name) {
+Object.keys(convert).forEach(name => {
 	var labels = convert[name];
 	convert[name] = Object.defineProperties({}, {channels: {value: labels.length}, labels: {value: labels}});
 });
@@ -160,7 +160,7 @@ convert.rgb.keyword = function (rgb) {
 	var currentClosestDistance = Infinity;
 	var currentClosestKeyword;
 
-	Object.keys(cssKeywords).forEach(function (keyword) {
+	Object.keys(cssKeywords).forEach(keyword => {
 		var value = cssKeywords[keyword];
 
 		// Compute comparative distance
