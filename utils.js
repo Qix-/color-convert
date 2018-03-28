@@ -24,8 +24,9 @@ exports.search = function search(conversions, fromKey, toKey) {
 				fn.path = arr.reverse();
 				return fn;
 			}
-
-			for (var key in targets) {
+			var keys = Object.keys(targets);
+			for (var j = 0; j < keys.length; j++) {
+				var key = keys[j];
 				if (visited[key] === undefined) {
 					visited[key] = k;
 					newNodes.push(key);
