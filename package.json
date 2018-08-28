@@ -1,7 +1,7 @@
 {
   "name": "color-convert",
   "description": "Plain color conversion functions",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "author": "Heather Arthur <fayearthur@gmail.com>",
   "license": "MIT",
   "repository": "Qix-/color-convert",
