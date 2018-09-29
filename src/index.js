@@ -1,9 +1,7 @@
-import conversions from './conversions';
+import {conversions, models} from './conversions';
 import route from './route';
 
 const convert = {};
-
-const models = Object.keys(conversions);
 
 function wrapRaw(fn) {
 	const wrappedFn = function (...args) {

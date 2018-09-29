@@ -1,4 +1,4 @@
-import conversions from './conversions';
+import {conversions, models} from './conversions';
 
 /*
 	This function routes a model to all other models.
@@ -13,9 +13,8 @@ import conversions from './conversions';
 
 function buildGraph() {
 	const graph = {};
-	// https://jsperf.com/object-keys-vs-for-in-with-closure/3
-	const models = Object.keys(conversions);
 
+	// https://jsperf.com/object-keys-vs-for-in-with-closure/3
 	for (let len = models.length, i = 0; i < len; i++) {
 		graph[models[i]] = {
 			// http://jsperf.com/1-vs-infinity
@@ -79,7 +78,6 @@ export default function (fromModel) {
 	const graph = deriveBFS(fromModel);
 	const conversion = {};
 
-	const models = Object.keys(graph);
 	for (let len = models.length, i = 0; i < len; i++) {
 		const toModel = models[i];
 		const node = graph[toModel];

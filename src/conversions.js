@@ -29,8 +29,6 @@ const convert = {
 	gray: {channels: 1, labels: ['gray']}
 };
 
-export default convert;
-
 // Hide .channels and .labels properties
 for (const model of Object.keys(convert)) {
 	if (!('channels' in convert[model])) {
@@ -836,4 +834,11 @@ convert.gray.hex = function (gray) {
 convert.rgb.gray = function (rgb) {
 	const val = (rgb[0] + rgb[1] + rgb[2]) / 3;
 	return [val / 255 * 100];
+};
+
+const models = Object.keys(convert);
+
+export {
+	convert as conversions,
+	models
 };
