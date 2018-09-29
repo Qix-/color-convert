@@ -1,6 +1,6 @@
 /* MIT license */
 /* eslint-disable no-mixed-operators */
-const cssKeywords = require('color-name');
+import cssKeywords from 'color-name';
 
 // NOTE: conversions should only return primitive values (i.e. arrays, or
 //       values that give correct `typeof` results).
@@ -29,7 +29,7 @@ const convert = {
 	gray: {channels: 1, labels: ['gray']}
 };
 
-module.exports = convert;
+export default convert;
 
 // Hide .channels and .labels properties
 for (const model of Object.keys(convert)) {

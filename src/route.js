@@ -1,4 +1,4 @@
-const conversions = require('./conversions');
+import conversions from './conversions';
 
 /*
 	This function routes a model to all other models.
@@ -75,7 +75,7 @@ function wrapConversion(toModel, graph) {
 	return fn;
 }
 
-module.exports = function (fromModel) {
+export default function (fromModel) {
 	const graph = deriveBFS(fromModel);
 	const conversion = {};
 
@@ -93,5 +93,4 @@ module.exports = function (fromModel) {
 	}
 
 	return conversion;
-};
-
+}

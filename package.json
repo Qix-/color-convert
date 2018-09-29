@@ -7,11 +7,14 @@
   "repository": "Qix-/color-convert",
   "scripts": {
     "pretest": "xo",
-    "test": "node test/basic.js"
+    "prepublish": "npm run build",
+    "test": "npm run build && node test/basic.js",
+    "build": "rollup --config"
   },
   "engines": {
     "node": ">=10.0.0"
   },
+  "main": "dist/index.js",
   "keywords": [
     "color",
     "colour",
@@ -27,9 +30,7 @@
     "ansi16"
   ],
   "files": [
-    "index.js",
-    "conversions.js",
-    "route.js"
+    "dist/"
   ],
   "xo": {
     "rules": {
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "chalk": "^2.4.2",
+    "rollup": "^2.28.2",
     "xo": "^0.24.0"
   },
   "dependencies": {

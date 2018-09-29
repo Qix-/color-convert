@@ -1,5 +1,5 @@
-const conversions = require('./conversions');
-const route = require('./route');
+import conversions from './conversions';
+import route from './route';
 
 const convert = {};
 
@@ -78,4 +78,4 @@ models.forEach(fromModel => {
 	});
 });
 
-module.exports = convert;
+export default convert;
