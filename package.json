@@ -36,6 +36,9 @@
       "operator-linebreak": 0
     }
   },
+  "engines": {
+    "node": ">=6.0"
+  },
   "devDependencies": {
     "chalk": "1.1.1",
     "xo": "0.11.2"
