@@ -6,13 +6,13 @@ var convert = {};
 var models = Object.keys(conversions);
 
 function wrapRaw(fn) {
-	var wrappedFn = function (args) {
-		if (args === undefined || args === null) {
-			return args;
+	var wrappedFn = function (...args) {
+		if (args.length === 0) {
+			return undefined;
 		}
 
-		if (arguments.length > 1) {
-			args = Array.prototype.slice.call(arguments);
+		if (args.length === 1 && Array.isArray(args[0])) {
+			args = args[0];
 		}
 
 		return fn(args);
@@ -27,13 +27,13 @@ function wrapRaw(fn) {
 }
 
 function wrapRounded(fn) {
-	var wrappedFn = function (args) {
-		if (args === undefined || args === null) {
-			return args;
+	var wrappedFn = function (...args) {
+		if (args.length === 0) {
+			return undefined;
 		}
 
-		if (arguments.length > 1) {
-			args = Array.prototype.slice.call(arguments);
+		if (args.length === 1 && Array.isArray(args[0])) {
+			args = args[0];
 		}
 
 		var result = fn(args);
