@@ -9,6 +9,9 @@
     "pretest": "xo",
     "test": "node test/basic.js"
   },
+  "engines": {
+    "node": ">=7.0.0"
+  },
   "keywords": [
     "color",
     "colour",
