@@ -677,15 +677,10 @@ convert.rgb.hcg = function (rgb) {
 convert.hsl.hcg = function (hsl) {
 	const s = hsl[1] / 100;
 	const l = hsl[2] / 100;
-	let c = 1;
+
+	const c = l < 0.5 ? (2.0 * s * l) : (2.0 * s * (1.0 - l));
+
 	let f = 0;
-
-	if (l < 0.5) {
-		c = 2.0 * s * l;
-	} else {
-		c = 2.0 * s * (1.0 - l);
-	}
-
 	if (c < 1.0) {
 		f = (l - 0.5 * c) / (1.0 - c);
 	}
