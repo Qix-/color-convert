@@ -1,4 +1,4 @@
-const assert = require('assert').strict;
+const assert = require('assert').strict || require('assert');
 const chalk = require('chalk');
 const convert = require('..');
 const keywords = require('color-name');
@@ -27,8 +27,8 @@ for (let len = models.length, i = 0; i < len; i++) {
 	}
 
 	// Should not expose channels
-	assert(convert[toModel].channels > 0);
-	assert(Object.keys(convert[toModel]).indexOf('channels') === -1);
+	assert.ok(convert[toModel].channels > 0);
+	assert.ok(Object.keys(convert[toModel]).indexOf('channels') === -1);
 }
 
 // Labels should be unique
