@@ -86,6 +86,11 @@ module.exports = function (fromModel) {
 
 		if (node.parent === null) {
 			// No possible conversion, or this node is the source model.
+			if (fromModel === toModel) {
+				// Add in the identity conversion
+				conversion[toModel] = args => args;
+			}
+
 			continue;
 		}
 
