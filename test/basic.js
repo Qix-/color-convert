@@ -2,7 +2,7 @@ const assert = require('assert');
 const chalk = require('chalk');
 const convert = require('..');
 const keywords = require('color-name');
-const conversions = require('../conversions');
+const conversions = require('..');
 
 const models = Object.keys(conversions);
 for (let len = models.length, i = 0; i < len; i++) {
