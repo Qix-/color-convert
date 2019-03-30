@@ -4,14 +4,14 @@ require('@babel/register')({plugins: ['@babel/transform-modules-commonjs']});
 const conversions = require('./conversions');
 
 const colorModels = {
-	rgb: {channels: 3, labels: 'rgb'},
-	hsl: {channels: 3, labels: 'hsl'},
-	hsv: {channels: 3, labels: 'hsv'},
-	hwb: {channels: 3, labels: 'hwb'},
-	cmyk: {channels: 4, labels: 'cmyk'},
-	xyz: {channels: 3, labels: 'xyz'},
-	lab: {channels: 3, labels: 'lab'},
-	lch: {channels: 3, labels: 'lch'},
+	rgb: {channels: 3, labels: ['rgb']},
+	hsl: {channels: 3, labels: ['hsl']},
+	hsv: {channels: 3, labels: ['hsv']},
+	hwb: {channels: 3, labels: ['hwb']},
+	cmyk: {channels: 4, labels: ['cmyk']},
+	xyz: {channels: 3, labels: ['xyz']},
+	lab: {channels: 3, labels: ['lab']},
+	lch: {channels: 3, labels: ['lch']},
 	hex: {channels: 1, labels: ['hex']},
 	keyword: {channels: 1, labels: ['keyword']},
 	ansi16: {channels: 1, labels: ['ansi16']},
@@ -26,21 +26,17 @@ const modelNames = Object.keys(colorModels);
 const blocks = [];
 
 function composeConversion(path, fromModel, toModel) {
-	let conversion = '';
-	const functionName = path.length > 1 ? `${fromModel}${toModel}fn` : `conversions.${fromModel}.${toModel}`;
-	if (path.length > 1) {
-		const conversionPath = [fromModel, ...path];
-		let conversionFunction = '';
-		for (let i = 0; i < conversionPath.length - 1; ++i) {
-			conversionFunction = `conversions.${conversionPath[i]}.${conversionPath[i + 1]}(${conversionFunction}`;
-		}
-
-		conversion = `const ${functionName} = args => ${conversionFunction}args${')'.repeat(conversionPath.length - 1)};`;
+	if (path.length === 1) {
+		return `conversions.${fromModel}.${toModel}`;
 	}
 
-	return `${conversion}
-	convert.${fromModel}.${toModel} = wrapRounded(${functionName});
-	convert.${fromModel}.${toModel}.raw = wrapRaw(${functionName});`;
+	const conversionPath = [fromModel, ...path];
+	let conversionFunction = '';
+	for (let i = 0; i < conversionPath.length - 1; ++i) {
+		conversionFunction = `conversions.${conversionPath[i]}.${conversionPath[i + 1]}(${conversionFunction}`;
+	}
+
+	return `args => ${conversionFunction}args${')'.repeat(conversionPath.length - 1)}`;
 }
 
 for (const fromModel of modelNames) {
@@ -80,72 +76,22 @@ for (const [fromModel, graph] of graphs) {
 			current = graph[current].parent;
 		}
 
-		pathFunctions.push(composeConversion(path, fromModel, toModel));
+		const conversion = composeConversion(path, fromModel, toModel);
+		pathFunctions.push(`${toModel}: wrapFn(${conversion})`);
 	}
 
 	blocks.push(`
-  convert.${fromModel} = {};
+  convert.${fromModel} = {
+		${pathFunctions.join(',\n')}
+	};
 	Object.defineProperty(convert.${fromModel}, 'channels', {value: ${channels}});
-  Object.defineProperty(convert.${fromModel}, 'labels', {value: '${labels}'});
-  ${pathFunctions.join('\n')}
+  Object.defineProperty(convert.${fromModel}, 'labels', {value: [${labels.map(label => `'${label}'`).join(',')}]});
 `);
 }
 
 module.exports = `
-  import * as conversions from './conversions.js';
-
-  function wrapRaw(fn) {
-    var wrappedFn = function (args) {
-      if (args === undefined || args === null) {
-        return args;
-      }
-
-      if (arguments.length > 1) {
-        args = Array.prototype.slice.call(arguments);
-      }
-
-      return fn(args);
-    };
-
-    // preserve .conversion property if there is one
-    if ('conversion' in fn) {
-      wrappedFn.conversion = fn.conversion;
-    }
-
-    return wrappedFn;
-  }
-
-  function wrapRounded(fn) {
-    var wrappedFn = function (args) {
-      if (args === undefined || args === null) {
-        return args;
-      }
-
-      if (arguments.length > 1) {
-        args = Array.prototype.slice.call(arguments);
-      }
-
-      var result = fn(args);
-
-      // we're assuming the result is an array here.
-      // see notice in conversions.js; don't use box types
-      // in conversion functions.
-      if (typeof result === 'object') {
-        for (var len = result.length, i = 0; i < len; i++) {
-          result[i] = Math.round(result[i]);
-        }
-      }
-
-      return result;
-    };
-
-    // preserve .conversion property if there is one
-    if ('conversion' in fn) {
-      wrappedFn.conversion = fn.conversion;
-    }
-
-    return wrappedFn;
-  }
+	import * as conversions from './conversions';
+	import wrapFn from './wrap-fn';
 
   const convert = {};
   ${blocks.join('\n')}
