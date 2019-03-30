@@ -7,8 +7,8 @@
   "repository": "Qix-/color-convert",
   "scripts": {
     "build": "rollup -c",
-    "pretest": "xo",
-    "test": "npm run build && node test/basic.js"
+    "pretest": "npm run build && xo",
+    "test": "node test/basic.js"
   },
   "main": "lib/index.js",
   "engines": {
