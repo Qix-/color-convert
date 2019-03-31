@@ -21,7 +21,6 @@ const colorModels = {
 	gray: {channels: 1, labels: ['gray']}
 };
 
-const graphs = new Map();
 const modelNames = Object.keys(colorModels);
 const blocks = [];
 
@@ -58,10 +57,6 @@ for (const fromModel of modelNames) {
 		}
 	}
 
-	graphs.set(fromModel, graph);
-}
-
-for (const [fromModel, graph] of graphs) {
 	const {channels, labels} = colorModels[fromModel];
 	const pathFunctions = [];
 	for (const [toModel, {parent}] of Object.entries(graph)) {
@@ -81,19 +76,18 @@ for (const [fromModel, graph] of graphs) {
 	}
 
 	blocks.push(`
-  convert.${fromModel} = {
+  ${fromModel}: Object.defineProperties({
 		${pathFunctions.join(',\n')}
-	};
-	Object.defineProperty(convert.${fromModel}, 'channels', {value: ${channels}});
-  Object.defineProperty(convert.${fromModel}, 'labels', {value: [${labels.map(label => `'${label}'`).join(',')}]});
-`);
+	}, {
+		channels: {value: ${channels}},
+		labels: {value: [${labels.map(label => `'${label}'`).join(',')}]}
+	})`);
 }
 
 module.exports = `
 	import * as conversions from './conversions';
 	import wrapFn from './wrap-fn';
-
-  const convert = {};
-  ${blocks.join('\n')}
-  export default convert;
+  export default {
+		${blocks.join(',\n')}
+	};
 `;
