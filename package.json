@@ -29,7 +29,6 @@
   "files": [
     "index.js",
     "conversions.js",
-    "css-keywords.js",
     "route.js"
   ],
   "xo": {
