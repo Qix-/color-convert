@@ -1,8 +1,10 @@
 const assert = require('assert');
 const chalk = require('chalk');
-const convert = require('..');
 const keywords = require('color-name');
+
 const conversions = require('../conversions');
+
+const convert = require('..');
 
 const models = Object.keys(conversions);
 for (let len = models.length, i = 0; i < len; i++) {
@@ -121,6 +123,9 @@ assert.deepStrictEqual(convert.hex.rgb('ABC'), [170, 187, 204]);
 assert.deepStrictEqual(convert.hcg.rgb([96, 39, 64]), [139, 199, 100]);
 assert.deepStrictEqual(convert.hcg.hsv([96, 39, 64]), [96, 50, 78]);
 assert.deepStrictEqual(convert.hcg.hsl([96, 39, 64]), [96, 47, 59]);
+
+// https://github.com/Qix-/color-convert/issues/73
+assert.deepStrictEqual(convert.rgb.hcg.raw([250, 0, 255]), [298.8235294117647, 100, 0]);
 
 // Non-array arguments
 assert.deepStrictEqual(convert.hsl.rgb(96, 48, 59), [140, 201, 100]);

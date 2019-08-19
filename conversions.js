@@ -665,7 +665,7 @@ convert.rgb.hcg = function (rgb) {
 	if (max === g) {
 		hue = 2 + (b - r) / chroma;
 	} else {
-		hue = 4 + (r - g) / chroma + 4;
+		hue = 4 + (r - g) / chroma;
 	}
 
 	hue /= 6;
