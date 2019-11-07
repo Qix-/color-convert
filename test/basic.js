@@ -235,3 +235,6 @@ assert.deepStrictEqual(convert.rgb.gray([0, 0, 0]), [0]);
 assert.deepStrictEqual(convert.rgb.gray([128, 128, 128]), [50]);
 assert.deepStrictEqual(convert.rgb.gray([255, 255, 255]), [100]);
 assert.deepStrictEqual(convert.rgb.gray([0, 128, 255]), [50]);
+
+// https://github.com/Qix-/color-convert/issues/74
+assert.deepStrictEqual(convert.rgb.ansi256(40, 38, 41), 235);
