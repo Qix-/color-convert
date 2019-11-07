@@ -550,7 +550,7 @@ convert.rgb.ansi256 = function (args) {
 
 	// We use the extended greyscale palette here, with the exception of
 	// black and white. normal palette only has 4 greyscale shades.
-	if (r === g && g === b) {
+	if (r >> 4 === g >> 4 && g >> 4 === b >> 4) {
 		if (r < 8) {
 			return 16;
 		}
