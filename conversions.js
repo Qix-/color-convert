@@ -52,6 +52,28 @@ for (const model of Object.keys(convert)) {
 	Object.defineProperty(convert[model], 'labels', {value: labels});
 }
 
+// ANSI 256 colors
+const ansi256Colors = [];
+
+// Using Euclidean distance (might be a bit naive)
+ansi256Colors.closest = function (r, g, b) {
+	let minDistance = Infinity;
+	let index;
+	for (let i = 0; i < this.length; ++i) {
+		const rgb = this[i];
+		// Distance-squared should be fine for this function's purpose
+		const distance = (r - rgb.r) ** 2
+			+ (g - rgb.g) ** 2
+			+ (b - rgb.b) ** 2;
+		if (distance < minDistance) {
+			minDistance = distance;
+			index = i;
+		}
+	}
+
+	return index;
+};
+
 convert.rgb.hsl = function (rgb) {
 	const r = rgb[0] / 255;
 	const g = rgb[1] / 255;
@@ -548,24 +570,7 @@ convert.rgb.ansi256 = function (args) {
 	const g = args[1];
 	const b = args[2];
 
-	// We use the extended greyscale palette here, with the exception of
-	// black and white. normal palette only has 4 greyscale shades.
-	if (r === g && g === b) {
-		if (r < 8) {
-			return 16;
-		}
-
-		if (r > 248) {
-			return 231;
-		}
-
-		return Math.round(((r - 8) / 247) * 24) + 232;
-	}
-
-	const ansi = 16
-		+ (36 * Math.round(r / 255 * 5))
-		+ (6 * Math.round(g / 255 * 5))
-		+ Math.round(b / 255 * 5);
+	const ansi = ansi256Colors.closest(r, g, b);
 
 	return ansi;
 };
@@ -837,3 +842,8 @@ convert.rgb.gray = function (rgb) {
 	const val = (rgb[0] + rgb[1] + rgb[2]) / 3;
 	return [val / 255 * 100];
 };
+
+for (let color = 0; color < 255; ++color) {
+	const [r, g, b] = convert.ansi256.rgb(color);
+	ansi256Colors.push({r, g, b});
+}
