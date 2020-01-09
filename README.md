@@ -60,6 +60,67 @@ Conversions that don't have an _explicitly_ defined conversion (in [conversions.
 
 Keep in mind that extensive conversions _may_ result in a loss of precision, and exist only to be complete. For a list of "direct" (single-step) conversions, see [conversions.js](conversions.js).
 
+## Color Space Scales
+Conversions rely on an agreed upon 'full-scale' value for each of the channels. Listed here are those values for the most common color spaces
+
+### rgb
+channel | full-scale value
+---|---
+r | 255
+g | 255
+b | 255
+
+### hsl
+channel | full-scale value
+---|---
+h | 360
+s | 100
+l | 100
+
+### hsv
+channel | full-scale value
+---|---
+h | 360
+s | 100
+v | 100
+
+### hwb
+channel | full-scale value
+---|---
+h | 360
+w | 100
+b | 100
+
+### cmyk
+channel | full-scale value
+---|---
+c | 100
+m | 100
+y | 100
+k | 100
+
+### hex
+channel | full-scale value
+---|---
+hex | ```0xffffff```
+
+### keyword
+channel | value
+---|---
+name | any key from [color-name](https://github.com/colorjs/color-name/blob/master/index.js)
+
+### apple
+channel | full-scale value
+---|---
+0 | 65535
+1 | 65535
+2 | 65535
+
+### gray
+channel | full-scale value
+---|---
+g | 100
+
 # Contribute
 
 If there is a new model you would like to support, or want to add a direct conversion between two existing models, please send us a pull request.
