@@ -6,9 +6,15 @@ const cssKeywords = require('color-name');
 //       values that give correct `typeof` results).
 //       do not use box values types (i.e. Number(), String(), etc.)
 
-const reverseKeywords = {};
-for (const key of Object.keys(cssKeywords)) {
-	reverseKeywords[cssKeywords[key]] = key;
+const reverseKeywords = new Map();
+function findReverseKeyword(rgb) {
+	if (reverseKeywords.size === 0) {
+		for (const key of Object.keys(cssKeywords)) {
+			reverseKeywords.set(cssKeywords[key], key);
+		}
+	}
+
+	return reverseKeywords.get(rgb);
 }
 
 const convert = {
@@ -175,7 +181,7 @@ function comparativeDistance(x, y) {
 }
 
 convert.rgb.keyword = function (rgb) {
-	const reversed = reverseKeywords[rgb];
+	const reversed = findReverseKeyword(rgb);
 	if (reversed) {
 		return reversed;
 	}
