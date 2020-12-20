@@ -6,15 +6,16 @@ const cssKeywords = require('color-name');
 //       values that give correct `typeof` results).
 //       do not use box values types (i.e. Number(), String(), etc.)
 
-const reverseKeywords = new Map();
+let reverseKeywords = null;
 function findReverseKeyword(rgb) {
-	if (reverseKeywords.size === 0) {
+	if (reverseKeywords === null) {
+		reverseKeywords = {};
 		for (const key of Object.keys(cssKeywords)) {
-			reverseKeywords.set(cssKeywords[key], key);
+			reverseKeywords[cssKeywords[key]] = key;
 		}
 	}
 
-	return reverseKeywords.get(rgb);
+	return reverseKeywords[rgb];
 }
 
 const convert = {
