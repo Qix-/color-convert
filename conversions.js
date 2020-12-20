@@ -6,17 +6,40 @@ const cssKeywords = require('color-name');
 //       values that give correct `typeof` results).
 //       do not use box values types (i.e. Number(), String(), etc.)
 
-let reverseKeywords = null;
-function findReverseKeyword(rgb) {
-	if (reverseKeywords === null) {
-		reverseKeywords = {};
-		for (const key of Object.keys(cssKeywords)) {
-			reverseKeywords[cssKeywords[key]] = key;
-		}
-	}
+const reverseKeywords = (cssKeywords => {
+	let filled = false;
+	let keywords = null;
+	let keywordKeys = null;
 
-	return reverseKeywords[rgb];
-}
+	const fill = () => {
+		filled = true;
+		if (keywords === null) {
+			keywords = {};
+			keywordKeys = Object.keys(cssKeywords);
+			for (const key of keywordKeys) {
+				keywords[cssKeywords[key]] = key;
+			}
+		}
+	};
+
+	const all = () => {
+		if (filled === false) {
+			fill();
+		}
+
+		return keywordKeys;
+	};
+
+	const find = rgb => {
+		if (filled === false) {
+			fill();
+		}
+
+		return keywords[rgb];
+	};
+
+	return {all, find};
+})(cssKeywords);
 
 const convert = {
 	rgb: {channels: 3, labels: 'rgb'},
@@ -182,7 +205,7 @@ function comparativeDistance(x, y) {
 }
 
 convert.rgb.keyword = function (rgb) {
-	const reversed = findReverseKeyword(rgb);
+	const reversed = reverseKeywords.find(rgb);
 	if (reversed) {
 		return reversed;
 	}
@@ -190,7 +213,7 @@ convert.rgb.keyword = function (rgb) {
 	let currentClosestDistance = Infinity;
 	let currentClosestKeyword;
 
-	for (const keyword of Object.keys(cssKeywords)) {
+	for (const keyword of reverseKeywords.all()) {
 		const value = cssKeywords[keyword];
 
 		// Compute comparative distance
