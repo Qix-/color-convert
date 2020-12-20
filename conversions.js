@@ -22,7 +22,7 @@ const reverseKeywords = (cssKeywords => {
 		}
 	};
 
-	const all = () => {
+	const allKeys = () => {
 		if (filled === false) {
 			fill();
 		}
@@ -38,7 +38,11 @@ const reverseKeywords = (cssKeywords => {
 		return keywords[rgb];
 	};
 
-	return {all, find};
+	const each = callback => {
+		allKeys().forEach(key => callback(key, cssKeywords[key]));
+	};
+
+	return {allKeys, find, each};
 })(cssKeywords);
 
 const convert = {
@@ -213,18 +217,16 @@ convert.rgb.keyword = function (rgb) {
 	let currentClosestDistance = Infinity;
 	let currentClosestKeyword;
 
-	for (const keyword of reverseKeywords.all()) {
-		const value = cssKeywords[keyword];
-
+	reverseKeywords.each((key, value) => {
 		// Compute comparative distance
 		const distance = comparativeDistance(rgb, value);
 
 		// Check if its less, if so set as closest
 		if (distance < currentClosestDistance) {
 			currentClosestDistance = distance;
-			currentClosestKeyword = keyword;
+			currentClosestKeyword = key;
 		}
-	}
+	});
 
 	return currentClosestKeyword;
 };
