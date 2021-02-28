@@ -515,32 +515,30 @@ convert.lch.lab = function (lch) {
 	return [l, a, b];
 };
 
-convert.rgb.ansi16 = function (args, saturation = null) {
+convert.rgb.ansi16 = function (args) {
 	const [r, g, b] = args;
-	let value = saturation === null ? convert.rgb.hsv(args)[2] : saturation; // Hsv -> ansi16 optimization
-
-	value = Math.round(value / 50);
+	const value = Math.round(
+		// (x / 255 / .333) -> (x / (255 * .333))
+		Math.max(r, g, b) / 85
+	);
 
 	if (value === 0) {
 		return 30;
 	}
 
-	let ansi = 30
-		+ ((Math.round(b / 255) << 2)
-		| (Math.round(g / 255) << 1)
-		| Math.round(r / 255));
+	console.log({r, g, b, value});
 
-	if (value === 2) {
-		ansi += 60;
-	}
-
-	return ansi;
+	return 30
+		+ (
+			(Math.round(b / 255) << 2)
+			| (Math.round(g / 255) << 1)
+			| Math.round(r / 255)
+		)
+		+ (value % 2) * 60;
 };
 
 convert.hsv.ansi16 = function (args) {
-	// Optimization here; we already know the value and don't need to get
-	// it converted for us.
-	return convert.rgb.ansi16(convert.hsv.rgb(args), args[2]);
+	return convert.rgb.ansi16(convert.hsv.rgb(args));
 };
 
 convert.rgb.ansi256 = function (args) {
@@ -603,6 +601,14 @@ convert.ansi256.rgb = function (args) {
 		return [c, c, c];
 	}
 
+	if (args < 8) {
+		return convert.ansi16.rgb([args + 30]);
+	}
+
+	if (args < 16) {
+		return convert.ansi16.rgb([args + 82]);
+	}
+
 	args -= 16;
 
 	let rem;
@@ -611,6 +617,50 @@ convert.ansi256.rgb = function (args) {
 	const b = (rem % 6) / 5 * 255;
 
 	return [r, g, b];
+};
+
+convert.ansi256.ansi16 = function (args) {
+	args = args[0];
+
+	if (args < 8) {
+		return args + 30;
+	}
+
+	if (args < 16) {
+		return args + 82;
+	}
+
+	if (args >= 251) {
+		return 97;
+	}
+
+	if (args >= 246) {
+		return 37;
+	}
+
+	if (args >= 235) {
+		return 90;
+	}
+
+	if (args >= 232) {
+		return 30;
+	}
+
+	args -= 16;
+
+	let rem;
+
+	let r = Math.floor(args / 36) / 5;
+	let g = Math.floor((rem = args % 36) / 6) / 5;
+	let b = (rem % 6) / 5;
+
+	const v = Math.round(Math.max(r, g, b));
+
+	r = Math.round(r * 0.3 + 0.35);
+	g = Math.round(g * 0.3 + 0.35);
+	b = Math.round(b * 0.3 + 0.35);
+
+	return 30 + ((b << 2) | (g << 1) | r) + (v * 60);
 };
 
 convert.rgb.hex = function (args) {
