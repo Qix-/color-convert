@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "chalk": "^2.4.2",
+    "jimp": "^0.16.1",
     "xo": "^0.24.0"
   },
   "dependencies": {
