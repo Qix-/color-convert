@@ -126,4 +126,7 @@ g | 100
 If there is a new model you would like to support, or want to add a direct conversion between two existing models, please send us a pull request.
 
 # License
-Copyright &copy; 2011-2016, Heather Arthur and Josh Junon. Licensed under the [MIT License](LICENSE).
+Copyright &copy; 2011-2016, Heather Arthur.
+Copyright &copy; 2016-2021, Josh Junon.
+
+Licensed under the [MIT License](LICENSE).
