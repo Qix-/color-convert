@@ -571,6 +571,8 @@ convert.rgb.ansi256 = function (args) {
 };
 
 convert.ansi16.rgb = function (args) {
+	args = args[0];
+
 	let color = args % 10;
 
 	// Handle greyscale
@@ -593,6 +595,8 @@ convert.ansi16.rgb = function (args) {
 };
 
 convert.ansi256.rgb = function (args) {
+	args = args[0];
+
 	// Handle greyscale
 	if (args >= 232) {
 		const c = (args - 232) * 10 + 8;
