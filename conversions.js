@@ -655,7 +655,7 @@ convert.ansi256.ansi16 = function (args) {
 	}
 
 	return result;
-}
+};
 
 convert.rgb.hex = function (args) {
 	const integer = ((Math.round(args[0]) & 0xFF) << 16)
