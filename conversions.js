@@ -613,6 +613,50 @@ convert.ansi256.rgb = function (args) {
 	return [r, g, b];
 };
 
+convert.ansi256.ansi16 = function (args) {
+	args = args[0];
+
+	if (args < 8) {
+		return 30 + args;
+	}
+
+	if (args < 16) {
+		return 90 + (args - 8);
+	}
+
+	let red;
+	let green;
+	let blue;
+
+	if (args >= 232) {
+		red = (((args - 232) * 10) + 8) / 255;
+		green = red;
+		blue = red;
+	} else {
+		args -= 16;
+
+		const remainder = args % 36;
+
+		red = Math.floor(args / 36) / 5;
+		green = Math.floor(remainder / 6) / 5;
+		blue = (remainder % 6) / 5;
+	}
+
+	const value = Math.max(red, green, blue) * 2;
+
+	if (value === 0) {
+		return 30;
+	}
+
+	let result = 30 + ((Math.round(blue) << 2) | (Math.round(green) << 1) | Math.round(red));
+
+	if (value === 2) {
+		result += 60;
+	}
+
+	return result;
+}
+
 convert.rgb.hex = function (args) {
 	const integer = ((Math.round(args[0]) & 0xFF) << 16)
 		+ ((Math.round(args[1]) & 0xFF) << 8)
