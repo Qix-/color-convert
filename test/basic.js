@@ -238,3 +238,11 @@ assert.deepStrictEqual(convert.rgb.gray([0, 128, 255]), [50]);
 
 // https://github.com/Qix-/color-convert/issues/74
 assert.deepStrictEqual(convert.rgb.ansi256(40, 38, 41), 235);
+
+for (let code = 0; code < 8; code++) {
+	assert.strictEqual(convert.ansi256.ansi16(code), 30 + code);
+}
+
+for (let code = 8; code < 16; code++) {
+	assert.strictEqual(convert.ansi256.ansi16(code), 90 + (code - 8));
+}
