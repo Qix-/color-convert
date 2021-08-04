@@ -38,6 +38,7 @@
     "rules": {
       "default-case": 0,
       "no-inline-comments": 0,
+      "no-mixed-operators": 0,
       "operator-linebreak": 0
     }
   },
