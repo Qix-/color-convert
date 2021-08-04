@@ -31,7 +31,7 @@
   ],
   "files": [
     "index.js",
-    "conversions.js",
+    "conversions",
     "route.js"
   ],
   "xo": {
