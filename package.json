@@ -38,7 +38,8 @@
     "rules": {
       "default-case": 0,
       "no-inline-comments": 0,
-      "operator-linebreak": 0
+      "operator-linebreak": 0,
+      "unicorn/prefer-exponentiation-operator": 0
     }
   },
   "devDependencies": {

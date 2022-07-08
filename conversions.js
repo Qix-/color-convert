@@ -31,6 +31,9 @@ const convert = {
 
 module.exports = convert;
 
+// LAB f(t) constant
+const LAB_FT = Math.pow(6 / 29, 3);
+
 // Hide .channels and .labels properties
 for (const model of Object.keys(convert)) {
 	if (!('channels' in convert[model])) {
@@ -230,9 +233,9 @@ convert.rgb.lab = function (rgb) {
 	y /= 100;
 	z /= 108.883;
 
-	x = x > 0.008856 ? (x ** (1 / 3)) : (7.787 * x) + (16 / 116);
-	y = y > 0.008856 ? (y ** (1 / 3)) : (7.787 * y) + (16 / 116);
-	z = z > 0.008856 ? (z ** (1 / 3)) : (7.787 * z) + (16 / 116);
+	x = x > LAB_FT ? (x ** (1 / 3)) : (7.787 * x) + (16 / 116);
+	y = y > LAB_FT ? (y ** (1 / 3)) : (7.787 * y) + (16 / 116);
+	z = z > LAB_FT ? (z ** (1 / 3)) : (7.787 * z) + (16 / 116);
 
 	const l = (116 * y) - 16;
 	const a = 500 * (x - y);
@@ -448,9 +451,9 @@ convert.xyz.lab = function (xyz) {
 	y /= 100;
 	z /= 108.883;
 
-	x = x > 0.008856 ? (x ** (1 / 3)) : (7.787 * x) + (16 / 116);
-	y = y > 0.008856 ? (y ** (1 / 3)) : (7.787 * y) + (16 / 116);
-	z = z > 0.008856 ? (z ** (1 / 3)) : (7.787 * z) + (16 / 116);
+	x = x > LAB_FT ? (x ** (1 / 3)) : (7.787 * x) + (16 / 116);
+	y = y > LAB_FT ? (y ** (1 / 3)) : (7.787 * y) + (16 / 116);
+	z = z > LAB_FT ? (z ** (1 / 3)) : (7.787 * z) + (16 / 116);
 
 	const l = (116 * y) - 16;
 	const a = 500 * (x - y);
@@ -474,10 +477,12 @@ convert.lab.xyz = function (lab) {
 	const y2 = y ** 3;
 	const x2 = x ** 3;
 	const z2 = z ** 3;
-	y = y2 > 0.008856 ? y2 : (y - 16 / 116) / 7.787;
-	x = x2 > 0.008856 ? x2 : (x - 16 / 116) / 7.787;
-	z = z2 > 0.008856 ? z2 : (z - 16 / 116) / 7.787;
+	y = y2 > LAB_FT ? y2 : (y - 16 / 116) / 7.787;
+	x = x2 > LAB_FT ? x2 : (x - 16 / 116) / 7.787;
+	z = z2 > LAB_FT ? z2 : (z - 16 / 116) / 7.787;
 
+	// Illuminant D65 XYZ Tristrimulus Values
+	// https://en.wikipedia.org/wiki/CIE_1931_color_space
 	x *= 95.047;
 	y *= 100;
 	z *= 108.883;
