@@ -48,6 +48,6 @@
     "xo": "^0.24.0"
   },
   "dependencies": {
-    "color-name": "~1.1.4"
+    "color-name": "~2.0.0"
   }
 }
