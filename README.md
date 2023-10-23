@@ -4,19 +4,19 @@ Color-convert is a color conversion library for JavaScript and node.
 It converts all ways between `rgb`, `hsl`, `hsv`, `hwb`, `cmyk`, `ansi`, `ansi16`, `hex` strings, and CSS `keyword`s (will round to closest):
 
 ```js
-var convert = require('color-convert');
+import convert from 'color-convert';
 
 convert.rgb.hsl(140, 200, 100);             // [96, 48, 59]
 convert.keyword.rgb('blue');                // [0, 0, 255]
 
-var rgbChannels = convert.rgb.channels;     // 3
-var cmykChannels = convert.cmyk.channels;   // 4
-var ansiChannels = convert.ansi16.channels; // 1
+const rgbChannels = convert.rgb.channels;     // 3
+const cmykChannels = convert.cmyk.channels;   // 4
+const ansiChannels = convert.ansi16.channels; // 1
 ```
 
 # Install
 
-```console
+```sh
 $ npm install color-convert
 ```
 
@@ -29,7 +29,7 @@ All functions have a rounded and unrounded variant. By default, return values ar
 All 'from' functions have a hidden property called `.channels` that indicates the number of channels the function expects (not including alpha).
 
 ```js
-var convert = require('color-convert');
+import convert from 'color-convert';
 
 // Hex to LAB
 convert.hex.lab('DEADBF');         // [ 76, 21, -2 ]
@@ -46,7 +46,7 @@ All functions that accept multiple arguments also support passing an array.
 Note that this does **not** apply to functions that convert from a color that only requires one value (e.g. `keyword`, `ansi256`, `hex`, etc.)
 
 ```js
-var convert = require('color-convert');
+import convert from 'color-convert';
 
 convert.rgb.hex(123, 45, 67);      // '7B2D43'
 convert.rgb.hex([123, 45, 67]);    // '7B2D43'
