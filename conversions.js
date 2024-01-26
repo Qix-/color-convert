@@ -608,6 +608,15 @@ convert.ansi256.rgb = function (args) {
 		return [c, c, c];
 	}
 
+	// Handle the bottom 16 colors, which are the same as the ANSI 16 colors.
+	if (args < 8) {
+		return convert.ansi16.rgb([args + 30]);
+	}
+
+	if (args < 16) {
+		return convert.ansi16.rgb([args + 82]);
+	}
+
 	args -= 16;
 
 	let rem;

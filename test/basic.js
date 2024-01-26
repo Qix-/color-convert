@@ -238,3 +238,19 @@ assert.deepStrictEqual(convert.rgb.gray([0, 128, 255]), [50]);
 
 // https://github.com/Qix-/color-convert/issues/74
 assert.deepStrictEqual(convert.rgb.ansi256(40, 38, 41), 235);
+
+// Verify we get sensible results back for lower ansi256 colors.
+assert.deepStrictEqual(convert.ansi256.rgb(0), [0, 0, 0]);
+assert.deepStrictEqual(convert.ansi256.rgb(1), [128, 0, 0]);
+assert.deepStrictEqual(convert.ansi256.rgb(10), [0, 255, 0]);
+assert.deepStrictEqual(convert.ansi256.rgb(14), [0, 255, 255]);
+
+// Verify that the first 16 colors of the ANSI 256 color set are the same as the ANSI 16 color set.
+for (let i = 0; i < 16; i++) {
+	const inc = i < 8 ? 30 : 82;
+	assert.deepStrictEqual(
+		convert.ansi256.rgb(i),
+		convert.ansi16.rgb(inc + i),
+		`value ${i}`
+	);
+}
