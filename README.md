@@ -17,7 +17,7 @@ const ansiChannels = convert.ansi16.channels; // 1
 # Install
 
 ```sh
-$ npm install color-convert
+npm install color-convert
 ```
 
 # API
@@ -117,7 +117,7 @@ channel | full-scale value
 ### gray
 channel | full-scale value
 ---|---
-g | 100
+gray | 100
 
 # Contribute
 

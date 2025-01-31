@@ -1,6 +1,6 @@
 /* MIT license */
 /* eslint-disable no-mixed-operators */
-const cssKeywords = require('color-name');
+import cssKeywords from 'color-name';
 
 // NOTE: conversions should only return primitive values (i.e. arrays, or
 //       values that give correct `typeof` results).
@@ -26,13 +26,13 @@ const convert = {
 	ansi256: {channels: 1, labels: ['ansi256']},
 	hcg: {channels: 3, labels: ['h', 'c', 'g']},
 	apple: {channels: 3, labels: ['r16', 'g16', 'b16']},
-	gray: {channels: 1, labels: ['gray']}
+	gray: {channels: 1, labels: ['gray']},
 };
 
-module.exports = convert;
+export default convert;
 
 // LAB f(t) constant
-const LAB_FT = Math.pow(6 / 29, 3);
+const LAB_FT = (6 / 29) ** 3;
 
 // Hide .channels and .labels properties
 for (const model of Object.keys(convert)) {
@@ -65,14 +65,31 @@ convert.rgb.hsl = function (rgb) {
 	let h;
 	let s;
 
-	if (max === min) {
-		h = 0;
-	} else if (r === max) {
-		h = (g - b) / delta;
-	} else if (g === max) {
-		h = 2 + (b - r) / delta;
-	} else if (b === max) {
-		h = 4 + (r - g) / delta;
+	switch (max) {
+		case min: {
+			h = 0;
+
+			break;
+		}
+
+		case r: {
+			h = (g - b) / delta;
+
+			break;
+		}
+
+		case g: {
+			h = 2 + (b - r) / delta;
+
+			break;
+		}
+
+		case b: {
+			h = 4 + (r - g) / delta;
+
+			break;
+		}
+	// No default
 	}
 
 	h = Math.min(h * 60, 360);
@@ -119,12 +136,25 @@ convert.rgb.hsv = function (rgb) {
 		gdif = diffc(g);
 		bdif = diffc(b);
 
-		if (r === v) {
-			h = bdif - gdif;
-		} else if (g === v) {
-			h = (1 / 3) + rdif - bdif;
-		} else if (b === v) {
-			h = (2 / 3) + gdif - rdif;
+		switch (v) {
+			case r: {
+				h = bdif - gdif;
+
+				break;
+			}
+
+			case g: {
+				h = (1 / 3) + rdif - bdif;
+
+				break;
+			}
+
+			case b: {
+				h = (2 / 3) + gdif - rdif;
+
+				break;
+			}
+		// No default
 		}
 
 		if (h < 0) {
@@ -137,7 +167,7 @@ convert.rgb.hsv = function (rgb) {
 	return [
 		h * 360,
 		s * 100,
-		v * 100
+		v * 100,
 	];
 };
 
@@ -183,7 +213,7 @@ convert.rgb.keyword = function (rgb) {
 		return reversed;
 	}
 
-	let currentClosestDistance = Infinity;
+	let currentClosestDistance = Number.POSITIVE_INFINITY;
 	let currentClosestKeyword;
 
 	for (const keyword of Object.keys(cssKeywords)) {
@@ -212,13 +242,13 @@ convert.rgb.xyz = function (rgb) {
 	let b = rgb[2] / 255;
 
 	// Assume sRGB
-	r = r > 0.04045 ? (((r + 0.055) / 1.055) ** 2.4) : (r / 12.92);
-	g = g > 0.04045 ? (((g + 0.055) / 1.055) ** 2.4) : (g / 12.92);
-	b = b > 0.04045 ? (((b + 0.055) / 1.055) ** 2.4) : (b / 12.92);
+	r = r > 0.040_45 ? (((r + 0.055) / 1.055) ** 2.4) : (r / 12.92);
+	g = g > 0.040_45 ? (((g + 0.055) / 1.055) ** 2.4) : (g / 12.92);
+	b = b > 0.040_45 ? (((b + 0.055) / 1.055) ** 2.4) : (b / 12.92);
 
-	const x = (r * 0.4124564) + (g * 0.3575761) + (b * 0.1804375);
-	const y = (r * 0.2126729) + (g * 0.7151522) + (b * 0.072175);
-	const z = (r * 0.0193339) + (g * 0.119192) + (b * 0.9503041);
+	const x = (r * 0.412_456_4) + (g * 0.357_576_1) + (b * 0.180_437_5);
+	const y = (r * 0.212_672_9) + (g * 0.715_152_2) + (b * 0.072_175);
+	const z = (r * 0.019_333_9) + (g * 0.119_192) + (b * 0.950_304_1);
 
 	return [x * 100, y * 100, z * 100];
 };
@@ -248,20 +278,15 @@ convert.hsl.rgb = function (hsl) {
 	const h = hsl[0] / 360;
 	const s = hsl[1] / 100;
 	const l = hsl[2] / 100;
-	let t2;
 	let t3;
-	let val;
+	let value;
 
 	if (s === 0) {
-		val = l * 255;
-		return [val, val, val];
+		value = l * 255;
+		return [value, value, value];
 	}
 
-	if (l < 0.5) {
-		t2 = l * (1 + s);
-	} else {
-		t2 = l + s - l * s;
-	}
+	const t2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
 
 	const t1 = 2 * l - t2;
 
@@ -277,16 +302,16 @@ convert.hsl.rgb = function (hsl) {
 		}
 
 		if (6 * t3 < 1) {
-			val = t1 + (t2 - t1) * 6 * t3;
+			value = t1 + (t2 - t1) * 6 * t3;
 		} else if (2 * t3 < 1) {
-			val = t2;
+			value = t2;
 		} else if (3 * t3 < 2) {
-			val = t1 + (t2 - t1) * (2 / 3 - t3) * 6;
+			value = t1 + (t2 - t1) * (2 / 3 - t3) * 6;
 		} else {
-			val = t1;
+			value = t1;
 		}
 
-		rgb[i] = val * 255;
+		rgb[i] = value * 255;
 	}
 
 	return rgb;
@@ -321,18 +346,29 @@ convert.hsv.rgb = function (hsv) {
 	v *= 255;
 
 	switch (hi) {
-		case 0:
+		case 0: {
 			return [v, t, p];
-		case 1:
+		}
+
+		case 1: {
 			return [q, v, p];
-		case 2:
+		}
+
+		case 2: {
 			return [p, v, t];
-		case 3:
+		}
+
+		case 3: {
 			return [p, q, v];
-		case 4:
+		}
+
+		case 4: {
 			return [t, p, v];
-		case 5:
+		}
+
+		case 5: {
 			return [v, p, q];
+		}
 	}
 };
 
@@ -372,6 +408,7 @@ convert.hwb.rgb = function (hwb) {
 	const v = 1 - bl;
 	f = 6 * h - i;
 
+	// eslint-disable-next-line no-bitwise
 	if ((i & 0x01) !== 0) {
 		f = 1 - f;
 	}
@@ -381,18 +418,29 @@ convert.hwb.rgb = function (hwb) {
 	let r;
 	let g;
 	let b;
-	/* eslint-disable max-statements-per-line,no-multi-spaces */
+	/* eslint-disable max-statements-per-line,no-multi-spaces, default-case-last */
 	switch (i) {
 		default:
 		case 6:
-		case 0: r = v;  g = n;  b = wh; break;
-		case 1: r = n;  g = v;  b = wh; break;
-		case 2: r = wh; g = v;  b = n; break;
-		case 3: r = wh; g = n;  b = v; break;
-		case 4: r = n;  g = wh; b = v; break;
-		case 5: r = v;  g = wh; b = n; break;
+		case 0: { r = v;  g = n;  b = wh; break;
+		}
+
+		case 1: { r = n;  g = v;  b = wh; break;
+		}
+
+		case 2: { r = wh; g = v;  b = n; break;
+		}
+
+		case 3: { r = wh; g = n;  b = v; break;
+		}
+
+		case 4: { r = n;  g = wh; b = v; break;
+		}
+
+		case 5: { r = v;  g = wh; b = n; break;
+		}
 	}
-	/* eslint-enable max-statements-per-line,no-multi-spaces */
+	/* eslint-enable max-statements-per-line,no-multi-spaces, default-case-last */
 
 	return [r * 255, g * 255, b * 255];
 };
@@ -418,21 +466,21 @@ convert.xyz.rgb = function (xyz) {
 	let g;
 	let b;
 
-	r = (x * 3.2404542) + (y * -1.5371385) + (z * -0.4985314);
-	g = (x * -0.969266) + (y * 1.8760108) + (z * 0.041556);
-	b = (x * 0.0556434) + (y * -0.2040259) + (z * 1.0572252);
+	r = (x * 3.240_454_2) + (y * -1.537_138_5) + (z * -0.498_531_4);
+	g = (x * -0.969_266) + (y * 1.876_010_8) + (z * 0.041_556);
+	b = (x * 0.055_643_4) + (y * -0.204_025_9) + (z * 1.057_225_2);
 
 	// Assume sRGB
-	r = r > 0.0031308
-		? ((1.055 * (r ** (1.0 / 2.4))) - 0.055)
+	r = r > 0.003_130_8
+		? ((1.055 * (r ** (1 / 2.4))) - 0.055)
 		: r * 12.92;
 
-	g = g > 0.0031308
-		? ((1.055 * (g ** (1.0 / 2.4))) - 0.055)
+	g = g > 0.003_130_8
+		? ((1.055 * (g ** (1 / 2.4))) - 0.055)
 		: g * 12.92;
 
-	b = b > 0.0031308
-		? ((1.055 * (b ** (1.0 / 2.4))) - 0.055)
+	b = b > 0.003_130_8
+		? ((1.055 * (b ** (1 / 2.4))) - 0.055)
 		: b * 12.92;
 
 	r = Math.min(Math.max(0, r), 1);
@@ -531,9 +579,11 @@ convert.rgb.ansi16 = function (args, saturation = null) {
 	}
 
 	let ansi = 30
+		/* eslint-disable no-bitwise */
 		+ ((Math.round(b / 255) << 2)
 		| (Math.round(g / 255) << 1)
 		| Math.round(r / 255));
+		/* eslint-enable no-bitwise */
 
 	if (value === 2) {
 		ansi += 60;
@@ -555,6 +605,7 @@ convert.rgb.ansi256 = function (args) {
 
 	// We use the extended greyscale palette here, with the exception of
 	// black and white. normal palette only has 4 greyscale shades.
+	// eslint-disable-next-line no-bitwise
 	if (r >> 4 === g >> 4 && g >> 4 === b >> 4) {
 		if (r < 8) {
 			return 16;
@@ -591,10 +642,12 @@ convert.ansi16.rgb = function (args) {
 		return [color, color, color];
 	}
 
-	const mult = (~~(args > 50) + 1) * 0.5;
+	const mult = (Math.trunc(args > 50) + 1) * 0.5;
+	/* eslint-disable no-bitwise */
 	const r = ((color & 1) * mult) * 255;
 	const g = (((color >> 1) & 1) * mult) * 255;
 	const b = (((color >> 2) & 1) * mult) * 255;
+	/* eslint-enable no-bitwise */
 
 	return [r, g, b];
 };
@@ -619,16 +672,18 @@ convert.ansi256.rgb = function (args) {
 };
 
 convert.rgb.hex = function (args) {
+	/* eslint-disable no-bitwise */
 	const integer = ((Math.round(args[0]) & 0xFF) << 16)
 		+ ((Math.round(args[1]) & 0xFF) << 8)
 		+ (Math.round(args[2]) & 0xFF);
+	/* eslint-enable no-bitwise */
 
 	const string = integer.toString(16).toUpperCase();
-	return '000000'.substring(string.length) + string;
+	return '000000'.slice(string.length) + string;
 };
 
 convert.hex.rgb = function (args) {
-	const match = args.toString(16).match(/[a-f0-9]{6}|[a-f0-9]{3}/i);
+	const match = args.toString(16).match(/[a-f\d]{6}|[a-f\d]{3}/i);
 	if (!match) {
 		return [0, 0, 0];
 	}
@@ -636,15 +691,15 @@ convert.hex.rgb = function (args) {
 	let colorString = match[0];
 
 	if (match[0].length === 3) {
-		colorString = colorString.split('').map(char => {
-			return char + char;
-		}).join('');
+		colorString = [...colorString].map(char => char + char).join('');
 	}
 
-	const integer = parseInt(colorString, 16);
+	const integer = Number.parseInt(colorString, 16);
+	/* eslint-disable no-bitwise */
 	const r = (integer >> 16) & 0xFF;
 	const g = (integer >> 8) & 0xFF;
 	const b = integer & 0xFF;
+	/* eslint-enable no-bitwise */
 
 	return [r, g, b];
 };
@@ -656,22 +711,15 @@ convert.rgb.hcg = function (rgb) {
 	const max = Math.max(Math.max(r, g), b);
 	const min = Math.min(Math.min(r, g), b);
 	const chroma = (max - min);
-	let grayscale;
 	let hue;
 
-	if (chroma < 1) {
-		grayscale = min / (1 - chroma);
-	} else {
-		grayscale = 0;
-	}
+	const grayscale = chroma < 1 ? min / (1 - chroma) : 0;
 
 	if (chroma <= 0) {
 		hue = 0;
-	} else
-	if (max === r) {
+	} else if (max === r) {
 		hue = ((g - b) / chroma) % 6;
-	} else
-	if (max === g) {
+	} else if (max === g) {
 		hue = 2 + (b - r) / chroma;
 	} else {
 		hue = 4 + (r - g) / chroma;
@@ -687,11 +735,11 @@ convert.hsl.hcg = function (hsl) {
 	const s = hsl[1] / 100;
 	const l = hsl[2] / 100;
 
-	const c = l < 0.5 ? (2.0 * s * l) : (2.0 * s * (1.0 - l));
+	const c = l < 0.5 ? (2 * s * l) : (2 * s * (1 - l));
 
 	let f = 0;
-	if (c < 1.0) {
-		f = (l - 0.5 * c) / (1.0 - c);
+	if (c < 1) {
+		f = (l - 0.5 * c) / (1 - c);
 	}
 
 	return [hsl[0], c * 100, f * 100];
@@ -704,7 +752,7 @@ convert.hsv.hcg = function (hsv) {
 	const c = s * v;
 	let f = 0;
 
-	if (c < 1.0) {
+	if (c < 1) {
 		f = (v - c) / (1 - c);
 	}
 
@@ -716,7 +764,7 @@ convert.hcg.rgb = function (hcg) {
 	const c = hcg[1] / 100;
 	const g = hcg[2] / 100;
 
-	if (c === 0.0) {
+	if (c === 0) {
 		return [g * 255, g * 255, g * 255];
 	}
 
@@ -728,27 +776,38 @@ convert.hcg.rgb = function (hcg) {
 
 	/* eslint-disable max-statements-per-line */
 	switch (Math.floor(hi)) {
-		case 0:
+		case 0: {
 			pure[0] = 1; pure[1] = v; pure[2] = 0; break;
-		case 1:
+		}
+
+		case 1: {
 			pure[0] = w; pure[1] = 1; pure[2] = 0; break;
-		case 2:
+		}
+
+		case 2: {
 			pure[0] = 0; pure[1] = 1; pure[2] = v; break;
-		case 3:
+		}
+
+		case 3: {
 			pure[0] = 0; pure[1] = w; pure[2] = 1; break;
-		case 4:
+		}
+
+		case 4: {
 			pure[0] = v; pure[1] = 0; pure[2] = 1; break;
-		default:
+		}
+
+		default: {
 			pure[0] = 1; pure[1] = 0; pure[2] = w;
+		}
 	}
 	/* eslint-enable max-statements-per-line */
 
-	mg = (1.0 - c) * g;
+	mg = (1 - c) * g;
 
 	return [
 		(c * pure[0] + mg) * 255,
 		(c * pure[1] + mg) * 255,
-		(c * pure[2] + mg) * 255
+		(c * pure[2] + mg) * 255,
 	];
 };
 
@@ -756,10 +815,10 @@ convert.hcg.hsv = function (hcg) {
 	const c = hcg[1] / 100;
 	const g = hcg[2] / 100;
 
-	const v = c + g * (1.0 - c);
+	const v = c + g * (1 - c);
 	let f = 0;
 
-	if (v > 0.0) {
+	if (v > 0) {
 		f = c / v;
 	}
 
@@ -770,13 +829,12 @@ convert.hcg.hsl = function (hcg) {
 	const c = hcg[1] / 100;
 	const g = hcg[2] / 100;
 
-	const l = g * (1.0 - c) + 0.5 * c;
+	const l = g * (1 - c) + 0.5 * c;
 	let s = 0;
 
-	if (l > 0.0 && l < 0.5) {
+	if (l > 0 && l < 0.5) {
 		s = c / (2 * l);
-	} else
-	if (l >= 0.5 && l < 1.0) {
+	} else if (l >= 0.5 && l < 1) {
 		s = c / (2 * (1 - l));
 	}
 
@@ -786,7 +844,7 @@ convert.hcg.hsl = function (hcg) {
 convert.hcg.hwb = function (hcg) {
 	const c = hcg[1] / 100;
 	const g = hcg[2] / 100;
-	const v = c + g * (1.0 - c);
+	const v = c + g * (1 - c);
 	return [hcg[0], (v - c) * 100, (1 - v) * 100];
 };
 
@@ -805,11 +863,11 @@ convert.hwb.hcg = function (hwb) {
 };
 
 convert.apple.rgb = function (apple) {
-	return [(apple[0] / 65535) * 255, (apple[1] / 65535) * 255, (apple[2] / 65535) * 255];
+	return [(apple[0] / 65_535) * 255, (apple[1] / 65_535) * 255, (apple[2] / 65_535) * 255];
 };
 
 convert.rgb.apple = function (rgb) {
-	return [(rgb[0] / 255) * 65535, (rgb[1] / 255) * 65535, (rgb[2] / 255) * 65535];
+	return [(rgb[0] / 255) * 65_535, (rgb[1] / 255) * 65_535, (rgb[2] / 255) * 65_535];
 };
 
 convert.gray.rgb = function (args) {
@@ -835,14 +893,16 @@ convert.gray.lab = function (gray) {
 };
 
 convert.gray.hex = function (gray) {
-	const val = Math.round(gray[0] / 100 * 255) & 0xFF;
-	const integer = (val << 16) + (val << 8) + val;
+	/* eslint-disable no-bitwise */
+	const value = Math.round(gray[0] / 100 * 255) & 0xFF;
+	const integer = (value << 16) + (value << 8) + value;
+	/* eslint-enable no-bitwise */
 
 	const string = integer.toString(16).toUpperCase();
-	return '000000'.substring(string.length) + string;
+	return '000000'.slice(string.length) + string;
 };
 
 convert.rgb.gray = function (rgb) {
-	const val = (rgb[0] + rgb[1] + rgb[2]) / 3;
-	return [val / 255 * 100];
+	const value = (rgb[0] + rgb[1] + rgb[2]) / 3;
+	return [value / 255 * 100];
 };

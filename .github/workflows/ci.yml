@@ -14,18 +14,13 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 7
-          - 8
-          - 9
-          - 10
-          - 11
-          - 13
-          - 14
-          - 15
+          - 20
+          - 18
+          - 16
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install

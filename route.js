@@ -1,4 +1,4 @@
-const conversions = require('./conversions');
+import conversions from './conversions.js';
 
 /*
 	This function routes a model to all other models.
@@ -16,12 +16,12 @@ function buildGraph() {
 	// https://jsperf.com/object-keys-vs-for-in-with-closure/3
 	const models = Object.keys(conversions);
 
-	for (let len = models.length, i = 0; i < len; i++) {
+	for (let {length} = models, i = 0; i < length; i++) {
 		graph[models[i]] = {
 			// http://jsperf.com/1-vs-infinity
 			// micro-opt, but this is simple.
 			distance: -1,
-			parent: null
+			parent: null,
 		};
 	}
 
@@ -35,11 +35,11 @@ function deriveBFS(fromModel) {
 
 	graph[fromModel].distance = 0;
 
-	while (queue.length) {
+	while (queue.length > 0) {
 		const current = queue.pop();
 		const adjacents = Object.keys(conversions[current]);
 
-		for (let len = adjacents.length, i = 0; i < len; i++) {
+		for (let {length} = adjacents, i = 0; i < length; i++) {
 			const adjacent = adjacents[i];
 			const node = graph[adjacent];
 
@@ -75,12 +75,12 @@ function wrapConversion(toModel, graph) {
 	return fn;
 }
 
-module.exports = function (fromModel) {
+function route(fromModel) {
 	const graph = deriveBFS(fromModel);
 	const conversion = {};
 
 	const models = Object.keys(graph);
-	for (let len = models.length, i = 0; i < len; i++) {
+	for (let {length} = models, i = 0; i < length; i++) {
 		const toModel = models[i];
 		const node = graph[toModel];
 
@@ -93,5 +93,6 @@ module.exports = function (fromModel) {
 	}
 
 	return conversion;
-};
+}
 
+export default route;
