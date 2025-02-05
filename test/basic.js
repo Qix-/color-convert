@@ -42,91 +42,91 @@ for (const model of models) {
 	uniqued[hash] = model;
 }
 
-assert.deepStrictEqual(convert.rgb.hsl([140, 200, 100]), [96, 48, 59]);
-assert.deepStrictEqual(convert.rgb.hsv([140, 200, 100]), [96, 50, 78]);
-assert.deepStrictEqual(convert.rgb.hwb([140, 200, 100]), [96, 39, 22]);
-assert.deepStrictEqual(convert.rgb.cmyk([140, 200, 100]), [30, 0, 50, 22]);
-assert.deepStrictEqual(convert.rgb.cmyk([0, 0, 0, 1]), [0, 0, 0, 100]);
-assert.deepStrictEqual(convert.rgb.keyword([255, 228, 196]), 'bisque');
-assert.deepStrictEqual(convert.rgb.xyz([92, 191, 84]), [25, 40, 15]);
-assert.deepStrictEqual(convert.rgb.lab([92, 191, 84]), [70, -50, 45]);
-assert.deepStrictEqual(convert.rgb.lch([92, 191, 84]), [70, 67, 138]);
-assert.deepStrictEqual(convert.rgb.ansi16([92, 191, 84]), 32);
-assert.deepStrictEqual(convert.rgb.ansi256([92, 191, 84]), 114);
-assert.deepStrictEqual(convert.rgb.hex([92, 191, 84]), '5CBF54');
-assert.deepStrictEqual(convert.rgb.hcg([140, 200, 100]), [96, 39, 65]);
-assert.deepStrictEqual(convert.rgb.apple([255, 127, 0]), [65_535, 32_639, 0]);
+assert.deepStrictEqual(rgbToHsl([140, 200, 100]), [96, 48, 59]);
+assert.deepStrictEqual(rgbToHsv([140, 200, 100]), [96, 50, 78]);
+assert.deepStrictEqual(rgbToHwb([140, 200, 100]), [96, 39, 22]);
+assert.deepStrictEqual(rgbToCmyk([140, 200, 100]), [30, 0, 50, 22]);
+assert.deepStrictEqual(rgbToCmyk([0, 0, 0, 1]), [0, 0, 0, 100]);
+assert.deepStrictEqual(rgbToKeyword([255, 228, 196]), 'bisque');
+assert.deepStrictEqual(rgbToXyz([92, 191, 84]), [25, 40, 15]);
+assert.deepStrictEqual(rgbToLab([92, 191, 84]), [70, -50, 45]);
+assert.deepStrictEqual(rgbToLch([92, 191, 84]), [70, 67, 138]);
+assert.deepStrictEqual(rgbToAnsi16([92, 191, 84]), 32);
+assert.deepStrictEqual(rgbToAnsi256([92, 191, 84]), 114);
+assert.deepStrictEqual(rgbToHex([92, 191, 84]), '5CBF54');
+assert.deepStrictEqual(rgbToHcg([140, 200, 100]), [96, 39, 65]);
+assert.deepStrictEqual(rgbToApple([255, 127, 0]), [65_535, 32_639, 0]);
 
-assert.deepStrictEqual(convert.hsl.rgb([96, 48, 59]), [140, 201, 100]);
-assert.deepStrictEqual(convert.hsl.hsv([96, 48, 59]), [96, 50, 79]); // Colorpicker says [96,50,79]
-assert.deepStrictEqual(convert.hsl.hwb([96, 48, 59]), [96, 39, 21]); // Computer round to 21, should be 22
-assert.deepStrictEqual(convert.hsl.cmyk([96, 48, 59]), [30, 0, 50, 21]);
-assert.deepStrictEqual(convert.hsl.keyword([240, 100, 50]), 'blue');
-assert.deepStrictEqual(convert.hsl.ansi16([240, 100, 50]), 94);
-assert.deepStrictEqual(convert.hsl.ansi256([240, 100, 50]), 21);
-assert.deepStrictEqual(convert.hsl.hex([240, 100, 50]), '0000FF');
-assert.deepStrictEqual(convert.hsl.hcg([96, 48, 59]), [96, 39, 65]);
+assert.deepStrictEqual(hslToRgb([96, 48, 59]), [140, 201, 100]);
+assert.deepStrictEqual(hslToHsv([96, 48, 59]), [96, 50, 79]); // Colorpicker says [96,50,79]
+assert.deepStrictEqual(hslToHwb([96, 48, 59]), [96, 39, 21]); // Computer round to 21, should be 22
+assert.deepStrictEqual(hslToCmyk([96, 48, 59]), [30, 0, 50, 21]);
+assert.deepStrictEqual(hslToKeyword([240, 100, 50]), 'blue');
+assert.deepStrictEqual(hslToAnsi16([240, 100, 50]), 94);
+assert.deepStrictEqual(hslToAnsi256([240, 100, 50]), 21);
+assert.deepStrictEqual(hslToHex([240, 100, 50]), '0000FF');
+assert.deepStrictEqual(hslToHcg([96, 48, 59]), [96, 39, 65]);
 
-assert.deepStrictEqual(convert.hsv.rgb([96, 50, 78]), [139, 199, 99]);
-assert.deepStrictEqual(convert.hsv.hsl([96, 50, 78]), [96, 47, 59]);
-assert.deepStrictEqual(convert.hsv.hsl([0, 0, 0]), [0, 0, 0]);
-assert.deepStrictEqual(convert.hsv.hwb([96, 50, 78]), [96, 39, 22]);
-assert.deepStrictEqual(convert.hsv.cmyk([96, 50, 78]), [30, 0, 50, 22]);
-assert.deepStrictEqual(convert.hsv.keyword([240, 100, 100]), 'blue');
-assert.deepStrictEqual(convert.hsv.ansi16([240, 100, 100]), 94);
-assert.deepStrictEqual(convert.hsv.ansi256([240, 100, 100]), 21);
-assert.deepStrictEqual(convert.hsv.hex([251, 80, 42]), '25156B');
-assert.deepStrictEqual(convert.hsv.hcg([96, 50, 78]), [96, 39, 64]);
+assert.deepStrictEqual(hsvToRgb([96, 50, 78]), [139, 199, 99]);
+assert.deepStrictEqual(hsvToHsl([96, 50, 78]), [96, 47, 59]);
+assert.deepStrictEqual(hsvToHsl([0, 0, 0]), [0, 0, 0]);
+assert.deepStrictEqual(hsvToHwb([96, 50, 78]), [96, 39, 22]);
+assert.deepStrictEqual(hsvToCmyk([96, 50, 78]), [30, 0, 50, 22]);
+assert.deepStrictEqual(hsvToKeyword([240, 100, 100]), 'blue');
+assert.deepStrictEqual(hsvToAnsi16([240, 100, 100]), 94);
+assert.deepStrictEqual(hsvToAnsi256([240, 100, 100]), 21);
+assert.deepStrictEqual(hsvToHex([251, 80, 42]), '25156B');
+assert.deepStrictEqual(hsvToHcg([96, 50, 78]), [96, 39, 64]);
 
-assert.deepStrictEqual(convert.cmyk.rgb([30, 0, 50, 22]), [139, 199, 99]);
-assert.deepStrictEqual(convert.cmyk.hsl([30, 0, 50, 22]), [96, 47, 59]);
-assert.deepStrictEqual(convert.cmyk.hsv([30, 0, 50, 22]), [96, 50, 78]);
-assert.deepStrictEqual(convert.cmyk.hwb([30, 0, 50, 22]), [96, 39, 22]);
-assert.deepStrictEqual(convert.cmyk.keyword([100, 100, 0, 0]), 'blue');
-assert.deepStrictEqual(convert.cmyk.ansi16([30, 0, 50, 22]), 93);
-assert.deepStrictEqual(convert.cmyk.ansi256([30, 0, 50, 22]), 150);
-assert.deepStrictEqual(convert.cmyk.hex([30, 0, 50, 22]), '8BC763');
+assert.deepStrictEqual(cmykToRgb([30, 0, 50, 22]), [139, 199, 99]);
+assert.deepStrictEqual(cmykToHsl([30, 0, 50, 22]), [96, 47, 59]);
+assert.deepStrictEqual(cmykToHsv([30, 0, 50, 22]), [96, 50, 78]);
+assert.deepStrictEqual(cmykToHwb([30, 0, 50, 22]), [96, 39, 22]);
+assert.deepStrictEqual(cmykToKeyword([100, 100, 0, 0]), 'blue');
+assert.deepStrictEqual(cmykToAnsi16([30, 0, 50, 22]), 93);
+assert.deepStrictEqual(cmykToAnsi256([30, 0, 50, 22]), 150);
+assert.deepStrictEqual(cmykToHex([30, 0, 50, 22]), '8BC763');
 
-assert.deepStrictEqual(convert.keyword.rgb('blue'), [0, 0, 255]);
-assert.deepStrictEqual(convert.keyword.hsl('blue'), [240, 100, 50]);
-assert.deepStrictEqual(convert.keyword.hsv('blue'), [240, 100, 100]);
-assert.deepStrictEqual(convert.keyword.hwb('blue'), [240, 0, 0]);
-assert.deepStrictEqual(convert.keyword.cmyk('blue'), [100, 100, 0, 0]);
-assert.deepStrictEqual(convert.keyword.lab('blue'), [32, 79, -108]);
-assert.deepStrictEqual(convert.keyword.xyz('blue'), [18, 7, 95]);
-assert.deepStrictEqual(convert.keyword.ansi16('purple'), 35);
-assert.deepStrictEqual(convert.keyword.ansi256('purple'), 127);
-assert.deepStrictEqual(convert.keyword.hex('blue'), '0000FF');
+assert.deepStrictEqual(keywordToRgb('blue'), [0, 0, 255]);
+assert.deepStrictEqual(keywordToHsl('blue'), [240, 100, 50]);
+assert.deepStrictEqual(keywordToHsv('blue'), [240, 100, 100]);
+assert.deepStrictEqual(keywordToHwb('blue'), [240, 0, 0]);
+assert.deepStrictEqual(keywordToCmyk('blue'), [100, 100, 0, 0]);
+assert.deepStrictEqual(keywordToLab('blue'), [32, 79, -108]);
+assert.deepStrictEqual(keywordToXyz('blue'), [18, 7, 95]);
+assert.deepStrictEqual(keywordToAnsi16('purple'), 35);
+assert.deepStrictEqual(keywordToAnsi256('purple'), 127);
+assert.deepStrictEqual(keywordToHex('blue'), '0000FF');
 
-assert.deepStrictEqual(convert.xyz.rgb([25, 40, 15]), [97, 190, 85]);
-assert.deepStrictEqual(convert.xyz.rgb([50, 100, 100]), [0, 255, 241]);
-assert.deepStrictEqual(convert.xyz.lab([25, 40, 15]), [69, -48, 44]);
-assert.deepStrictEqual(convert.xyz.lch([25, 40, 15]), [69, 65, 137]);
+assert.deepStrictEqual(xyzToRgb([25, 40, 15]), [97, 190, 85]);
+assert.deepStrictEqual(xyzToRgb([50, 100, 100]), [0, 255, 241]);
+assert.deepStrictEqual(xyzToLab([25, 40, 15]), [69, -48, 44]);
+assert.deepStrictEqual(xyzToLch([25, 40, 15]), [69, 65, 137]);
 
-assert.deepStrictEqual(convert.lab.xyz([69, -48, 44]), [25, 39, 15]);
-assert.deepStrictEqual(convert.lab.rgb([75, 20, -30]), [194, 175, 240]);
-assert.deepStrictEqual(convert.lab.lch([69, -48, 44]), [69, 65, 137]);
+assert.deepStrictEqual(labToXyz([69, -48, 44]), [25, 39, 15]);
+assert.deepStrictEqual(labToRgb([75, 20, -30]), [194, 175, 240]);
+assert.deepStrictEqual(labToLch([69, -48, 44]), [69, 65, 137]);
 
-assert.deepStrictEqual(convert.lch.lab([69, 65, 137]), [69, -48, 44]);
-assert.deepStrictEqual(convert.lch.xyz([69, 65, 137]), [25, 39, 15]);
-assert.deepStrictEqual(convert.lch.rgb([69, 65, 137]), [98, 188, 83]);
+assert.deepStrictEqual(lchToLab([69, 65, 137]), [69, -48, 44]);
+assert.deepStrictEqual(lchToXyz([69, 65, 137]), [25, 39, 15]);
+assert.deepStrictEqual(lchToRgb([69, 65, 137]), [98, 188, 83]);
 
-assert.deepStrictEqual(convert.ansi16.rgb(103), [255, 255, 0]);
-assert.deepStrictEqual(convert.ansi256.rgb(175), [204, 102, 153]);
+assert.deepStrictEqual(ansi16ToRgb(103), [255, 255, 0]);
+assert.deepStrictEqual(ansi256ToRgb(175), [204, 102, 153]);
 
-assert.deepStrictEqual(convert.hex.rgb('ABCDEF'), [171, 205, 239]);
-assert.deepStrictEqual(convert.hex.rgb('AABBCC'), [170, 187, 204]);
-assert.deepStrictEqual(convert.hex.rgb('ABC'), [170, 187, 204]);
+assert.deepStrictEqual(hexToRgb('ABCDEF'), [171, 205, 239]);
+assert.deepStrictEqual(hexToRgb('AABBCC'), [170, 187, 204]);
+assert.deepStrictEqual(hexToRgb('ABC'), [170, 187, 204]);
 
-assert.deepStrictEqual(convert.hcg.rgb([96, 39, 64]), [139, 199, 100]);
-assert.deepStrictEqual(convert.hcg.hsv([96, 39, 64]), [96, 50, 78]);
-assert.deepStrictEqual(convert.hcg.hsl([96, 39, 64]), [96, 47, 59]);
+assert.deepStrictEqual(hcgToRgb([96, 39, 64]), [139, 199, 100]);
+assert.deepStrictEqual(hcgToHsv([96, 39, 64]), [96, 50, 78]);
+assert.deepStrictEqual(hcgToHsl([96, 39, 64]), [96, 47, 59]);
 
 // https://github.com/Qix-/color-convert/issues/73
 assert.deepStrictEqual(convert.rgb.hcg.raw([250, 0, 255]), [298.823_529_411_764_7, 100, 0]);
 
 // Non-array arguments
-assert.deepStrictEqual(convert.hsl.rgb(96, 48, 59), [140, 201, 100]);
+assert.deepStrictEqual(hslToRgb(96, 48, 59), [140, 201, 100]);
 
 // Raw functions
 function round(vals) {
@@ -175,64 +175,64 @@ assert.deepStrictEqual(round(convert.rgb.lab.raw([92, 191, 84])), [69.6, -50.1, 
 
 // all extreme value should give black, white or grey
 for (let angle = 0; angle <= 360; angle++) {
-	assert.deepStrictEqual(convert.hwb.rgb([angle, 0, 100]), [0, 0, 0]);
-	assert.deepStrictEqual(convert.hwb.rgb([angle, 100, 0]), [255, 255, 255]);
-	assert.deepStrictEqual(convert.hwb.rgb([angle, 100, 100]), [128, 128, 128]);
+	assert.deepStrictEqual(hwbToRgb([angle, 0, 100]), [0, 0, 0]);
+	assert.deepStrictEqual(hwbToRgb([angle, 100, 0]), [255, 255, 255]);
+	assert.deepStrictEqual(hwbToRgb([angle, 100, 100]), [128, 128, 128]);
 }
 
-assert.deepStrictEqual(convert.hwb.rgb([0, 0, 0]), [255, 0, 0]);
-assert.deepStrictEqual(convert.hwb.rgb([0, 20, 40]), [153, 51, 51]);
-assert.deepStrictEqual(convert.hwb.rgb([0, 40, 40]), [153, 102, 102]);
-assert.deepStrictEqual(convert.hwb.rgb([0, 40, 20]), [204, 102, 102]);
+assert.deepStrictEqual(hwbToRgb([0, 0, 0]), [255, 0, 0]);
+assert.deepStrictEqual(hwbToRgb([0, 20, 40]), [153, 51, 51]);
+assert.deepStrictEqual(hwbToRgb([0, 40, 40]), [153, 102, 102]);
+assert.deepStrictEqual(hwbToRgb([0, 40, 20]), [204, 102, 102]);
 
-assert.deepStrictEqual(convert.hwb.rgb([120, 0, 0]), [0, 255, 0]);
-assert.deepStrictEqual(convert.hwb.rgb([120, 20, 40]), [51, 153, 51]);
-assert.deepStrictEqual(convert.hwb.rgb([120, 40, 40]), [102, 153, 102]);
-assert.deepStrictEqual(convert.hwb.rgb([120, 40, 20]), [102, 204, 102]);
+assert.deepStrictEqual(hwbToRgb([120, 0, 0]), [0, 255, 0]);
+assert.deepStrictEqual(hwbToRgb([120, 20, 40]), [51, 153, 51]);
+assert.deepStrictEqual(hwbToRgb([120, 40, 40]), [102, 153, 102]);
+assert.deepStrictEqual(hwbToRgb([120, 40, 20]), [102, 204, 102]);
 
-assert.deepStrictEqual(convert.hwb.rgb([240, 0, 0]), [0, 0, 255]);
-assert.deepStrictEqual(convert.hwb.rgb([240, 20, 40]), [51, 51, 153]);
-assert.deepStrictEqual(convert.hwb.rgb([240, 40, 40]), [102, 102, 153]);
-assert.deepStrictEqual(convert.hwb.rgb([240, 40, 20]), [102, 102, 204]);
+assert.deepStrictEqual(hwbToRgb([240, 0, 0]), [0, 0, 255]);
+assert.deepStrictEqual(hwbToRgb([240, 20, 40]), [51, 51, 153]);
+assert.deepStrictEqual(hwbToRgb([240, 40, 40]), [102, 102, 153]);
+assert.deepStrictEqual(hwbToRgb([240, 40, 20]), [102, 102, 204]);
 
 // Black should always stay black
 const value = [0, 0, 0];
-assert.deepStrictEqual(convert.hsl.hsv(value), value);
-assert.deepStrictEqual(convert.hsl.rgb(value), value);
-assert.deepStrictEqual(convert.hsl.hwb(value), [0, 0, 100]);
-assert.deepStrictEqual(convert.hsl.cmyk(value), [0, 0, 0, 100]);
-assert.deepStrictEqual(convert.hsl.hex(value), '000000');
+assert.deepStrictEqual(hslToHsv(value), value);
+assert.deepStrictEqual(hslToRgb(value), value);
+assert.deepStrictEqual(hslToHwb(value), [0, 0, 100]);
+assert.deepStrictEqual(hslToCmyk(value), [0, 0, 0, 100]);
+assert.deepStrictEqual(hslToHex(value), '000000');
 
 // Test keyword rounding
-assert.deepStrictEqual(convert.rgb.keyword(255, 255, 0), 'yellow');
-assert.deepStrictEqual(convert.rgb.keyword(255, 255, 1), 'yellow');
-assert.deepStrictEqual(convert.rgb.keyword(250, 254, 1), 'yellow');
+assert.deepStrictEqual(rgbToKeyword(255, 255, 0), 'yellow');
+assert.deepStrictEqual(rgbToKeyword(255, 255, 1), 'yellow');
+assert.deepStrictEqual(rgbToKeyword(250, 254, 1), 'yellow');
 
 // Assure euclidean distance algorithm produces perfectly inverse results
 const keywordKeys = Object.keys(keywords);
 for (const k of keywordKeys) {
 	// Why the roundabout testing method? certain css keywords have the same color values.
-	const derived = convert.rgb.keyword(keywords[k]);
+	const derived = rgbToKeyword(keywords[k]);
 	assert.deepStrictEqual(keywords[derived], keywords[k]);
 }
 
 // Basic gray tests
-assert.deepStrictEqual(convert.gray.rgb([0]), [0, 0, 0]);
-assert.deepStrictEqual(convert.gray.rgb([50]), [128, 128, 128]);
-assert.deepStrictEqual(convert.gray.rgb([100]), [255, 255, 255]);
-assert.deepStrictEqual(convert.gray.hsl([50]), [0, 0, 50]);
-assert.deepStrictEqual(convert.gray.hsv([50]), [0, 0, 50]);
-assert.deepStrictEqual(convert.gray.hwb([50]), [0, 100, 50]);
-assert.deepStrictEqual(convert.gray.cmyk([50]), [0, 0, 0, 50]);
-assert.deepStrictEqual(convert.gray.lab([50]), [50, 0, 0]);
-assert.deepStrictEqual(convert.gray.hex([50]), '808080');
-assert.deepStrictEqual(convert.gray.hex([100]), 'FFFFFF');
-assert.deepStrictEqual(convert.gray.hex([0]), '000000');
+assert.deepStrictEqual(grayToRgb([0]), [0, 0, 0]);
+assert.deepStrictEqual(grayToRgb([50]), [128, 128, 128]);
+assert.deepStrictEqual(grayToRgb([100]), [255, 255, 255]);
+assert.deepStrictEqual(grayToHsl([50]), [0, 0, 50]);
+assert.deepStrictEqual(grayToHsv([50]), [0, 0, 50]);
+assert.deepStrictEqual(grayToHwb([50]), [0, 100, 50]);
+assert.deepStrictEqual(grayToCmyk([50]), [0, 0, 0, 50]);
+assert.deepStrictEqual(grayToLab([50]), [50, 0, 0]);
+assert.deepStrictEqual(grayToHex([50]), '808080');
+assert.deepStrictEqual(grayToHex([100]), 'FFFFFF');
+assert.deepStrictEqual(grayToHex([0]), '000000');
 
-assert.deepStrictEqual(convert.rgb.gray([0, 0, 0]), [0]);
-assert.deepStrictEqual(convert.rgb.gray([128, 128, 128]), [50]);
-assert.deepStrictEqual(convert.rgb.gray([255, 255, 255]), [100]);
-assert.deepStrictEqual(convert.rgb.gray([0, 128, 255]), [50]);
+assert.deepStrictEqual(rgbToGray([0, 0, 0]), [0]);
+assert.deepStrictEqual(rgbToGray([128, 128, 128]), [50]);
+assert.deepStrictEqual(rgbToGray([255, 255, 255]), [100]);
+assert.deepStrictEqual(rgbToGray([0, 128, 255]), [50]);
 
 // https://github.com/Qix-/color-convert/issues/74
-assert.deepStrictEqual(convert.rgb.ansi256(40, 38, 41), 235);
+assert.deepStrictEqual(rgbToAnsi256(40, 38, 41), 235);
