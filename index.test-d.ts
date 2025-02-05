@@ -1,6 +1,5 @@
 import {expectType} from 'tsd';
-import convert from './index.js';
-import type {Channels, RGB, HSL, HSV, CMYK, LAB, LCH, HCG, HWB, XYZ, Apple, Gray, ANSI16, ANSI256, Keyword, HEX} from './index.js';
+import convert, {type Channels, type RGB, type HSL, type HSV, type CMYK, type LAB, type LCH, type HCG, type HWB, type XYZ, type Apple, type Gray, type ANSI16, type ANSI256, type Keyword, type HEX} from './index.js';
 
 // RGB
 expectType<Channels>(convert.rgb.channels);
