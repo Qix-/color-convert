@@ -1,15 +1,13 @@
-const assert = require('assert');
-const chalk = require('chalk');
-const keywords = require('color-name');
-
-const conversions = require('../conversions');
-
-const convert = require('..');
+import assert from 'node:assert';
+import chalk from 'chalk';
+import keywords from 'color-name';
+import conversions from '../conversions.js';
+import convert from '../index.js';
 
 const models = Object.keys(conversions);
-for (let len = models.length, i = 0; i < len; i++) {
+for (let {length} = models, i = 0; i < length; i++) {
 	const toModel = models[i];
-	for (let j = 0; j < len; j++) {
+	for (let j = 0; j < length; j++) {
 		const fromModel = models[j];
 
 		if (toModel === fromModel) {
@@ -18,7 +16,7 @@ for (let len = models.length, i = 0; i < len; i++) {
 
 		const fn = convert[toModel][fromModel];
 		if (fn) {
-			const path = (fn.conversion || [fromModel, toModel]).slice();
+			const path = [...(fn.conversion || [fromModel, toModel])];
 			path[0] = chalk.bold.cyan(path[0]);
 			path[path.length - 1] = chalk.bold.cyan(path[path.length - 1]);
 
@@ -30,19 +28,19 @@ for (let len = models.length, i = 0; i < len; i++) {
 
 	// Should not expose channels
 	assert.ok(convert[toModel].channels > 0);
-	assert.ok(Object.keys(convert[toModel]).indexOf('channels') === -1);
+	assert.ok(!Object.keys(convert[toModel]).includes('channels'));
 }
 
 // Labels should be unique
 const uniqued = {};
-models.forEach(model => {
-	const hash = [].slice.call(convert[model].labels).sort().join('');
+for (const model of models) {
+	const hash = Array.prototype.slice.call(convert[model].labels).sort().join('');
 	if (hash in uniqued) {
 		throw new Error('models ' + uniqued[hash] + ' and ' + model + ' have the same label set');
 	}
 
 	uniqued[hash] = model;
-});
+}
 
 assert.deepStrictEqual(convert.rgb.hsl([140, 200, 100]), [96, 48, 59]);
 assert.deepStrictEqual(convert.rgb.hsv([140, 200, 100]), [96, 50, 78]);
@@ -57,7 +55,7 @@ assert.deepStrictEqual(convert.rgb.ansi16([92, 191, 84]), 32);
 assert.deepStrictEqual(convert.rgb.ansi256([92, 191, 84]), 114);
 assert.deepStrictEqual(convert.rgb.hex([92, 191, 84]), '5CBF54');
 assert.deepStrictEqual(convert.rgb.hcg([140, 200, 100]), [96, 39, 65]);
-assert.deepStrictEqual(convert.rgb.apple([255, 127, 0]), [65535, 32639, 0]);
+assert.deepStrictEqual(convert.rgb.apple([255, 127, 0]), [65_535, 32_639, 0]);
 
 assert.deepStrictEqual(convert.hsl.rgb([96, 48, 59]), [140, 201, 100]);
 assert.deepStrictEqual(convert.hsl.hsv([96, 48, 59]), [96, 50, 79]); // Colorpicker says [96,50,79]
@@ -125,7 +123,7 @@ assert.deepStrictEqual(convert.hcg.hsv([96, 39, 64]), [96, 50, 78]);
 assert.deepStrictEqual(convert.hcg.hsl([96, 39, 64]), [96, 47, 59]);
 
 // https://github.com/Qix-/color-convert/issues/73
-assert.deepStrictEqual(convert.rgb.hcg.raw([250, 0, 255]), [298.8235294117647, 100, 0]);
+assert.deepStrictEqual(convert.rgb.hcg.raw([250, 0, 255]), [298.823_529_411_764_7, 100, 0]);
 
 // Non-array arguments
 assert.deepStrictEqual(convert.hsl.rgb(96, 48, 59), [140, 201, 100]);
@@ -155,7 +153,7 @@ assert.deepStrictEqual(round(convert.keyword.rgb.raw('blue')), [0, 0, 255]);
 assert.deepStrictEqual(convert.rgb.keyword.raw([255, 228, 196]), 'bisque');
 
 assert.deepStrictEqual(round(convert.hsv.hsl.raw([96, 50, 78])), [96, 47, 58.5]);
-assert.deepStrictEqual(round(convert.hsv.hsl.raw([302, 32, 55])), [302, 19.0, 46.2]);
+assert.deepStrictEqual(round(convert.hsv.hsl.raw([302, 32, 55])), [302, 19, 46.2]);
 assert.deepStrictEqual(round(convert.hsv.hsl.raw([267, 19, 89])), [267, 43.5, 80.5]);
 assert.deepStrictEqual(round(convert.hsv.hsl.raw([267, 91, 95])), [267, 89.6, 51.8]);
 assert.deepStrictEqual(round(convert.hsv.hsl.raw([267, 91, 12])), [267, 83.5, 6.5]);
@@ -198,12 +196,12 @@ assert.deepStrictEqual(convert.hwb.rgb([240, 40, 40]), [102, 102, 153]);
 assert.deepStrictEqual(convert.hwb.rgb([240, 40, 20]), [102, 102, 204]);
 
 // Black should always stay black
-const val = [0, 0, 0];
-assert.deepStrictEqual(convert.hsl.hsv(val), val);
-assert.deepStrictEqual(convert.hsl.rgb(val), val);
-assert.deepStrictEqual(convert.hsl.hwb(val), [0, 0, 100]);
-assert.deepStrictEqual(convert.hsl.cmyk(val), [0, 0, 0, 100]);
-assert.deepStrictEqual(convert.hsl.hex(val), '000000');
+const value = [0, 0, 0];
+assert.deepStrictEqual(convert.hsl.hsv(value), value);
+assert.deepStrictEqual(convert.hsl.rgb(value), value);
+assert.deepStrictEqual(convert.hsl.hwb(value), [0, 0, 100]);
+assert.deepStrictEqual(convert.hsl.cmyk(value), [0, 0, 0, 100]);
+assert.deepStrictEqual(convert.hsl.hex(value), '000000');
 
 // Test keyword rounding
 assert.deepStrictEqual(convert.rgb.keyword(255, 255, 0), 'yellow');

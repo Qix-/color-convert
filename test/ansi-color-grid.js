@@ -1,4 +1,5 @@
-const cc = require('..');
+import process from 'node:process';
+import cc from '../index.js';
 
 process.stdout.write('\n');
 
@@ -11,7 +12,7 @@ for (let i = 0; i < 256; i++) {
 
 	process.stdout.write(
 		`  [${
-			'  '.substr(Math.max(0, Math.floor(Math.log10(i))))
+			'  '.slice(Math.max(0, Math.floor(Math.log10(i))))
 		}${
 			i
 		} \u001B[48;5;${i}m   \u001B[0;${
@@ -19,8 +20,8 @@ for (let i = 0; i < 256; i++) {
 		}m   \u001B[m ${
 			code16
 		}${
-			'  '.substr(Math.max(0, Math.floor(Math.log10(code16))))
-		}]`
+			'  '.slice(Math.max(0, Math.floor(Math.log10(code16))))
+		}]`,
 	);
 }
 

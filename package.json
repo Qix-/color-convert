@@ -8,13 +8,21 @@
   ],
   "license": "MIT",
   "repository": "Qix-/color-convert",
-  "scripts": {
-    "pretest": "xo",
-    "test": "node test/basic.js"
-  },
+  "type": "module",
+  "exports": "./index.js",
+  "types": "./index.d.ts",
   "engines": {
-    "node": ">=7.0.0"
+    "node": ">=14.6"
   },
+  "scripts": {
+    "test": "xo && tsd && node test/basic.js"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "conversions.js",
+    "route.js"
+  ],
   "keywords": [
     "color",
     "colour",
@@ -29,25 +37,22 @@
     "ansi",
     "ansi16"
   ],
-  "files": [
-    "index.js",
-    "conversions.js",
-    "route.js"
-  ],
   "xo": {
     "rules": {
       "default-case": 0,
       "no-inline-comments": 0,
       "operator-linebreak": 0,
-      "unicorn/prefer-exponentiation-operator": 0
+      "unicorn/prefer-exponentiation-operator": 0,
+      "@typescript-eslint/naming-convention": 0
     }
   },
   "devDependencies": {
-    "chalk": "^2.4.2",
-    "jimp": "^0.16.1",
-    "xo": "^0.24.0"
+    "chalk": "^5.2.0",
+    "jimp": "^0.22.8",
+    "tsd": "^0.28.1",
+    "xo": "^0.54.2"
   },
   "dependencies": {
-    "color-name": "~1.1.4"
+    "color-name": "^2.0.0"
   }
 }

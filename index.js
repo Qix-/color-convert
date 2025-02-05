@@ -1,5 +1,5 @@
-const conversions = require('./conversions');
-const route = require('./route');
+import conversions from './conversions.js';
+import route from './route.js';
 
 const convert = {};
 
@@ -45,7 +45,7 @@ function wrapRounded(fn) {
 		// see notice in conversions.js; don't use box types
 		// in conversion functions.
 		if (typeof result === 'object') {
-			for (let len = result.length, i = 0; i < len; i++) {
+			for (let {length} = result, i = 0; i < length; i++) {
 				result[i] = Math.round(result[i]);
 			}
 		}
@@ -61,7 +61,7 @@ function wrapRounded(fn) {
 	return wrappedFn;
 }
 
-models.forEach(fromModel => {
+for (const fromModel of models) {
 	convert[fromModel] = {};
 
 	Object.defineProperty(convert[fromModel], 'channels', {value: conversions[fromModel].channels});
@@ -70,12 +70,12 @@ models.forEach(fromModel => {
 	const routes = route(fromModel);
 	const routeModels = Object.keys(routes);
 
-	routeModels.forEach(toModel => {
+	for (const toModel of routeModels) {
 		const fn = routes[toModel];
 
 		convert[fromModel][toModel] = wrapRounded(fn);
 		convert[fromModel][toModel].raw = wrapRaw(fn);
-	});
-});
+	}
+}
 
-module.exports = convert;
+export default convert;
