@@ -1,7 +1,7 @@
 {
   "name": "color-convert",
   "description": "Plain color conversion functions",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Josh Junon <josh@junon.me>",
   "contributors": [
     "Heather Arthur <fayearthur@gmail.com>"
