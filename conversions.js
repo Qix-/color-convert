@@ -21,6 +21,7 @@ const convert = {
 	lab: {channels: 3, labels: 'lab'},
 	oklab: {channels: 3, labels: ['okl', 'oka', 'okb']},
 	lch: {channels: 3, labels: 'lch'},
+	oklch: {channels: 3, labels: ['okl', 'okc', 'okh']},
 	hex: {channels: 1, labels: ['hex']},
 	keyword: {channels: 1, labels: ['keyword']},
 	ansi16: {channels: 1, labels: ['ansi16']},
@@ -562,6 +563,24 @@ convert.xyz.oklab = function (xyz) {
 	return [l * 100, a * 100, b * 100];
 };
 
+convert.oklab.oklch = function (lab) {
+	const l = lab[0];
+	const a = lab[1];
+	const b = lab[2];
+	let h;
+
+	const hr = Math.atan2(b, a);
+	h = hr * 360 / 2 / Math.PI;
+
+	if (h < 0) {
+		h += 360;
+	}
+
+	const c = Math.sqrt(a * a + b * b);
+
+	return [l, c, h];
+};
+
 convert.oklab.xyz = function (lab) {
 	const l = lab[0] / 100;
 	const a = lab[1] / 100;
@@ -611,6 +630,18 @@ convert.oklab.xyz = function (lab) {
 	const z = m1[2][0] * ll + m1[2][1] * m + m1[2][2] * s;
 
 	return [x * 100, y * 100, z * 100];
+};
+
+convert.oklch.oklab = function (lch) {
+	const l = lch[0];
+	const c = lch[1];
+	const h = lch[2];
+
+	const hr = h / 360 * 2 * Math.PI;
+	const a = c * Math.cos(hr);
+	const b = c * Math.sin(hr);
+
+	return [l, a, b];
 };
 
 convert.lab.xyz = function (lab) {

@@ -52,6 +52,7 @@ assert.deepStrictEqual(convert.rgb.xyz([92, 191, 84]), [25, 40, 15]);
 assert.deepStrictEqual(convert.rgb.lab([92, 191, 84]), [70, -50, 45]);
 assert.deepStrictEqual(convert.rgb.oklab([153, 102, 255]), [64, 9, -20]);
 assert.deepStrictEqual(convert.rgb.lch([92, 191, 84]), [70, 67, 138]);
+assert.deepStrictEqual(convert.rgb.oklch([153, 102, 255]), [64, 22, 295]);
 assert.deepStrictEqual(convert.rgb.ansi16([92, 191, 84]), 32);
 assert.deepStrictEqual(convert.rgb.ansi256([92, 191, 84]), 114);
 assert.deepStrictEqual(convert.rgb.hex([92, 191, 84]), '5CBF54');
@@ -120,6 +121,8 @@ assert.deepStrictEqual(convert.oklab.xyz([15.3, -141.5, -44.9]), [0, 0, 100]);
 assert.deepStrictEqual(convert.lch.lab([69, 65, 137]), [69, -48, 44]);
 assert.deepStrictEqual(convert.lch.xyz([69, 65, 137]), [25, 39, 15]);
 assert.deepStrictEqual(convert.lch.rgb([69, 65, 137]), [98, 188, 83]);
+
+assert.deepStrictEqual(convert.oklch.rgb([64, 22, 295]), [154, 101, 255]);
 
 assert.deepStrictEqual(convert.ansi16.rgb(103), [255, 255, 0]);
 assert.deepStrictEqual(convert.ansi256.rgb(175), [204, 102, 153]);
