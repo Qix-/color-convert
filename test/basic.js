@@ -50,6 +50,7 @@ assert.deepStrictEqual(convert.rgb.cmyk([0, 0, 0, 1]), [0, 0, 0, 100]);
 assert.deepStrictEqual(convert.rgb.keyword([255, 228, 196]), 'bisque');
 assert.deepStrictEqual(convert.rgb.xyz([92, 191, 84]), [25, 40, 15]);
 assert.deepStrictEqual(convert.rgb.lab([92, 191, 84]), [70, -50, 45]);
+assert.deepStrictEqual(convert.rgb.oklab([153, 102, 255]), [64, 9, -20]);
 assert.deepStrictEqual(convert.rgb.lch([92, 191, 84]), [70, 67, 138]);
 assert.deepStrictEqual(convert.rgb.ansi16([92, 191, 84]), 32);
 assert.deepStrictEqual(convert.rgb.ansi256([92, 191, 84]), 114);
@@ -101,11 +102,20 @@ assert.deepStrictEqual(convert.keyword.hex('blue'), '0000FF');
 assert.deepStrictEqual(convert.xyz.rgb([25, 40, 15]), [97, 190, 85]);
 assert.deepStrictEqual(convert.xyz.rgb([50, 100, 100]), [0, 255, 241]);
 assert.deepStrictEqual(convert.xyz.lab([25, 40, 15]), [69, -48, 44]);
+assert.deepStrictEqual(convert.xyz.oklab([95, 100, 108.9]), [100, -0, -0]);
+assert.deepStrictEqual(convert.xyz.oklab([100, 0, 0]), [45, 124, -2]);
+assert.deepStrictEqual(convert.xyz.oklab([0, 100, 0]), [92, -67, 26]);
+assert.deepStrictEqual(convert.xyz.oklab([0, 0, 100]), [15, -141, -45]);
 assert.deepStrictEqual(convert.xyz.lch([25, 40, 15]), [69, 65, 137]);
 
 assert.deepStrictEqual(convert.lab.xyz([69, -48, 44]), [25, 39, 15]);
 assert.deepStrictEqual(convert.lab.rgb([75, 20, -30]), [194, 175, 240]);
 assert.deepStrictEqual(convert.lab.lch([69, -48, 44]), [69, 65, 137]);
+
+assert.deepStrictEqual(convert.oklab.xyz([100, 0, 0]), [95, 100, 109]);
+assert.deepStrictEqual(convert.oklab.xyz([45, 123.6, -1.9]), [100, -0, -0]);
+assert.deepStrictEqual(convert.oklab.xyz([92.2, -67.1, 26.3]), [0, 100, 0]);
+assert.deepStrictEqual(convert.oklab.xyz([15.3, -141.5, -44.9]), [0, 0, 100]);
 
 assert.deepStrictEqual(convert.lch.lab([69, 65, 137]), [69, -48, 44]);
 assert.deepStrictEqual(convert.lch.xyz([69, 65, 137]), [25, 39, 15]);

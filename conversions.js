@@ -19,6 +19,7 @@ const convert = {
 	cmyk: {channels: 4, labels: 'cmyk'},
 	xyz: {channels: 3, labels: 'xyz'},
 	lab: {channels: 3, labels: 'lab'},
+	oklab: {channels: 3, labels: ['okl', 'oka', 'okb']},
 	lch: {channels: 3, labels: 'lch'},
 	hex: {channels: 1, labels: ['hex']},
 	keyword: {channels: 1, labels: ['keyword']},
@@ -508,6 +509,108 @@ convert.xyz.lab = function (xyz) {
 	const b = 200 * (y - z);
 
 	return [l, a, b];
+};
+
+convert.xyz.oklab = function (xyz) {
+	const x = xyz[0] / 100;
+	const y = xyz[1] / 100;
+	const z = xyz[2] / 100;
+
+	const m1 = [
+		[
+			0.818_933_010_1,
+			0.361_866_742_4,
+			-0.128_859_713_7,
+		],
+		[
+			0.032_984_543_6,
+			0.929_311_871_5,
+			0.036_145_638_7,
+		],
+		[
+			0.048_200_301_8,
+			0.264_366_269_1,
+			0.633_851_707,
+		],
+	];
+	const m2 = [
+		[
+			0.210_454_255_3,
+			0.793_617_785,
+			-0.004_072_046_8,
+		],
+		[
+			1.977_998_495_1,
+			-2.428_592_205,
+			0.450_593_709_9,
+		],
+		[
+			0.025_904_037_1,
+			0.782_771_766_2,
+			-0.808_675_766,
+		],
+	];
+
+	const lp = Math.cbrt(m1[0][0] * x + m1[0][1] * y + m1[0][2] * z);
+	const mp = Math.cbrt(m1[1][0] * x + m1[1][1] * y + m1[1][2] * z);
+	const sp = Math.cbrt(m1[2][0] * x + m1[2][1] * y + m1[2][2] * z);
+
+	const l = m2[0][0] * lp + m2[0][1] * mp + m2[0][2] * sp;
+	const a = m2[1][0] * lp + m2[1][1] * mp + m2[1][2] * sp;
+	const b = m2[2][0] * lp + m2[2][1] * mp + m2[2][2] * sp;
+
+	return [l * 100, a * 100, b * 100];
+};
+
+convert.oklab.xyz = function (lab) {
+	const l = lab[0] / 100;
+	const a = lab[1] / 100;
+	const b = lab[2] / 100;
+
+	const m1 = [
+		[
+			1.227_013_851,
+			-0.557_799_98,
+			0.281_256_149,
+		],
+		[
+			-0.040_580_178,
+			1.112_256_87,
+			-0.071_676_679,
+		],
+		[
+			-0.076_381_285,
+			-0.421_481_978,
+			1.586_163_22,
+		],
+	];
+	const m2 = [
+		[
+			0.999_999_998,
+			0.396_337_792,
+			0.215_803_758,
+		],
+		[
+			1.000_000_008,
+			-0.105_561_342,
+			-0.063_854_175,
+		],
+		[
+			1.000_000_055,
+			-0.089_484_182,
+			-1.291_485_538,
+		],
+	];
+
+	const ll = (m2[0][0] * l + m2[0][1] * a + m2[0][2] * b) ** 3;
+	const m = (m2[1][0] * l + m2[1][1] * a + m2[1][2] * b) ** 3;
+	const s = (m2[2][0] * l + m2[2][1] * a + m2[2][2] * b) ** 3;
+
+	const x = m1[0][0] * ll + m1[0][1] * m + m1[0][2] * s;
+	const y = m1[1][0] * ll + m1[1][1] * m + m1[1][2] * s;
+	const z = m1[2][0] * ll + m1[2][1] * m + m1[2][2] * s;
+
+	return [x * 100, y * 100, z * 100];
 };
 
 convert.lab.xyz = function (lab) {
