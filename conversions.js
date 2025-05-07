@@ -36,6 +36,18 @@ export default convert;
 // LAB f(t) constant
 const LAB_FT = (6 / 29) ** 3;
 
+// SRGB non-linear transform functions
+function srgbNonlinearTransform(c) {
+	const cc = c > 0.003_130_8
+		? ((1.055 * (c ** (1 / 2.4))) - 0.055)
+		: c * 12.92;
+	return Math.min(Math.max(0, cc), 1);
+}
+
+function srgbNonlinearTransformInv(c) {
+	return c > 0.040_45 ? (((c + 0.055) / 1.055) ** 2.4) : (c / 12.92);
+}
+
 // Hide .channels and .labels properties
 for (const model of Object.keys(convert)) {
 	if (!('channels' in convert[model])) {
@@ -239,14 +251,10 @@ convert.keyword.rgb = function (keyword) {
 };
 
 convert.rgb.xyz = function (rgb) {
-	let r = rgb[0] / 255;
-	let g = rgb[1] / 255;
-	let b = rgb[2] / 255;
-
 	// Assume sRGB
-	r = r > 0.040_45 ? (((r + 0.055) / 1.055) ** 2.4) : (r / 12.92);
-	g = g > 0.040_45 ? (((g + 0.055) / 1.055) ** 2.4) : (g / 12.92);
-	b = b > 0.040_45 ? (((b + 0.055) / 1.055) ** 2.4) : (b / 12.92);
+	const r = srgbNonlinearTransformInv(rgb[0] / 255);
+	const g = srgbNonlinearTransformInv(rgb[1] / 255);
+	const b = srgbNonlinearTransformInv(rgb[2] / 255);
 
 	const x = (r * 0.412_456_4) + (g * 0.357_576_1) + (b * 0.180_437_5);
 	const y = (r * 0.212_672_9) + (g * 0.715_152_2) + (b * 0.072_175);
@@ -473,21 +481,9 @@ convert.xyz.rgb = function (xyz) {
 	b = (x * 0.055_643_4) + (y * -0.204_025_9) + (z * 1.057_225_2);
 
 	// Assume sRGB
-	r = r > 0.003_130_8
-		? ((1.055 * (r ** (1 / 2.4))) - 0.055)
-		: r * 12.92;
-
-	g = g > 0.003_130_8
-		? ((1.055 * (g ** (1 / 2.4))) - 0.055)
-		: g * 12.92;
-
-	b = b > 0.003_130_8
-		? ((1.055 * (b ** (1 / 2.4))) - 0.055)
-		: b * 12.92;
-
-	r = Math.min(Math.max(0, r), 1);
-	g = Math.min(Math.max(0, g), 1);
-	b = Math.min(Math.max(0, b), 1);
+	r = srgbNonlinearTransform(r);
+	g = srgbNonlinearTransform(g);
+	b = srgbNonlinearTransform(b);
 
 	return [r * 255, g * 255, b * 255];
 };
