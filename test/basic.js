@@ -117,6 +117,7 @@ assert.deepStrictEqual(convert.oklab.xyz([100, 0, 0]), [95, 100, 109]);
 assert.deepStrictEqual(convert.oklab.xyz([45, 123.6, -1.9]), [100, -0, -0]);
 assert.deepStrictEqual(convert.oklab.xyz([92.2, -67.1, 26.3]), [0, 100, 0]);
 assert.deepStrictEqual(convert.oklab.xyz([15.3, -141.5, -44.9]), [0, 0, 100]);
+assert.deepStrictEqual(convert.oklab.rgb([64, 9, -20]), [152, 102, 255]);
 
 assert.deepStrictEqual(convert.lch.lab([69, 65, 137]), [69, -48, 44]);
 assert.deepStrictEqual(convert.lch.xyz([69, 65, 137]), [25, 39, 15]);

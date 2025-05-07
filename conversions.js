@@ -197,6 +197,23 @@ convert.rgb.hwb = function (rgb) {
 	return [h, w * 100, b * 100];
 };
 
+convert.rgb.oklab = function (rgb) {
+	// Assume sRGB
+	const r = srgbNonlinearTransformInv(rgb[0] / 255);
+	const g = srgbNonlinearTransformInv(rgb[1] / 255);
+	const b = srgbNonlinearTransformInv(rgb[2] / 255);
+
+	const lp = Math.cbrt(0.412_221_470_8 * r + 0.536_332_536_3 * g + 0.051_445_992_9 * b);
+	const mp = Math.cbrt(0.211_903_498_2 * r + 0.680_699_545_1 * g + 0.107_396_956_6 * b);
+	const sp = Math.cbrt(0.088_302_461_9 * r + 0.281_718_837_6 * g + 0.629_978_700_5 * b);
+
+	const l = 0.210_454_255_3 * lp + 0.793_617_785 * mp - 0.004_072_046_8 * sp;
+	const aa = 1.977_998_495_1 * lp - 2.428_592_205 * mp + 0.450_593_709_9 * sp;
+	const bb = 0.025_904_037_1 * lp + 0.782_771_766_2 * mp - 0.808_675_766 * sp;
+
+	return [l * 100, aa * 100, bb * 100];
+};
+
 convert.rgb.cmyk = function (rgb) {
 	const r = rgb[0] / 255;
 	const g = rgb[1] / 255;
@@ -542,6 +559,23 @@ convert.oklab.xyz = function (lab) {
 	const z = -0.076_381_285 * k - 0.421_481_978 * m + 1.586_163_22 * s;
 
 	return [x * 100, y * 100, z * 100];
+};
+
+convert.oklab.rgb = function (oklab) {
+	const ll = oklab[0] / 100;
+	const aa = oklab[1] / 100;
+	const bb = oklab[2] / 100;
+
+	const l = (ll + 0.396_337_777_4 * aa + 0.215_803_757_3 * bb) ** 3;
+	const m = (ll - 0.105_561_345_8 * aa - 0.063_854_172_8 * bb) ** 3;
+	const s = (ll - 0.089_484_177_5 * aa - 1.291_485_548 * bb) ** 3;
+
+	// Assume sRGB
+	const r = srgbNonlinearTransform(4.076_741_662_1 * l - 3.307_711_591_3 * m + 0.230_969_929_2 * s);
+	const g = srgbNonlinearTransform(-1.268_438_004_6 * l + 2.609_757_401_1 * m - 0.341_319_396_5 * s);
+	const b = srgbNonlinearTransform(-0.004_196_086_3 * l - 0.703_418_614_7 * m + 1.707_614_701 * s);
+
+	return [r * 255, g * 255, b * 255];
 };
 
 convert.oklch.oklab = function (oklch) {
