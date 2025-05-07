@@ -528,22 +528,8 @@ convert.xyz.oklab = function (xyz) {
 	return [l * 100, a * 100, b * 100];
 };
 
-convert.oklab.oklch = function (lab) {
-	const l = lab[0];
-	const a = lab[1];
-	const b = lab[2];
-	let h;
-
-	const hr = Math.atan2(b, a);
-	h = hr * 360 / 2 / Math.PI;
-
-	if (h < 0) {
-		h += 360;
-	}
-
-	const c = Math.sqrt(a * a + b * b);
-
-	return [l, c, h];
+convert.oklab.oklch = function (oklab) {
+	return convert.lab.lch(oklab);
 };
 
 convert.oklab.xyz = function (lab) {
@@ -562,16 +548,8 @@ convert.oklab.xyz = function (lab) {
 	return [x * 100, y * 100, z * 100];
 };
 
-convert.oklch.oklab = function (lch) {
-	const l = lch[0];
-	const c = lch[1];
-	const h = lch[2];
-
-	const hr = h / 360 * 2 * Math.PI;
-	const a = c * Math.cos(hr);
-	const b = c * Math.sin(hr);
-
-	return [l, a, b];
+convert.oklch.oklab = function (oklch) {
+	return convert.lch.lab(oklch);
 };
 
 convert.lab.xyz = function (lab) {
