@@ -19,7 +19,9 @@ const convert = {
 	cmyk: {channels: 4, labels: 'cmyk'},
 	xyz: {channels: 3, labels: 'xyz'},
 	lab: {channels: 3, labels: 'lab'},
+	oklab: {channels: 3, labels: ['okl', 'oka', 'okb']},
 	lch: {channels: 3, labels: 'lch'},
+	oklch: {channels: 3, labels: ['okl', 'okc', 'okh']},
 	hex: {channels: 1, labels: ['hex']},
 	keyword: {channels: 1, labels: ['keyword']},
 	ansi16: {channels: 1, labels: ['ansi16']},
@@ -33,6 +35,18 @@ export default convert;
 
 // LAB f(t) constant
 const LAB_FT = (6 / 29) ** 3;
+
+// SRGB non-linear transform functions
+function srgbNonlinearTransform(c) {
+	const cc = c > 0.003_130_8
+		? ((1.055 * (c ** (1 / 2.4))) - 0.055)
+		: c * 12.92;
+	return Math.min(Math.max(0, cc), 1);
+}
+
+function srgbNonlinearTransformInv(c) {
+	return c > 0.040_45 ? (((c + 0.055) / 1.055) ** 2.4) : (c / 12.92);
+}
 
 // Hide .channels and .labels properties
 for (const model of Object.keys(convert)) {
@@ -183,6 +197,23 @@ convert.rgb.hwb = function (rgb) {
 	return [h, w * 100, b * 100];
 };
 
+convert.rgb.oklab = function (rgb) {
+	// Assume sRGB
+	const r = srgbNonlinearTransformInv(rgb[0] / 255);
+	const g = srgbNonlinearTransformInv(rgb[1] / 255);
+	const b = srgbNonlinearTransformInv(rgb[2] / 255);
+
+	const lp = Math.cbrt(0.412_221_470_8 * r + 0.536_332_536_3 * g + 0.051_445_992_9 * b);
+	const mp = Math.cbrt(0.211_903_498_2 * r + 0.680_699_545_1 * g + 0.107_396_956_6 * b);
+	const sp = Math.cbrt(0.088_302_461_9 * r + 0.281_718_837_6 * g + 0.629_978_700_5 * b);
+
+	const l = 0.210_454_255_3 * lp + 0.793_617_785 * mp - 0.004_072_046_8 * sp;
+	const aa = 1.977_998_495_1 * lp - 2.428_592_205 * mp + 0.450_593_709_9 * sp;
+	const bb = 0.025_904_037_1 * lp + 0.782_771_766_2 * mp - 0.808_675_766 * sp;
+
+	return [l * 100, aa * 100, bb * 100];
+};
+
 convert.rgb.cmyk = function (rgb) {
 	const r = rgb[0] / 255;
 	const g = rgb[1] / 255;
@@ -237,14 +268,10 @@ convert.keyword.rgb = function (keyword) {
 };
 
 convert.rgb.xyz = function (rgb) {
-	let r = rgb[0] / 255;
-	let g = rgb[1] / 255;
-	let b = rgb[2] / 255;
-
 	// Assume sRGB
-	r = r > 0.040_45 ? (((r + 0.055) / 1.055) ** 2.4) : (r / 12.92);
-	g = g > 0.040_45 ? (((g + 0.055) / 1.055) ** 2.4) : (g / 12.92);
-	b = b > 0.040_45 ? (((b + 0.055) / 1.055) ** 2.4) : (b / 12.92);
+	const r = srgbNonlinearTransformInv(rgb[0] / 255);
+	const g = srgbNonlinearTransformInv(rgb[1] / 255);
+	const b = srgbNonlinearTransformInv(rgb[2] / 255);
 
 	const x = (r * 0.412_456_4) + (g * 0.357_576_1) + (b * 0.180_437_5);
 	const y = (r * 0.212_672_9) + (g * 0.715_152_2) + (b * 0.072_175);
@@ -471,21 +498,9 @@ convert.xyz.rgb = function (xyz) {
 	b = (x * 0.055_643_4) + (y * -0.204_025_9) + (z * 1.057_225_2);
 
 	// Assume sRGB
-	r = r > 0.003_130_8
-		? ((1.055 * (r ** (1 / 2.4))) - 0.055)
-		: r * 12.92;
-
-	g = g > 0.003_130_8
-		? ((1.055 * (g ** (1 / 2.4))) - 0.055)
-		: g * 12.92;
-
-	b = b > 0.003_130_8
-		? ((1.055 * (b ** (1 / 2.4))) - 0.055)
-		: b * 12.92;
-
-	r = Math.min(Math.max(0, r), 1);
-	g = Math.min(Math.max(0, g), 1);
-	b = Math.min(Math.max(0, b), 1);
+	r = srgbNonlinearTransform(r);
+	g = srgbNonlinearTransform(g);
+	b = srgbNonlinearTransform(b);
 
 	return [r * 255, g * 255, b * 255];
 };
@@ -508,6 +523,63 @@ convert.xyz.lab = function (xyz) {
 	const b = 200 * (y - z);
 
 	return [l, a, b];
+};
+
+convert.xyz.oklab = function (xyz) {
+	const x = xyz[0] / 100;
+	const y = xyz[1] / 100;
+	const z = xyz[2] / 100;
+
+	const lp = Math.cbrt(0.818_933_010_1 * x + 0.361_866_742_4 * y - 0.128_859_713_7 * z);
+	const mp = Math.cbrt(0.032_984_543_6 * x + 0.929_311_871_5 * y + 0.036_145_638_7 * z);
+	const sp = Math.cbrt(0.048_200_301_8 * x + 0.264_366_269_1 * y + 0.633_851_707 * z);
+
+	const l = 0.210_454_255_3 * lp + 0.793_617_785 * mp - 0.004_072_046_8 * sp;
+	const a = 1.977_998_495_1 * lp - 2.428_592_205 * mp + 0.450_593_709_9 * sp;
+	const b = 0.025_904_037_1 * lp + 0.782_771_766_2 * mp - 0.808_675_766 * sp;
+
+	return [l * 100, a * 100, b * 100];
+};
+
+convert.oklab.oklch = function (oklab) {
+	return convert.lab.lch(oklab);
+};
+
+convert.oklab.xyz = function (oklab) {
+	const ll = oklab[0] / 100;
+	const a = oklab[1] / 100;
+	const b = oklab[2] / 100;
+
+	const l = (0.999_999_998 * ll + 0.396_337_792 * a + 0.215_803_758 * b) ** 3;
+	const m = (1.000_000_008 * ll - 0.105_561_342 * a - 0.063_854_175 * b) ** 3;
+	const s = (1.000_000_055 * ll - 0.089_484_182 * a - 1.291_485_538 * b) ** 3;
+
+	const x = 1.227_013_851 * l - 0.557_799_98 * m + 0.281_256_149 * s;
+	const y = -0.040_580_178 * l + 1.112_256_87 * m - 0.071_676_679 * s;
+	const z = -0.076_381_285 * l - 0.421_481_978 * m + 1.586_163_22 * s;
+
+	return [x * 100, y * 100, z * 100];
+};
+
+convert.oklab.rgb = function (oklab) {
+	const ll = oklab[0] / 100;
+	const aa = oklab[1] / 100;
+	const bb = oklab[2] / 100;
+
+	const l = (ll + 0.396_337_777_4 * aa + 0.215_803_757_3 * bb) ** 3;
+	const m = (ll - 0.105_561_345_8 * aa - 0.063_854_172_8 * bb) ** 3;
+	const s = (ll - 0.089_484_177_5 * aa - 1.291_485_548 * bb) ** 3;
+
+	// Assume sRGB
+	const r = srgbNonlinearTransform(4.076_741_662_1 * l - 3.307_711_591_3 * m + 0.230_969_929_2 * s);
+	const g = srgbNonlinearTransform(-1.268_438_004_6 * l + 2.609_757_401_1 * m - 0.341_319_396_5 * s);
+	const b = srgbNonlinearTransform(-0.004_196_086_3 * l - 0.703_418_614_7 * m + 1.707_614_701 * s);
+
+	return [r * 255, g * 255, b * 255];
+};
+
+convert.oklch.oklab = function (oklch) {
+	return convert.lch.lab(oklch);
 };
 
 convert.lab.xyz = function (lab) {

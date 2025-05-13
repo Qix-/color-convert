@@ -89,6 +89,41 @@ h | 360
 w | 100
 b | 100
 
+### xyz
+channel | full-scale value
+---|---
+x | 94
+y | 99
+z | 108
+
+### lab
+channel | full-scale value
+---|---
+l | 100
+a | -86, 98
+b | -108, 94
+
+### lch
+channel | full-scale value
+---|---
+l | 100
+c | 133
+h | 360
+
+### oklab
+channel | full-scale value
+---|---
+l | 100
+a | -23, 28
+b | -31, 20
+
+### oklch
+channel | full-scale value
+---|---
+l | 100
+c | 32
+h | 360
+
 ### cmyk
 channel | full-scale value
 ---|---
