@@ -8,8 +8,8 @@ export type LCH = [l: number, c: number, h: number];
 export type HCG = [h: number, c: number, g: number];
 export type HWB = [h: number, w: number, b: number];
 export type XYZ = [x: number, y: number, z: number];
-export type Oklab = [l: number, a: number, b: number];
-export type Oklch = [l: number, c: number, h: number];
+export type OKLAB = [l: number, a: number, b: number];
+export type OKLCH = [l: number, c: number, h: number];
 export type Apple = [r16: number, g16: number, b16: number];
 export type Gray = [gray: number];
 export type ANSI16 = number;
@@ -31,7 +31,6 @@ declare namespace route {
 		cmyk(...from: RGB): CMYK;
 		xyz(from: RGB): XYZ;
 		xyz(...from: RGB): XYZ;
-		oklab(from: RGB): Oklab;
 		lab(from: RGB): LAB;
 		lab(...from: RGB): LAB;
 		lch(from: RGB): LCH;
@@ -50,6 +49,10 @@ declare namespace route {
 		apple(...from: RGB): Apple;
 		gray(from: RGB): Gray;
 		gray(...from: RGB): Gray;
+		oklab(from: RGB): OKLAB;
+		oklab(...from: RGB): OKLAB;
+		oklch(from: RGB): OKLCH;
+		oklch(...from: RGB): OKLCH;
 	};
 
 	type hsl = {
@@ -81,6 +84,10 @@ declare namespace route {
 		apple(...from: HSL): Apple;
 		gray(from: HSL): Gray;
 		gray(...from: HSL): Gray;
+		oklab(from: HSL): OKLAB;
+		oklab(...from: HSL): OKLAB;
+		oklch(from: HSL): OKLCH;
+		oklch(...from: HSL): OKLCH;
 	};
 
 	type hsv = {
@@ -112,6 +119,10 @@ declare namespace route {
 		apple(...from: HSV): Apple;
 		gray(from: HSV): Gray;
 		gray(...from: HSV): Gray;
+		oklab(from: HSV): OKLAB;
+		oklab(...from: HSV): OKLAB;
+		oklch(from: HSV): OKLCH;
+		oklch(...from: HSV): OKLCH;
 	};
 
 	type hwb = {
@@ -143,6 +154,10 @@ declare namespace route {
 		apple(...from: HWB): Apple;
 		gray(from: HWB): Gray;
 		gray(...from: HWB): Gray;
+		oklab(from: HWB): OKLAB;
+		oklab(...from: HWB): OKLAB;
+		oklch(from: HWB): OKLCH;
+		oklch(...from: HWB): OKLCH;
 	};
 
 	type cmyk = {
@@ -174,6 +189,10 @@ declare namespace route {
 		apple(...from: CMYK): Apple;
 		gray(from: CMYK): Gray;
 		gray(...from: CMYK): Gray;
+		oklab(from: CMYK): OKLAB;
+		oklab(...from: CMYK): OKLAB;
+		oklch(from: CMYK): OKLCH;
+		oklch(...from: CMYK): OKLCH;
 	};
 
 	type xyz = {
@@ -189,7 +208,6 @@ declare namespace route {
 		cmyk(...from: XYZ): CMYK;
 		lab(from: XYZ): LAB;
 		lab(...from: XYZ): LAB;
-		oklab(from: RGB): Oklab;
 		lch(from: XYZ): LCH;
 		lch(...from: XYZ): LCH;
 		hex(from: XYZ): HEX;
@@ -206,16 +224,80 @@ declare namespace route {
 		apple(...from: XYZ): Apple;
 		gray(from: XYZ): Gray;
 		gray(...from: XYZ): Gray;
+		oklab(from: XYZ): OKLAB;
+		oklab(...from: XYZ): OKLAB;
+		oklch(from: XYZ): OKLCH;
+		oklch(...from: XYZ): OKLCH;
 	};
 
 	type oklab = {
-		oklch(from: Oklab): Oklch;
-		xyz(from: Oklab): XYZ;
-		rgb(from: Oklab): RGB;
+		rgb(from: OKLAB): RGB;
+		rgb(...from: OKLAB): RGB;
+		hsl(from: OKLAB): HSL;
+		hsl(...from: OKLAB): HSL;
+		hsv(from: OKLAB): HSV;
+		hsv(...from: OKLAB): HSV;
+		hwb(from: OKLAB): HWB;
+		hwb(...from: OKLAB): HWB;
+		cmyk(from: OKLAB): CMYK;
+		cmyk(...from: OKLAB): CMYK;
+		xyz(from: CMYK): OKLAB;
+		xyz(...from: CMYK): OKLAB;
+		lab(from: OKLAB): LAB;
+		lab(...from: OKLAB): LAB;
+		lch(from: OKLAB): LCH;
+		lch(...from: OKLAB): LCH;
+		hex(from: OKLAB): HEX;
+		hex(...from: OKLAB): HEX;
+		keyword(from: OKLAB): Keyword;
+		keyword(...from: OKLAB): Keyword;
+		ansi16(from: OKLAB): ANSI16;
+		ansi16(...from: OKLAB): ANSI16;
+		ansi256(from: OKLAB): ANSI256;
+		ansi256(...from: OKLAB): ANSI256;
+		hcg(from: OKLAB): HCG;
+		hcg(...from: OKLAB): HCG;
+		apple(from: OKLAB): Apple;
+		apple(...from: OKLAB): Apple;
+		gray(from: OKLAB): Gray;
+		gray(...from: OKLAB): Gray;
+		oklch(from: OKLAB): OKLCH;
+		oklch(...from: OKLAB): Oklch;
 	};
 
 	type oklch = {
-		oklab(from: Oklch): Oklab;
+		rgb(from: OKLCH): RGB;
+		rgb(...from: OKLCH): RGB;
+		hsl(from: OKLCH): HSL;
+		hsl(...from: OKLCH): HSL;
+		hsv(from: OKLCH): HSV;
+		hsv(...from: OKLCH): HSV;
+		hwb(from: OKLCH): HWB;
+		hwb(...from: OKLCH): HWB;
+		cmyk(from: OKLCH): CMYK;
+		cmyk(...from: OKLCH): CMYK;
+		xyz(from: CMYK): OKLCH;
+		xyz(...from: CMYK): OKLCH;
+		lab(from: OKLCH): LAB;
+		lab(...from: OKLCH): LAB;
+		lch(from: OKLCH): LCH;
+		lch(...from: OKLCH): LCH;
+		hex(from: OKLCH): HEX;
+		hex(...from: OKLCH): HEX;
+		keyword(from: OKLCH): Keyword;
+		keyword(...from: OKLCH): Keyword;
+		ansi16(from: OKLCH): ANSI16;
+		ansi16(...from: OKLCH): ANSI16;
+		ansi256(from: OKLCH): ANSI256;
+		ansi256(...from: OKLCH): ANSI256;
+		hcg(from: OKLCH): HCG;
+		hcg(...from: OKLCH): HCG;
+		apple(from: OKLCH): Apple;
+		apple(...from: OKLCH): Apple;
+		gray(from: OKLCH): Gray;
+		gray(...from: OKLCH): Gray;
+		oklab(from: OKLCH): OKLAB;
+		oklab(...from: OKLCH): OKLAB;
 	};
 
 	type lab = {
@@ -247,6 +329,10 @@ declare namespace route {
 		apple(...from: LAB): Apple;
 		gray(from: LAB): Gray;
 		gray(...from: LAB): Gray;
+		oklab(from: LAB): OKLAB;
+		oklab(...from: LAB): OKLAB;
+		oklch(from: LAB): OKLCH;
+		oklch(...from: LAB): OKLCH;
 	};
 
 	type lch = {
@@ -278,6 +364,10 @@ declare namespace route {
 		apple(...from: LCH): Apple;
 		gray(from: LCH): Gray;
 		gray(...from: LCH): Gray;
+		oklab(from: LCH): OKLAB;
+		oklab(...from: LCH): OKLAB;
+		oklch(from: LCH): OKLCH;
+		oklch(...from: LCH): OKLCH;
 	};
 
 	type hex = {
@@ -295,6 +385,8 @@ declare namespace route {
 		hcg(from: HEX): HCG;
 		apple(from: HEX): Apple;
 		gray(from: HEX): Gray;
+		oklab(from: HEX): OKLAB;
+		oklch(from: HEX): OKLCH;
 	};
 
 	type keyword = {
@@ -312,6 +404,8 @@ declare namespace route {
 		hcg(from: Keyword): HCG;
 		apple(from: Keyword): Apple;
 		gray(from: Keyword): Gray;
+		oklab(from: Keyword): OKLAB;
+		oklch(from: Keyword): OKLCH;
 	};
 
 	type ansi16 = {
@@ -329,6 +423,8 @@ declare namespace route {
 		hcg(from: ANSI16): HCG;
 		apple(from: ANSI16): Apple;
 		gray(from: ANSI16): Gray;
+		oklab(from: ANSI16): OKLAB;
+		oklch(from: ANSI16): OKLCH;
 	};
 
 	type ansi256 = {
@@ -346,6 +442,8 @@ declare namespace route {
 		hcg(from: ANSI256): HCG;
 		apple(from: ANSI256): Apple;
 		gray(from: ANSI256): Gray;
+		oklab(from: ANSI256): OKLAB;
+		oklch(from: ANSI256): OKLCH;
 	};
 
 	type hcg = {
@@ -377,6 +475,10 @@ declare namespace route {
 		apple(...from: HCG): Apple;
 		gray(from: HCG): Gray;
 		gray(...from: HCG): Gray;
+		oklab(from: HCG): OKLAB;
+		oklab(...from: HCG): OKLAB;
+		oklch(from: HCG): OKLCH;
+		oklch(...from: HCG): OKLCH;
 	};
 
 	type apple = {
@@ -408,6 +510,10 @@ declare namespace route {
 		hcg(...from: Apple): HCG;
 		gray(from: Apple): Gray;
 		gray(...from: Apple): Gray;
+		oklab(from: Apple): OKLAB;
+		oklab(...from: Apple): OKLAB;
+		oklch(from: Apple): OKLCH;
+		oklch(...from: Apple): OKLCH;
 	};
 
 	type gray = {
@@ -439,6 +545,10 @@ declare namespace route {
 		hcg(...from: Gray): HCG;
 		apple(from: Gray): Apple;
 		apple(...from: Gray): Apple;
+		oklab(from: Gray): OKLAB;
+		oklab(...from: Gray): OKLAB;
+		oklch(from: Gray): OKLCH;
+		oklch(...from: Gray): OKLCH;
 	};
 }
 
@@ -457,6 +567,8 @@ declare function route(fromModel: "ansi256"): route.ansi256;
 declare function route(fromModel: "hcg"): route.hcg;
 declare function route(fromModel: "apple"): route.apple;
 declare function route(fromModel: "gray"): route.gray;
+declare function route(fromModel: "oklch"): route.oklch;
+declare function route(fromModel: "oklab"): route.oklab;
 
 export type Convert = {
 	rgb: {
@@ -748,6 +860,40 @@ export type Convert = {
 	} & route.gray & {
 			[F in keyof route.gray]: {
 				raw: route.gray[F];
+			};
+		};
+
+	oklab: {
+		channels: Channels;
+		labels: ["okl", "oka", "okb"];
+		oklch: {
+			(...oklab: OKLAB): OKLCH;
+			raw: (...oklab: OKLAB) => OKLCH;
+		};
+		xyz: {
+			(...oklab: OKLAB): XYZ;
+			raw: (...oklab: OKLAB) => XYZ;
+		};
+		rgb: {
+			(...oklab: OKLAB): RGB;
+			raw: (...oklab: OKLAB) => RGB;
+		};
+	} & route.oklab & {
+			[F in keyof route.oklab]: {
+				raw: route.oklab[F];
+			};
+		};
+
+	oklch: {
+		channels: Channels;
+		labels: ["okl", "okc", "okh"];
+		oklab: {
+			(...oklch: OKLCH): OKLAB;
+			raw: (...oklch: OKLCH) => OKLAB;
+		};
+	} & route.oklch & {
+			[F in keyof route.oklch]: {
+				raw: route.oklch[F];
 			};
 		};
 };
