@@ -8,6 +8,8 @@ export type LCH = [l: number, c: number, h: number];
 export type HCG = [h: number, c: number, g: number];
 export type HWB = [h: number, w: number, b: number];
 export type XYZ = [x: number, y: number, z: number];
+export type Oklab = [l: number, a: number, b: number];
+export type Oklch = [l: number, c: number, h: number];
 export type Apple = [r16: number, g16: number, b16: number];
 export type Gray = [gray: number];
 export type ANSI16 = number;
@@ -29,6 +31,7 @@ declare namespace route {
 		cmyk(...from: RGB): CMYK;
 		xyz(from: RGB): XYZ;
 		xyz(...from: RGB): XYZ;
+		oklab(from: RGB): Oklab;
 		lab(from: RGB): LAB;
 		lab(...from: RGB): LAB;
 		lch(from: RGB): LCH;
@@ -140,7 +143,6 @@ declare namespace route {
 		apple(...from: HWB): Apple;
 		gray(from: HWB): Gray;
 		gray(...from: HWB): Gray;
-
 	};
 
 	type cmyk = {
@@ -187,6 +189,7 @@ declare namespace route {
 		cmyk(...from: XYZ): CMYK;
 		lab(from: XYZ): LAB;
 		lab(...from: XYZ): LAB;
+		oklab(from: RGB): Oklab;
 		lch(from: XYZ): LCH;
 		lch(...from: XYZ): LCH;
 		hex(from: XYZ): HEX;
@@ -203,6 +206,16 @@ declare namespace route {
 		apple(...from: XYZ): Apple;
 		gray(from: XYZ): Gray;
 		gray(...from: XYZ): Gray;
+	};
+
+	type oklab = {
+		oklch(from: Oklab): Oklch;
+		xyz(from: Oklab): XYZ;
+		rgb(from: Oklab): RGB;
+	};
+
+	type oklch = {
+		oklab(from: Oklch): Oklab;
 	};
 
 	type lab = {
@@ -364,7 +377,6 @@ declare namespace route {
 		apple(...from: HCG): Apple;
 		gray(from: HCG): Gray;
 		gray(...from: HCG): Gray;
-
 	};
 
 	type apple = {
@@ -430,26 +442,26 @@ declare namespace route {
 	};
 }
 
-declare function route(fromModel: 'rgb'): route.rgb;
-declare function route(fromModel: 'hsl'): route.hsl;
-declare function route(fromModel: 'hsv'): route.hsv;
-declare function route(fromModel: 'hwb'): route.hwb;
-declare function route(fromModel: 'cmyk'): route.cmyk;
-declare function route(fromModel: 'xyz'): route.xyz;
-declare function route(fromModel: 'lab'): route.lab;
-declare function route(fromModel: 'lch'): route.lch;
-declare function route(fromModel: 'hex'): route.hex;
-declare function route(fromModel: 'keyword'): route.keyword;
-declare function route(fromModel: 'ansi16'): route.ansi16;
-declare function route(fromModel: 'ansi256'): route.ansi256;
-declare function route(fromModel: 'hcg'): route.hcg;
-declare function route(fromModel: 'apple'): route.apple;
-declare function route(fromModel: 'gray'): route.gray;
+declare function route(fromModel: "rgb"): route.rgb;
+declare function route(fromModel: "hsl"): route.hsl;
+declare function route(fromModel: "hsv"): route.hsv;
+declare function route(fromModel: "hwb"): route.hwb;
+declare function route(fromModel: "cmyk"): route.cmyk;
+declare function route(fromModel: "xyz"): route.xyz;
+declare function route(fromModel: "lab"): route.lab;
+declare function route(fromModel: "lch"): route.lch;
+declare function route(fromModel: "hex"): route.hex;
+declare function route(fromModel: "keyword"): route.keyword;
+declare function route(fromModel: "ansi16"): route.ansi16;
+declare function route(fromModel: "ansi256"): route.ansi256;
+declare function route(fromModel: "hcg"): route.hcg;
+declare function route(fromModel: "apple"): route.apple;
+declare function route(fromModel: "gray"): route.gray;
 
 export type Convert = {
 	rgb: {
 		channels: Channels;
-		labels: 'rgb';
+		labels: "rgb";
 		hsl: {
 			(...rgb: RGB): HSL;
 			raw: (...rgb: RGB) => HSL;
@@ -495,10 +507,10 @@ export type Convert = {
 			raw: (...rgb: RGB) => Gray;
 		};
 	} & route.rgb & {
-		[F in keyof route.rgb]: {
-			raw: route.rgb[F];
+			[F in keyof route.rgb]: {
+				raw: route.rgb[F];
+			};
 		};
-	};
 	keyword: {
 		channels: Channels;
 		rgb: {
@@ -506,13 +518,13 @@ export type Convert = {
 			raw: (keyword: Keyword) => RGB;
 		};
 	} & route.keyword & {
-		[F in keyof route.keyword]: {
-			raw: route.keyword[F];
+			[F in keyof route.keyword]: {
+				raw: route.keyword[F];
+			};
 		};
-	};
 	hsl: {
 		channels: Channels;
-		labels: 'hsl';
+		labels: "hsl";
 		rgb: {
 			(...hsl: HSL): RGB;
 			raw: (...hsl: HSL) => RGB;
@@ -526,13 +538,13 @@ export type Convert = {
 			raw: (...hsl: HSL) => HCG;
 		};
 	} & route.hsl & {
-		[F in keyof route.hsl]: {
-			raw: route.hsl[F];
+			[F in keyof route.hsl]: {
+				raw: route.hsl[F];
+			};
 		};
-	};
 	hsv: {
 		channels: Channels;
-		labels: 'hsv';
+		labels: "hsv";
 		hcg: {
 			(...hsv: HSV): HCG;
 			raw: (...hsv: HSV) => HCG;
@@ -558,13 +570,13 @@ export type Convert = {
 			raw: (...hsv: HSV) => ANSI16;
 		};
 	} & route.hsv & {
-		[F in keyof route.hsv]: {
-			raw: route.hsv[F];
+			[F in keyof route.hsv]: {
+				raw: route.hsv[F];
+			};
 		};
-	};
 	hwb: {
 		channels: Channels;
-		labels: 'hwb';
+		labels: "hwb";
 		hcg: {
 			(...hwb: HWB): HCG;
 			raw: (...hwb: HWB) => HCG;
@@ -574,25 +586,25 @@ export type Convert = {
 			raw: (...hwb: HWB) => RGB;
 		};
 	} & route.hwb & {
-		[F in keyof route.hwb]: {
-			raw: route.hwb[F];
+			[F in keyof route.hwb]: {
+				raw: route.hwb[F];
+			};
 		};
-	};
 	cmyk: {
 		channels: Channels;
-		labels: 'cmyk';
+		labels: "cmyk";
 		rgb: {
 			(...cmyk: CMYK): RGB;
 			raw: (...cmyk: CMYK) => RGB;
 		};
 	} & route.cmyk & {
-		[F in keyof route.cmyk]: {
-			raw: route.cmyk[F];
+			[F in keyof route.cmyk]: {
+				raw: route.cmyk[F];
+			};
 		};
-	};
 	xyz: {
 		channels: Channels;
-		labels: 'xyz';
+		labels: "xyz";
 		rgb: {
 			(...xyz: XYZ): RGB;
 			raw: (...xyz: XYZ) => RGB;
@@ -602,13 +614,13 @@ export type Convert = {
 			raw: (...xyz: XYZ) => LAB;
 		};
 	} & route.xyz & {
-		[F in keyof route.xyz]: {
-			raw: route.xyz[F];
+			[F in keyof route.xyz]: {
+				raw: route.xyz[F];
+			};
 		};
-	};
 	lab: {
 		channels: Channels;
-		labels: 'lab';
+		labels: "lab";
 		xyz: {
 			(...lab: LAB): XYZ;
 			raw: (...lab: LAB) => XYZ;
@@ -618,61 +630,61 @@ export type Convert = {
 			raw: (...lab: LAB) => LCH;
 		};
 	} & route.lab & {
-		[F in keyof route.lab]: {
-			raw: route.lab[F];
+			[F in keyof route.lab]: {
+				raw: route.lab[F];
+			};
 		};
-	};
 	lch: {
 		channels: Channels;
-		labels: 'lch';
+		labels: "lch";
 		lab: {
 			(...lch: LCH): LAB;
 			raw: (...lch: LCH) => LAB;
 		};
 	} & route.lch & {
-		[F in keyof route.lch]: {
-			raw: route.lch[F];
+			[F in keyof route.lch]: {
+				raw: route.lch[F];
+			};
 		};
-	};
 	hex: {
 		channels: Channels;
-		labels: ['hex'];
+		labels: ["hex"];
 		rgb: {
 			(hex: HEX): RGB;
 			raw: (hex: HEX) => RGB;
 		};
 	} & route.hex & {
-		[F in keyof route.hex]: {
-			raw: route.hex[F];
+			[F in keyof route.hex]: {
+				raw: route.hex[F];
+			};
 		};
-	};
 	ansi16: {
 		channels: Channels;
-		labels: ['ansi16'];
+		labels: ["ansi16"];
 		rgb: {
 			(ansi16: ANSI16): RGB;
 			raw: (ansi16: ANSI16) => RGB;
 		};
 	} & route.ansi16 & {
-		[F in keyof route.ansi16]: {
-			raw: route.ansi16[F];
+			[F in keyof route.ansi16]: {
+				raw: route.ansi16[F];
+			};
 		};
-	};
 	ansi256: {
 		channels: Channels;
-		labels: ['ansi256'];
+		labels: ["ansi256"];
 		rgb: {
 			(ansi256: ANSI256): RGB;
 			raw: (ansi256: ANSI256) => RGB;
 		};
 	} & route.ansi256 & {
-		[F in keyof route.ansi256]: {
-			raw: route.ansi256[F];
+			[F in keyof route.ansi256]: {
+				raw: route.ansi256[F];
+			};
 		};
-	};
 	hcg: {
 		channels: Channels;
-		labels: ['h', 'c', 'g'];
+		labels: ["h", "c", "g"];
 		rgb: {
 			(...hcg: HCG): RGB;
 			raw: (...hcg: HCG) => RGB;
@@ -686,25 +698,25 @@ export type Convert = {
 			raw: (...hcg: HCG) => HWB;
 		};
 	} & route.hcg & {
-		[F in keyof route.hcg]: {
-			raw: route.hcg[F];
+			[F in keyof route.hcg]: {
+				raw: route.hcg[F];
+			};
 		};
-	};
 	apple: {
 		channels: Channels;
-		labels: ['r16', 'g16', 'b16'];
+		labels: ["r16", "g16", "b16"];
 		rgb: {
 			(...apple: Apple): RGB;
 			raw: (...apple: Apple) => RGB;
 		};
 	} & route.apple & {
-		[F in keyof route.apple]: {
-			raw: route.apple[F];
+			[F in keyof route.apple]: {
+				raw: route.apple[F];
+			};
 		};
-	};
 	gray: {
 		channels: Channels;
-		labels: ['gray'];
+		labels: ["gray"];
 		rgb: {
 			(...gray: Gray): RGB;
 			raw: (...gray: Gray) => RGB;
@@ -734,10 +746,10 @@ export type Convert = {
 			raw: (...gray: Gray) => HEX;
 		};
 	} & route.gray & {
-		[F in keyof route.gray]: {
-			raw: route.gray[F];
+			[F in keyof route.gray]: {
+				raw: route.gray[F];
+			};
 		};
-	};
 };
 
 declare const convert: Convert;
