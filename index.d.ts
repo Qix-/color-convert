@@ -262,7 +262,7 @@ declare namespace route {
 		gray(from: OKLAB): Gray;
 		gray(...from: OKLAB): Gray;
 		oklch(from: OKLAB): OKLCH;
-		oklch(...from: OKLAB): Oklch;
+		oklch(...from: OKLAB): OKLCH;
 	};
 
 	type oklch = {
