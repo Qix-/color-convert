@@ -1,5 +1,24 @@
-import {expectType} from 'tsd';
-import convert, {type Channels, type RGB, type HSL, type HSV, type CMYK, type LAB, type LCH, type HCG, type HWB, type XYZ, type Apple, type Gray, type ANSI16, type ANSI256, type Keyword, type HEX} from './index.js';
+import { expectType } from "tsd";
+import convert, {
+	type Channels,
+	type RGB,
+	type HSL,
+	type HSV,
+	type CMYK,
+	type LAB,
+	type LCH,
+	type HCG,
+	type HWB,
+	type XYZ,
+	type Apple,
+	type Gray,
+	type ANSI16,
+	type ANSI256,
+	type Keyword,
+	type HEX,
+	type OKLAB,
+	type OKLCH,
+} from "./index.js";
 
 // RGB
 expectType<Channels>(convert.rgb.channels);
@@ -32,38 +51,46 @@ expectType<LAB>(convert.rgb.lab(0, 0, 0));
 expectType<LAB>(convert.rgb.lab.raw(0, 0, 0));
 expectType<LCH>(convert.rgb.lch(0, 0, 0));
 expectType<LCH>(convert.rgb.lch.raw(0, 0, 0));
+expectType<OKLAB>(convert.rgb.oklab(0, 0, 0));
+expectType<OKLAB>(convert.rgb.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.rgb.oklch(0, 0, 0));
+expectType<OKLCH>(convert.rgb.oklch.raw(0, 0, 0));
 
 // Keyword
 expectType<Channels>(convert.keyword.channels);
-expectType<RGB>(convert.keyword.rgb('blue'));
-expectType<RGB>(convert.keyword.rgb.raw('blue'));
+expectType<RGB>(convert.keyword.rgb("blue"));
+expectType<RGB>(convert.keyword.rgb.raw("blue"));
 // - automatic conversions
-expectType<HSL>(convert.keyword.hsl('blue'));
-expectType<HSL>(convert.keyword.hsl.raw('blue'));
-expectType<HSV>(convert.keyword.hsv('blue'));
-expectType<HSV>(convert.keyword.hsv.raw('blue'));
-expectType<HWB>(convert.keyword.hwb('blue'));
-expectType<HWB>(convert.keyword.hwb.raw('blue'));
-expectType<CMYK>(convert.keyword.cmyk('blue'));
-expectType<CMYK>(convert.keyword.cmyk.raw('blue'));
-expectType<XYZ>(convert.keyword.xyz('blue'));
-expectType<XYZ>(convert.keyword.xyz.raw('blue'));
-expectType<LAB>(convert.keyword.lab('blue'));
-expectType<LAB>(convert.keyword.lab.raw('blue'));
-expectType<LCH>(convert.keyword.lch('blue'));
-expectType<LCH>(convert.keyword.lch.raw('blue'));
-expectType<HEX>(convert.keyword.hex('blue'));
-expectType<HEX>(convert.keyword.hex.raw('blue'));
-expectType<ANSI16>(convert.keyword.ansi16('blue'));
-expectType<ANSI16>(convert.keyword.ansi16.raw('blue'));
-expectType<ANSI256>(convert.keyword.ansi256('blue'));
-expectType<ANSI256>(convert.keyword.ansi256.raw('blue'));
-expectType<HCG>(convert.keyword.hcg('blue'));
-expectType<HCG>(convert.keyword.hcg.raw('blue'));
-expectType<Apple>(convert.keyword.apple('blue'));
-expectType<Apple>(convert.keyword.apple.raw('blue'));
-expectType<Gray>(convert.keyword.gray('blue'));
-expectType<Gray>(convert.keyword.gray.raw('blue'));
+expectType<HSL>(convert.keyword.hsl("blue"));
+expectType<HSL>(convert.keyword.hsl.raw("blue"));
+expectType<HSV>(convert.keyword.hsv("blue"));
+expectType<HSV>(convert.keyword.hsv.raw("blue"));
+expectType<HWB>(convert.keyword.hwb("blue"));
+expectType<HWB>(convert.keyword.hwb.raw("blue"));
+expectType<CMYK>(convert.keyword.cmyk("blue"));
+expectType<CMYK>(convert.keyword.cmyk.raw("blue"));
+expectType<XYZ>(convert.keyword.xyz("blue"));
+expectType<XYZ>(convert.keyword.xyz.raw("blue"));
+expectType<LAB>(convert.keyword.lab("blue"));
+expectType<LAB>(convert.keyword.lab.raw("blue"));
+expectType<LCH>(convert.keyword.lch("blue"));
+expectType<LCH>(convert.keyword.lch.raw("blue"));
+expectType<HEX>(convert.keyword.hex("blue"));
+expectType<HEX>(convert.keyword.hex.raw("blue"));
+expectType<ANSI16>(convert.keyword.ansi16("blue"));
+expectType<ANSI16>(convert.keyword.ansi16.raw("blue"));
+expectType<ANSI256>(convert.keyword.ansi256("blue"));
+expectType<ANSI256>(convert.keyword.ansi256.raw("blue"));
+expectType<HCG>(convert.keyword.hcg("blue"));
+expectType<HCG>(convert.keyword.hcg.raw("blue"));
+expectType<Apple>(convert.keyword.apple("blue"));
+expectType<Apple>(convert.keyword.apple.raw("blue"));
+expectType<Gray>(convert.keyword.gray("blue"));
+expectType<Gray>(convert.keyword.gray.raw("blue"));
+expectType<OKLAB>(convert.keyword.oklab("blue"));
+expectType<OKLAB>(convert.keyword.oklab.raw("blue"));
+expectType<OKLCH>(convert.keyword.oklch("blue"));
+expectType<OKLCH>(convert.keyword.oklch.raw("blue"));
 
 // HSL
 expectType<Channels>(convert.hsl.channels);
@@ -96,6 +123,10 @@ expectType<Apple>(convert.hsl.apple(0, 0, 0));
 expectType<Apple>(convert.hsl.apple.raw(0, 0, 0));
 expectType<Gray>(convert.hsl.gray(0, 0, 0));
 expectType<Gray>(convert.hsl.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.hsl.oklab(0, 0, 0));
+expectType<OKLAB>(convert.hsl.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.hsl.oklch(0, 0, 0));
+expectType<OKLCH>(convert.hsl.oklch.raw(0, 0, 0));
 
 // HSV
 expectType<Channels>(convert.hsv.channels);
@@ -128,6 +159,10 @@ expectType<HEX>(convert.hsv.hex(0, 0, 0));
 expectType<HEX>(convert.hsv.hex.raw(0, 0, 0));
 expectType<Keyword>(convert.hsv.keyword(0, 0, 0));
 expectType<Keyword>(convert.hsv.keyword.raw(0, 0, 0));
+expectType<OKLAB>(convert.hsv.oklab(0, 0, 0));
+expectType<OKLAB>(convert.hsv.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.hsv.oklch(0, 0, 0));
+expectType<OKLCH>(convert.hsv.oklch.raw(0, 0, 0));
 
 // HWB
 expectType<Channels>(convert.hwb.channels);
@@ -160,6 +195,10 @@ expectType<Apple>(convert.hwb.apple(0, 0, 0));
 expectType<Apple>(convert.hwb.apple.raw(0, 0, 0));
 expectType<Gray>(convert.hwb.gray(0, 0, 0));
 expectType<Gray>(convert.hwb.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.hwb.oklab(0, 0, 0));
+expectType<OKLAB>(convert.hwb.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.hwb.oklch(0, 0, 0));
+expectType<OKLCH>(convert.hwb.oklch.raw(0, 0, 0));
 
 // CMYK
 expectType<Channels>(convert.cmyk.channels);
@@ -192,6 +231,10 @@ expectType<Apple>(convert.cmyk.apple(0, 0, 0, 0));
 expectType<Apple>(convert.cmyk.apple.raw(0, 0, 0, 0));
 expectType<Gray>(convert.cmyk.gray(0, 0, 0, 0));
 expectType<Gray>(convert.cmyk.gray.raw(0, 0, 0, 0));
+expectType<OKLAB>(convert.cmyk.oklab(0, 0, 0, 0));
+expectType<OKLAB>(convert.cmyk.oklab.raw(0, 0, 0, 0));
+expectType<OKLCH>(convert.cmyk.oklch(0, 0, 0, 0));
+expectType<OKLCH>(convert.cmyk.oklch.raw(0, 0, 0, 0));
 
 // XYZ
 expectType<Channels>(convert.xyz.channels);
@@ -224,6 +267,78 @@ expectType<Apple>(convert.xyz.apple(0, 0, 0));
 expectType<Apple>(convert.xyz.apple.raw(0, 0, 0));
 expectType<Gray>(convert.xyz.gray(0, 0, 0));
 expectType<Gray>(convert.xyz.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.xyz.oklab(0, 0, 0));
+expectType<OKLAB>(convert.xyz.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.xyz.oklch(0, 0, 0));
+expectType<OKLCH>(convert.xyz.oklch.raw(0, 0, 0));
+
+// Oklab
+expectType<Channels>(convert.oklab.channels);
+expectType<RGB>(convert.oklab.rgb(0, 0, 0));
+expectType<RGB>(convert.oklab.rgb.raw(0, 0, 0));
+expectType<LAB>(convert.oklab.lab(0, 0, 0));
+expectType<LAB>(convert.oklab.lab.raw(0, 0, 0));
+// - automatic conversions
+expectType<HSL>(convert.oklab.hsl(0, 0, 0));
+expectType<HSL>(convert.oklab.hsl.raw(0, 0, 0));
+expectType<HSV>(convert.oklab.hsv(0, 0, 0));
+expectType<HSV>(convert.oklab.hsv.raw(0, 0, 0));
+expectType<HWB>(convert.oklab.hwb(0, 0, 0));
+expectType<HWB>(convert.oklab.hwb.raw(0, 0, 0));
+expectType<CMYK>(convert.oklab.cmyk(0, 0, 0));
+expectType<CMYK>(convert.oklab.cmyk.raw(0, 0, 0));
+expectType<LCH>(convert.oklab.lch(0, 0, 0));
+expectType<LCH>(convert.oklab.lch.raw(0, 0, 0));
+expectType<HEX>(convert.oklab.hex(0, 0, 0));
+expectType<HEX>(convert.oklab.hex.raw(0, 0, 0));
+expectType<Keyword>(convert.oklab.keyword(0, 0, 0));
+expectType<Keyword>(convert.oklab.keyword.raw(0, 0, 0));
+expectType<ANSI16>(convert.oklab.ansi16(0, 0, 0));
+expectType<ANSI16>(convert.oklab.ansi16.raw(0, 0, 0));
+expectType<ANSI256>(convert.oklab.ansi256(0, 0, 0));
+expectType<ANSI256>(convert.oklab.ansi256.raw(0, 0, 0));
+expectType<HCG>(convert.oklab.hcg(0, 0, 0));
+expectType<HCG>(convert.oklab.hcg.raw(0, 0, 0));
+expectType<Apple>(convert.oklab.apple(0, 0, 0));
+expectType<Apple>(convert.oklab.apple.raw(0, 0, 0));
+expectType<Gray>(convert.oklab.gray(0, 0, 0));
+expectType<Gray>(convert.oklab.gray.raw(0, 0, 0));
+expectType<OKLCH>(convert.oklab.oklch(0, 0, 0));
+expectType<OKLCH>(convert.oklab.oklch.raw(0, 0, 0));
+
+// oklch
+expectType<Channels>(convert.oklch.channels);
+expectType<RGB>(convert.oklch.rgb(0, 0, 0));
+expectType<RGB>(convert.oklch.rgb.raw(0, 0, 0));
+expectType<LAB>(convert.oklch.lab(0, 0, 0));
+expectType<LAB>(convert.oklch.lab.raw(0, 0, 0));
+// - automatic conversions
+expectType<HSL>(convert.oklch.hsl(0, 0, 0));
+expectType<HSL>(convert.oklch.hsl.raw(0, 0, 0));
+expectType<HSV>(convert.oklch.hsv(0, 0, 0));
+expectType<HSV>(convert.oklch.hsv.raw(0, 0, 0));
+expectType<HWB>(convert.oklch.hwb(0, 0, 0));
+expectType<HWB>(convert.oklch.hwb.raw(0, 0, 0));
+expectType<CMYK>(convert.oklch.cmyk(0, 0, 0));
+expectType<CMYK>(convert.oklch.cmyk.raw(0, 0, 0));
+expectType<LCH>(convert.oklch.lch(0, 0, 0));
+expectType<LCH>(convert.oklch.lch.raw(0, 0, 0));
+expectType<HEX>(convert.oklch.hex(0, 0, 0));
+expectType<HEX>(convert.oklch.hex.raw(0, 0, 0));
+expectType<Keyword>(convert.oklch.keyword(0, 0, 0));
+expectType<Keyword>(convert.oklch.keyword.raw(0, 0, 0));
+expectType<ANSI16>(convert.oklch.ansi16(0, 0, 0));
+expectType<ANSI16>(convert.oklch.ansi16.raw(0, 0, 0));
+expectType<ANSI256>(convert.oklch.ansi256(0, 0, 0));
+expectType<ANSI256>(convert.oklch.ansi256.raw(0, 0, 0));
+expectType<HCG>(convert.oklch.hcg(0, 0, 0));
+expectType<HCG>(convert.oklch.hcg.raw(0, 0, 0));
+expectType<Apple>(convert.oklch.apple(0, 0, 0));
+expectType<Apple>(convert.oklch.apple.raw(0, 0, 0));
+expectType<Gray>(convert.oklch.gray(0, 0, 0));
+expectType<Gray>(convert.oklch.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.oklch.oklab(0, 0, 0));
+expectType<OKLAB>(convert.oklch.oklab.raw(0, 0, 0));
 
 // LAB
 expectType<Channels>(convert.lab.channels);
@@ -256,6 +371,10 @@ expectType<Apple>(convert.lab.apple(0, 0, 0));
 expectType<Apple>(convert.lab.apple.raw(0, 0, 0));
 expectType<Gray>(convert.lab.gray(0, 0, 0));
 expectType<Gray>(convert.lab.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.lab.oklab(0, 0, 0));
+expectType<OKLAB>(convert.lab.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.lab.oklch(0, 0, 0));
+expectType<OKLCH>(convert.lab.oklch.raw(0, 0, 0));
 
 // LCH
 expectType<Channels>(convert.lch.channels);
@@ -288,6 +407,10 @@ expectType<Apple>(convert.lch.apple(0, 0, 0));
 expectType<Apple>(convert.lch.apple.raw(0, 0, 0));
 expectType<Gray>(convert.lch.gray(0, 0, 0));
 expectType<Gray>(convert.lch.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.lch.oklab(0, 0, 0));
+expectType<OKLAB>(convert.lch.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.lch.oklch(0, 0, 0));
+expectType<OKLCH>(convert.lch.oklch.raw(0, 0, 0));
 
 // HCG
 expectType<Channels>(convert.hcg.channels);
@@ -320,6 +443,10 @@ expectType<Apple>(convert.hcg.apple(0, 0, 0));
 expectType<Apple>(convert.hcg.apple.raw(0, 0, 0));
 expectType<Gray>(convert.hcg.gray(0, 0, 0));
 expectType<Gray>(convert.hcg.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.hcg.oklab(0, 0, 0));
+expectType<OKLAB>(convert.hcg.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.hcg.oklch(0, 0, 0));
+expectType<OKLCH>(convert.hcg.oklch.raw(0, 0, 0));
 
 // Apple
 expectType<Channels>(convert.apple.channels);
@@ -352,6 +479,10 @@ expectType<HCG>(convert.apple.hcg(0, 0, 0));
 expectType<HCG>(convert.apple.hcg.raw(0, 0, 0));
 expectType<Gray>(convert.apple.gray(0, 0, 0));
 expectType<Gray>(convert.apple.gray.raw(0, 0, 0));
+expectType<OKLAB>(convert.apple.oklab(0, 0, 0));
+expectType<OKLAB>(convert.apple.oklab.raw(0, 0, 0));
+expectType<OKLCH>(convert.apple.oklch(0, 0, 0));
+expectType<OKLCH>(convert.apple.oklch.raw(0, 0, 0));
 
 // Gray
 expectType<Channels>(convert.gray.channels);
@@ -384,3 +515,7 @@ expectType<HCG>(convert.gray.hcg(0));
 expectType<HCG>(convert.gray.hcg.raw(0));
 expectType<Apple>(convert.gray.apple(0));
 expectType<Apple>(convert.gray.apple.raw(0));
+expectType<OKLAB>(convert.gray.oklab(0));
+expectType<OKLAB>(convert.gray.oklab.raw(0));
+expectType<OKLCH>(convert.gray.oklch(0));
+expectType<OKLCH>(convert.gray.oklch.raw(0));
