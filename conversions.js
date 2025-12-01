@@ -264,7 +264,7 @@ convert.rgb.keyword = function (rgb) {
 };
 
 convert.keyword.rgb = function (keyword) {
-	return [...cssKeywords[keyword]];
+	return cssKeywords[keyword]?.slice();
 };
 
 convert.rgb.xyz = function (rgb) {

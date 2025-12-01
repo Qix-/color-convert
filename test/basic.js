@@ -90,6 +90,10 @@ assert.deepStrictEqual(convert.cmyk.ansi256([30, 0, 50, 22]), 150);
 assert.deepStrictEqual(convert.cmyk.hex([30, 0, 50, 22]), '8BC763');
 
 assert.deepStrictEqual(convert.keyword.rgb('blue'), [0, 0, 255]);
+assert.deepStrictEqual(convert.keyword.rgb('no-match'), undefined);
+assert.doesNotThrow(() => {
+	convert.keyword.rgb('no-match');
+});
 assert.deepStrictEqual(convert.keyword.hsl('blue'), [240, 100, 50]);
 assert.deepStrictEqual(convert.keyword.hsv('blue'), [240, 100, 100]);
 assert.deepStrictEqual(convert.keyword.hwb('blue'), [240, 0, 0]);
