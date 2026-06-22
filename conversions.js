@@ -800,6 +800,10 @@ convert.rgb.hcg = function (rgb) {
 	hue /= 6;
 	hue %= 1;
 
+	if (hue < 0) {
+		hue += 1;
+	}
+
 	return [hue * 360, chroma * 100, grayscale * 100];
 };
 

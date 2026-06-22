@@ -139,6 +139,11 @@ assert.deepStrictEqual(convert.hcg.hsl([96, 39, 64]), [96, 47, 59]);
 // https://github.com/Qix-/color-convert/issues/73
 assert.deepStrictEqual(convert.rgb.hcg.raw([250, 0, 255]), [298.823_529_411_764_7, 100, 0]);
 
+// Hue must wrap into [0, 360) for red-dominant colors with blue > green,
+// matching the identical hue definition used by rgb.hsl/rgb.hsv.
+assert.deepStrictEqual(convert.rgb.hcg.raw([255, 0, 150]), [324.705_882_352_941_16, 100, 0]);
+assert.deepStrictEqual(convert.rgb.hcg([255, 0, 150])[0], convert.rgb.hsl([255, 0, 150])[0]);
+
 // Non-array arguments
 assert.deepStrictEqual(convert.hsl.rgb(96, 48, 59), [140, 201, 100]);
 
