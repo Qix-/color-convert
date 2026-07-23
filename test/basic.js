@@ -238,6 +238,8 @@ assert.deepStrictEqual(convert.gray.hsl([50]), [0, 0, 50]);
 assert.deepStrictEqual(convert.gray.hsv([50]), [0, 0, 50]);
 assert.deepStrictEqual(convert.gray.hwb([50]), [0, 100, 50]);
 assert.deepStrictEqual(convert.gray.cmyk([50]), [0, 0, 0, 50]);
+assert.deepStrictEqual(convert.gray.cmyk([100]), [0, 0, 0, 0]);
+assert.deepStrictEqual(convert.gray.cmyk([0]), [0, 0, 0, 100]);
 assert.deepStrictEqual(convert.gray.lab([50]), [50, 0, 0]);
 assert.deepStrictEqual(convert.gray.hex([50]), '808080');
 assert.deepStrictEqual(convert.gray.hex([100]), 'FFFFFF');
