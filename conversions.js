@@ -957,7 +957,9 @@ convert.gray.hwb = function (gray) {
 };
 
 convert.gray.cmyk = function (gray) {
-	return [0, 0, 0, gray[0]];
+	// Gray is a lightness percentage (100 = white); CMYK K is darkness,
+	// so K is its complement, matching every other gray.* conversion
+	return [0, 0, 0, 100 - gray[0]];
 };
 
 convert.gray.lab = function (gray) {
