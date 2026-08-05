@@ -953,7 +953,7 @@ convert.gray.hsl = function (args) {
 convert.gray.hsv = convert.gray.hsl;
 
 convert.gray.hwb = function (gray) {
-	return [0, 100, gray[0]];
+	return [0, gray[0], 100 - gray[0]];
 };
 
 convert.gray.cmyk = function (gray) {
