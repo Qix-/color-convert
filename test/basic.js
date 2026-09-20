@@ -110,6 +110,18 @@ assert.deepStrictEqual(convert.xyz.oklab([0, 0, 100]), [15, -141, -45]);
 assert.deepStrictEqual(convert.xyz.lch([25, 40, 15]), [69, 65, 137]);
 
 assert.deepStrictEqual(convert.lab.xyz([69, -48, 44]), [25, 39, 15]);
+
+// CIE LAB linear branch uses κ = 1/(3*(6/29)^2), not the rounded 7.787 (#100)
+{
+	const xyz = [0.001, 0.001, 0.001];
+	const lab = convert.xyz.lab.raw(xyz);
+	const back = convert.lab.xyz.raw(lab);
+	assert.ok(Number.isFinite(lab[0]) && Number.isFinite(lab[1]) && Number.isFinite(lab[2]));
+	assert.ok(Math.abs(back[0] - xyz[0]) < 1e-12);
+	assert.ok(Math.abs(back[1] - xyz[1]) < 1e-12);
+	assert.ok(Math.abs(back[2] - xyz[2]) < 1e-12);
+}
+
 assert.deepStrictEqual(convert.lab.rgb([75, 20, -30]), [194, 175, 240]);
 assert.deepStrictEqual(convert.lab.lch([69, -48, 44]), [69, 65, 137]);
 
