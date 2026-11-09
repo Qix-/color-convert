@@ -250,3 +250,27 @@ assert.deepStrictEqual(convert.rgb.gray([0, 128, 255]), [50]);
 
 // https://github.com/Qix-/color-convert/issues/74
 assert.deepStrictEqual(convert.rgb.ansi256(40, 38, 41), 235);
+
+// Nullish input passes through unchanged
+assert.deepStrictEqual(convert.rgb.hsl(undefined), undefined);
+assert.deepStrictEqual(convert.rgb.hsl(null), null);
+assert.deepStrictEqual(convert.rgb.hsl.raw(undefined), undefined);
+assert.deepStrictEqual(convert.rgb.hsl.raw(null), null);
+
+// Rgb.hsl with a dominant red channel computes hue in the red branch
+assert.deepStrictEqual(convert.rgb.hsl([255, 0, 0]), [0, 100, 50]);
+// Dominant red with g < b produces a negative hue that wraps around
+assert.deepStrictEqual(convert.rgb.hsl([255, 0, 255]), [300, 100, 50]);
+// Dominant green channel
+assert.deepStrictEqual(convert.rgb.hsl([0, 255, 0]), [120, 100, 50]);
+
+// Rgb.hsv of an achromatic color has zero hue and saturation
+assert.deepStrictEqual(convert.rgb.hsv([128, 128, 128]), [0, 0, 50]);
+
+// Xyz.lab below the LAB_FT threshold uses the linear segment
+assert.deepStrictEqual(convert.xyz.lab([0.5, 0.5, 0.5]), [5, 1, 1]);
+
+// Hsl.rgb with lightness >= 50 uses the l + s - l * s divisor
+assert.deepStrictEqual(convert.hsl.rgb([100, 100, 60]), [119, 255, 51]);
+// Hue near 360 pushes t3 above 1 for the red channel
+assert.deepStrictEqual(convert.hsl.rgb([300, 100, 60]), [255, 51, 255]);
