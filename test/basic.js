@@ -250,3 +250,59 @@ assert.deepStrictEqual(convert.rgb.gray([0, 128, 255]), [50]);
 
 // https://github.com/Qix-/color-convert/issues/74
 assert.deepStrictEqual(convert.rgb.ansi256(40, 38, 41), 235);
+
+// HCG to RGB hue sectors (all six branches of the hue switch)
+assert.deepStrictEqual(convert.hcg.rgb([0, 100, 0]), [255, 0, 0]);
+assert.deepStrictEqual(convert.hcg.rgb([60, 100, 0]), [255, 255, 0]);
+assert.deepStrictEqual(convert.hcg.rgb([120, 100, 0]), [0, 255, 0]);
+assert.deepStrictEqual(convert.hcg.rgb([180, 100, 0]), [0, 255, 255]);
+assert.deepStrictEqual(convert.hcg.rgb([240, 100, 0]), [0, 0, 255]);
+assert.deepStrictEqual(convert.hcg.rgb([300, 100, 0]), [255, 0, 255]);
+assert.deepStrictEqual(convert.hcg.rgb.raw([30, 100, 0]), [255, 127.5, 0]);
+
+// Hcg.hsv with zero chroma and zero gray (v === 0 branch)
+assert.deepStrictEqual(convert.hcg.hsv([10, 0, 0]), [10, 0, 0]);
+
+// Hcg.hsl lightness branches: l === 0, l < 0.5, and l >= 0.5
+assert.deepStrictEqual(convert.hcg.hsl([10, 0, 0]), [10, 0, 0]);
+assert.deepStrictEqual(convert.hcg.hsl.raw([0, 60, 20]), [0, 78.947_368_421_052_63, 38]);
+assert.deepStrictEqual(convert.hcg.hsl([96, 39, 64]), [96, 47, 59]);
+
+// Hcg.hwb, including the zero-chroma passthrough
+assert.deepStrictEqual(convert.hcg.hwb([96, 39, 64]), [96, 39, 22]);
+assert.deepStrictEqual(convert.hcg.hwb([96, 0, 50]), [96, 50, 50]);
+
+// Hwb.hcg, including the w === 0 && b === 0 branch (g === 0)
+assert.deepStrictEqual(convert.hwb.hcg([96, 0, 0]), [96, 100, 0]);
+assert.deepStrictEqual(convert.hwb.hcg.raw([96, 39, 22]), [96, 39, 63.934_426_229_508_205]);
+
+// Apple to RGB scaling
+assert.deepStrictEqual(convert.apple.rgb([65_535, 32_639, 0]), [255, 127, 0]);
+
+// Wrapped functions pass through undefined/null and spread single arrays
+assert.deepStrictEqual(convert.rgb.hsl(), undefined);
+assert.deepStrictEqual(convert.rgb.hsl(null), null);
+assert.deepStrictEqual(convert.rgb.hsl([140, 200, 100]), [96, 48, 59]);
+
+// Hex.rgb: 3-digit shorthand, uppercase, and unparseable input
+assert.deepStrictEqual(convert.hex.rgb('abc'), [170, 187, 204]);
+assert.deepStrictEqual(convert.hex.rgb('ABC'), [170, 187, 204]);
+assert.deepStrictEqual(convert.hex.rgb('zzzz'), [0, 0, 0]);
+
+// Ansi16.rgb greyscale entries (0 and 7) and bright grey (args > 50)
+assert.deepStrictEqual(convert.ansi16.rgb(0), [0, 0, 0]);
+assert.deepStrictEqual(convert.ansi16.rgb(7), [170, 170, 170]);
+assert.deepStrictEqual(convert.ansi16.rgb(60), [85, 85, 85]);
+
+// Ansi256.rgb greyscale ramp (232-255)
+assert.deepStrictEqual(convert.ansi256.rgb(232), [8, 8, 8]);
+assert.deepStrictEqual(convert.ansi256.rgb(255), [238, 238, 238]);
+
+// Rgb.hcg hue branches: grayscale, green-dominant, blue-dominant
+assert.deepStrictEqual(convert.rgb.hcg([128, 128, 128]), [0, 0, 50]);
+assert.deepStrictEqual(convert.rgb.hcg([100, 200, 140]), [144, 39, 65]);
+assert.deepStrictEqual(convert.rgb.hcg([100, 140, 200]), [216, 39, 65]);
+assert.deepStrictEqual(convert.rgb.hcg([200, 140, 100]), [24, 39, 65]);
+
+// HCG to RGB with zero chroma passes through grey
+assert.deepStrictEqual(convert.hcg.rgb([96, 0, 50]), [128, 128, 128]);
