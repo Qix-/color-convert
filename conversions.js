@@ -264,7 +264,12 @@ convert.rgb.keyword = function (rgb) {
 };
 
 convert.keyword.rgb = function (keyword) {
-	return [...cssKeywords[keyword]];
+	const value = cssKeywords[keyword];
+	if (!value) {
+		return undefined;
+	}
+
+	return [...value];
 };
 
 convert.rgb.xyz = function (rgb) {

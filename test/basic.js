@@ -100,6 +100,10 @@ assert.deepStrictEqual(convert.keyword.ansi16('purple'), 35);
 assert.deepStrictEqual(convert.keyword.ansi256('purple'), 127);
 assert.deepStrictEqual(convert.keyword.hex('blue'), '0000FF');
 
+// Unknown keywords should return undefined rather than throw
+assert.strictEqual(convert.keyword.rgb('asdf'), undefined);
+assert.strictEqual(convert.keyword.rgb.raw('asdf'), undefined);
+
 assert.deepStrictEqual(convert.xyz.rgb([25, 40, 15]), [97, 190, 85]);
 assert.deepStrictEqual(convert.xyz.rgb([50, 100, 100]), [0, 255, 241]);
 assert.deepStrictEqual(convert.xyz.lab([25, 40, 15]), [69, -48, 44]);
